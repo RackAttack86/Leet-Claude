@@ -50,24 +50,21 @@ class Solution:
         nums.sort()
 
         for i in range(len(nums) - 2):
-            # Skip duplicate values for the first number
-            if i > 0 and nums[i] == nums[i - 1]:
-                continue
+            # Skip if same as previous number, no duplicate three pairs
+            if i > 0 and nums[i] == nums[i-1]:
+                continue 
 
-            left = i + 1
+            left = i+1
             right = len(nums) - 1
-            target = -nums[i]
+            target  = -nums[i]
 
             while left < right:
                 current_sum = nums[left] + nums[right]
-
                 if current_sum == target:
                     result.append([nums[i], nums[left], nums[right]])
-
-                    # Skip duplicates for left pointer
                     while left < right and nums[left] == nums[left + 1]:
                         left += 1
-                    # Skip duplicates for right pointer
+                    
                     while left < right and nums[right] == nums[right - 1]:
                         right -= 1
 
@@ -79,7 +76,6 @@ class Solution:
                     right -= 1
 
         return result
-
 
 # Metadata for tracking
 PROBLEM_METADATA = {
