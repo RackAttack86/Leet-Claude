@@ -34,18 +34,26 @@ class Solution:
     Solution to LeetCode Problem #75: Sort Colors
 
     Approach: [TODO: Describe approach]
-    Time Complexity: O(?)
-    Space Complexity: O(?)
+    Time Complexity: O(n)
+    Space Complexity: O(1)
 
     Key Insights:
     [TODO: Add key insights]
     """
 
-    def solve(self):
-        """
-        [TODO: Implement solution]
-        """
-        pass
+    def sortColors(self, nums: List[int]) -> None:
+        low, mid = 0, 0
+        high = len(nums)-1
+        while mid <= high:
+            if nums[mid] == 0:
+                nums[low], nums[mid] = nums[mid], nums[low]
+                low += 1
+                mid += 1
+            elif nums[mid] == 1:
+                mid += 1
+            elif nums[mid] == 2:
+                nums[high], nums[mid] = nums[mid], nums[high]
+                high -= 1
 
 
 # Metadata for tracking
