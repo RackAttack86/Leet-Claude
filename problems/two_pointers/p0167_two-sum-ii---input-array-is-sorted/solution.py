@@ -2,7 +2,7 @@
 LeetCode Problem #167: Two Sum II - Input Array Is Sorted
 Difficulty: Medium
 Pattern: Two Pointers
-Link: https://leetcode.com/problems/two-sum-ii---input-array-is-sorted/
+Link: https://leetcode.com/problems/two-sum-ii-input-array-is-sorted/description/
 
 Problem:
 --------
@@ -42,11 +42,17 @@ class Solution:
     [TODO: Add key insights]
     """
 
-    def solve(self):
-        """
-        [TODO: Implement solution]
-        """
-        pass
+    def twoSum(self, numbers: List[int], target: int) -> List[int]:
+        l, r = 0, len(numbers)-1
+        while l<r:
+            if numbers[l] + numbers[r] == target:
+                return [l+1,r+1]
+            else:
+                if numbers[l] + numbers[r] < target:
+                    l+=1
+                else:
+                    r-=1
+
 
 
 # Metadata for tracking
