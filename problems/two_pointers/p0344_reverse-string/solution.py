@@ -32,11 +32,15 @@ class Solution:
     [TODO: Add key insights]
     """
 
-    def solve(self):
+    def reverseString(self, s: List[str]) -> None:
         """
-        [TODO: Implement solution]
+        Do not return anything, modify s in-place instead.
         """
-        pass
+        l,r = 0, len(s)-1
+        while l<r:
+            s[l], s[r] = s[r], s[l]
+            l+=1
+            r-=1
 
 
 # Metadata for tracking
