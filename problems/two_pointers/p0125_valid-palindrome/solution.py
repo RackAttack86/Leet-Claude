@@ -59,24 +59,19 @@ class Solution:
         Returns:
             True if palindrome, False otherwise
         """
-        left, right = 0, len(s) - 1
-
-        while left < right:
-            # Skip non-alphanumeric from left
-            while left < right and not s[left].isalnum():
-                left += 1
-
-            # Skip non-alphanumeric from right
-            while left < right and not s[right].isalnum():
-                right -= 1
-
-            # Compare characters (case-insensitive)
-            if s[left].lower() != s[right].lower():
+        s = s.lower()
+        l = 0
+        r = len(s) - 1
+        while l<r:
+            if not s[l].isalnum():
+                l += 1
+            elif not s[r].isalnum():
+                r -= 1
+            elif s[l] != s[r]:
                 return False
-
-            left += 1
-            right -= 1
-
+            else:
+                l+=1
+                r-=1
         return True
 
     def isPalindrome_filter(self, s: str) -> bool:
