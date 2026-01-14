@@ -39,11 +39,17 @@ class Solution:
     [TODO: Add key insights]
     """
 
-    def solve(self):
+    def moveZeroes(self, nums: List[int]) -> None:
         """
-        [TODO: Implement solution]
+        Do not return anything, modify nums in-place instead.
         """
-        pass
+        l = 0
+        for r in range(len(nums)):
+            if nums[r] == 0:
+                continue
+            else:
+                nums[l], nums[r] = nums[r], nums[l]
+                l+=1
 
 
 # Metadata for tracking
