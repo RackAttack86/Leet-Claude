@@ -29,12 +29,14 @@ class Solution:
     """
     Solution to LeetCode Problem #191: Number of 1 Bits
 
-    Approach: [TODO: Describe approach]
-    Time Complexity: O(?)
-    Space Complexity: O(?)
+    Approach: Brian Kernighan's algorithm
+    Time Complexity: O(k) where k is number of 1 bits
+    Space Complexity: O(1)
 
     Key Insights:
-    [TODO: Add key insights]
+    - n & (n-1) removes rightmost 1 bit
+    - Count how many times we can do this
+    - Or use built-in bit_count()
     """
 
     def solve(self):

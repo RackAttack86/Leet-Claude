@@ -34,12 +34,15 @@ class Solution:
     """
     Solution to LeetCode Problem #198: House Robber
 
-    Approach: [TODO: Describe approach]
-    Time Complexity: O(?)
-    Space Complexity: O(?)
+    Approach: Dynamic Programming
+    Time Complexity: O(n)
+    Space Complexity: O(1) with space optimization
 
     Key Insights:
-    [TODO: Add key insights]
+    - dp[i] = max(dp[i-1], dp[i-2] + nums[i])
+    - Either rob current house or skip it
+    - Can optimize to O(1) space with two variables
+    - Classic DP with non-adjacent constraint
     """
 
     def solve(self):

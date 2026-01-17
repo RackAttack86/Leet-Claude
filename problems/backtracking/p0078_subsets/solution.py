@@ -31,12 +31,15 @@ class Solution:
     """
     Solution to LeetCode Problem #78: Subsets
 
-    Approach: [TODO: Describe approach]
-    Time Complexity: O(?)
-    Space Complexity: O(?)
+    Approach: Backtracking or iterative
+    Time Complexity: O(2^n * n)
+    Space Complexity: O(n) for recursion
 
     Key Insights:
-    [TODO: Add key insights]
+    - Each element has two choices: include or exclude
+    - Backtrack with start index
+    - Add current subset at each step
+    - 2^n total subsets
     """
 
     def solve(self):

@@ -47,12 +47,15 @@ class Solution:
     """
     Solution to LeetCode Problem #155: Min Stack
 
-    Approach: [TODO: Describe approach]
-    Time Complexity: O(?)
-    Space Complexity: O(?)
+    Approach: Two stacks or stack with pairs
+    Time Complexity: O(1) for all operations
+    Space Complexity: O(n)
 
     Key Insights:
-    [TODO: Add key insights]
+    - Store (value, current_min) pairs
+    - Or use two stacks: main and min
+    - Update min on push
+    - Pop from both stacks together
     """
 
     def solve(self):

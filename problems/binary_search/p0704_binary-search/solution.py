@@ -33,12 +33,15 @@ class Solution:
     """
     Solution to LeetCode Problem #704: Binary Search
 
-    Approach: [TODO: Describe approach]
-    Time Complexity: O(?)
-    Space Complexity: O(?)
+    Approach: Standard binary search
+    Time Complexity: O(log n)
+    Space Complexity: O(1)
 
     Key Insights:
-    [TODO: Add key insights]
+    - Classic binary search implementation
+    - Compare mid with target
+    - Adjust left or right pointer
+    - Template for all binary search problems
     """
 
     def solve(self):

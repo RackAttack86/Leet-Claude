@@ -30,12 +30,15 @@ class Solution:
     """
     Solution to LeetCode Problem #295: Find Median from Data Stream
 
-    Approach: [TODO: Describe approach]
-    Time Complexity: O(?)
-    Space Complexity: O(?)
+    Approach: Two heaps (max heap for smaller half, min heap for larger half)
+    Time Complexity: O(log n) for addNum, O(1) for findMedian
+    Space Complexity: O(n)
 
     Key Insights:
-    [TODO: Add key insights]
+    - Max heap stores smaller half
+    - Min heap stores larger half
+    - Keep heaps balanced (size diff <= 1)
+    - Median is top of heap(s)
     """
 
     def solve(self):

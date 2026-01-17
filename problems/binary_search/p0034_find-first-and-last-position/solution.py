@@ -33,12 +33,15 @@ class Solution:
     """
     Solution to LeetCode Problem #34: Find First and Last Position
 
-    Approach: [TODO: Describe approach]
-    Time Complexity: O(?)
-    Space Complexity: O(?)
+    Approach: Binary search twice (first and last position)
+    Time Complexity: O(log n)
+    Space Complexity: O(1)
 
     Key Insights:
-    [TODO: Add key insights]
+    - Find leftmost position with binary search
+    - Find rightmost position with binary search
+    - Modify binary search to find boundaries
+    - Two separate binary searches
     """
 
     def solve(self):

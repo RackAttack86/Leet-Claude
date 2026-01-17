@@ -34,12 +34,15 @@ class Solution:
     """
     Solution to LeetCode Problem #45: Jump Game II
 
-    Approach: [TODO: Describe approach]
-    Time Complexity: O(?)
-    Space Complexity: O(?)
+    Approach: Greedy with range tracking
+    Time Complexity: O(n)
+    Space Complexity: O(1)
 
     Key Insights:
-    [TODO: Add key insights]
+    - Track current jump end and farthest reachable
+    - Increment jumps when reaching current end
+    - Update farthest as you iterate
+    - BFS-like level order traversal
     """
 
     def solve(self):

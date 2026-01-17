@@ -31,12 +31,15 @@ class Solution:
     """
     Solution to LeetCode Problem #46: Permutations
 
-    Approach: [TODO: Describe approach]
-    Time Complexity: O(?)
-    Space Complexity: O(?)
+    Approach: Backtracking with swapping or used array
+    Time Complexity: O(n! * n)
+    Space Complexity: O(n)
 
     Key Insights:
-    [TODO: Add key insights]
+    - Use backtracking to generate permutations
+    - Track used elements or use swapping
+    - Add to result when permutation complete
+    - Classic backtracking problem
     """
 
     def solve(self):

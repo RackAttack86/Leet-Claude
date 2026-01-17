@@ -34,12 +34,15 @@ class Solution:
     """
     Solution to LeetCode Problem #39: Combination Sum
 
-    Approach: [TODO: Describe approach]
-    Time Complexity: O(?)
-    Space Complexity: O(?)
+    Approach: Backtracking with repetition allowed
+    Time Complexity: O(n^(T/M)) where T is target, M is minimum candidate
+    Space Complexity: O(T/M) for recursion depth
 
     Key Insights:
-    [TODO: Add key insights]
+    - Can reuse same element
+    - Use index to avoid duplicates in different order
+    - Backtrack when sum exceeds target
+    - Include element and recurse with same index
     """
 
     def solve(self):

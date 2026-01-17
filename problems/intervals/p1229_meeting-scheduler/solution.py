@@ -6,15 +6,27 @@ Link: https://leetcode.com/problems/meeting-scheduler/
 
 Problem:
 --------
-[TODO: Add problem description]
+Given two lists of closed intervals, each list of intervals is pairwise disjoint and in sorted order.
+
+Return the minimum number of conference rooms required.
+
+Note: This is a premium problem, similar to meeting rooms II but with two people's schedules.
 
 Constraints:
 -----------
-[TODO: Add constraints]
+- 1 <= slots1.length, slots2.length <= 1000
+- slots1[i].length, slots2[i].length == 2
+- slots1[i][0] < slots1[i][1]
+- slots2[i][0] < slots2[i][1]
+- 0 <= slots1[i][j], slots2[i][j], duration <= 10^9
 
 Examples:
 ---------
-[TODO: Add examples]
+Input: slots1 = [[10,50],[60,120],[140,210]], slots2 = [[0,15],[60,70]], duration = 8
+Output: [60,68]
+
+Input: slots1 = [[10,50],[60,120],[140,210]], slots2 = [[0,15],[60,70]], duration = 12
+Output: []
 """
 
 from typing import List, Optional
@@ -24,12 +36,15 @@ class Solution:
     """
     Solution to LeetCode Problem #1229: Meeting Scheduler
 
-    Approach: [TODO: Describe approach]
-    Time Complexity: O(?)
-    Space Complexity: O(?)
+    Approach: Two pointers with intersection check
+    Time Complexity: O(m + n)
+    Space Complexity: O(1)
 
     Key Insights:
-    [TODO: Add key insights]
+    - Find intersection of intervals
+    - Check if intersection >= duration
+    - Move pointer with earlier end time
+    - Return first valid slot
     """
 
     def solve(self):
@@ -45,9 +60,9 @@ PROBLEM_METADATA = {
     "name": "Meeting Scheduler",
     "difficulty": "Medium",
     "pattern": "Intervals",
-    "topics": [],  # TODO: Add topics
+    "topics": ['Array', 'Two Pointers', 'Sorting'],
     "url": "https://leetcode.com/problems/meeting-scheduler/",
-    "companies": [],  # TODO: Add companies
-    "time_complexity": "O(?)",
-    "space_complexity": "O(?)",
+    "companies": ['Amazon', 'Google', 'Microsoft'],
+    "time_complexity": "O(m + n)",
+    "space_complexity": "O(1)",
 }

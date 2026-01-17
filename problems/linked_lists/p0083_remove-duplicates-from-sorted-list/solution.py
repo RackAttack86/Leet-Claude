@@ -6,15 +6,21 @@ Link: https://leetcode.com/problems/remove-duplicates-from-sorted-list/
 
 Problem:
 --------
-[TODO: Add problem description]
+Given the head of a sorted linked list, delete all duplicates such that each element appears only once. Return the linked list sorted as well.
 
 Constraints:
 -----------
-[TODO: Add constraints]
+- The number of nodes in the list is in the range [0, 300]
+- -100 <= Node.val <= 100
+- The list is guaranteed to be sorted in ascending order
 
 Examples:
 ---------
-[TODO: Add examples]
+Input: head = [1,1,2]
+Output: [1,2]
+
+Input: head = [1,1,2,3,3]
+Output: [1,2,3]
 """
 
 from typing import List, Optional
@@ -24,12 +30,15 @@ class Solution:
     """
     Solution to LeetCode Problem #83: Remove Duplicates from Sorted List
 
-    Approach: [TODO: Describe approach]
-    Time Complexity: O(?)
-    Space Complexity: O(?)
+    Approach: Single pointer traversal
+    Time Complexity: O(n)
+    Space Complexity: O(1)
 
     Key Insights:
-    [TODO: Add key insights]
+    - Compare current with next node
+    - Skip duplicates by updating next pointer
+    - Continue until end of list
+    - Simple one-pass solution
     """
 
     def solve(self):
@@ -45,9 +54,9 @@ PROBLEM_METADATA = {
     "name": "Remove Duplicates from Sorted List",
     "difficulty": "Easy",
     "pattern": "Linked Lists",
-    "topics": [],  # TODO: Add topics
+    "topics": ['Linked List'],
     "url": "https://leetcode.com/problems/remove-duplicates-from-sorted-list/",
-    "companies": [],  # TODO: Add companies
-    "time_complexity": "O(?)",
-    "space_complexity": "O(?)",
+    "companies": ['Amazon', 'Microsoft', 'Facebook'],
+    "time_complexity": "O(n)",
+    "space_complexity": "O(1)",
 }

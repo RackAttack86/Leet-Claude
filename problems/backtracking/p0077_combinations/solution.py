@@ -6,15 +6,22 @@ Link: https://leetcode.com/problems/combinations/
 
 Problem:
 --------
-[TODO: Add problem description]
+Given two integers n and k, return all possible combinations of k numbers chosen from the range [1, n].
+
+You may return the answer in any order.
 
 Constraints:
 -----------
-[TODO: Add constraints]
+- 1 <= n <= 20
+- 1 <= k <= n
 
 Examples:
 ---------
-[TODO: Add examples]
+Input: n = 4, k = 2
+Output: [[1,2],[1,3],[1,4],[2,3],[2,4],[3,4]]
+
+Input: n = 1, k = 1
+Output: [[1]]
 """
 
 from typing import List, Optional
@@ -24,12 +31,14 @@ class Solution:
     """
     Solution to LeetCode Problem #77: Combinations
 
-    Approach: [TODO: Describe approach]
-    Time Complexity: O(?)
-    Space Complexity: O(?)
+    Approach: Backtracking
+    Time Complexity: O(C(n,k) * k) = O(n! / (k! * (n-k)!))
+    Space Complexity: O(k)
 
     Key Insights:
-    [TODO: Add key insights]
+    - Choose k elements from 1 to n
+    - Backtrack with start index to avoid duplicates
+    - Stop when combination has k elements
     """
 
     def solve(self):
@@ -45,9 +54,9 @@ PROBLEM_METADATA = {
     "name": "Combinations",
     "difficulty": "Medium",
     "pattern": "Backtracking",
-    "topics": [],  # TODO: Add topics
+    "topics": ['Backtracking'],
     "url": "https://leetcode.com/problems/combinations/",
-    "companies": [],  # TODO: Add companies
-    "time_complexity": "O(?)",
-    "space_complexity": "O(?)",
+    "companies": ['Amazon', 'Facebook', 'Microsoft', 'Google'],
+    "time_complexity": "O(C(n,k) * k) = O(n! / (k! * (n-k)!))",
+    "space_complexity": "O(k)",
 }

@@ -6,15 +6,22 @@ Link: https://leetcode.com/problems/largest-rectangle-in-histogram/
 
 Problem:
 --------
-[TODO: Add problem description]
+Given an array of integers heights representing the histogram's bar height where the width of each bar is 1, return the area of the largest rectangle in the histogram.
 
 Constraints:
 -----------
-[TODO: Add constraints]
+- 1 <= heights.length <= 10^5
+- 0 <= heights[i] <= 10^4
 
 Examples:
 ---------
-[TODO: Add examples]
+Input: heights = [2,1,5,6,2,3]
+Output: 10
+Explanation: The above is a histogram where width of each bar is 1.
+The largest rectangle is shown in the red area, which has an area = 10 units.
+
+Input: heights = [2,4]
+Output: 4
 """
 
 from typing import List, Optional
@@ -24,12 +31,15 @@ class Solution:
     """
     Solution to LeetCode Problem #84: Largest Rectangle in Histogram
 
-    Approach: [TODO: Describe approach]
-    Time Complexity: O(?)
-    Space Complexity: O(?)
+    Approach: Monotonic stack
+    Time Complexity: O(n)
+    Space Complexity: O(n)
 
     Key Insights:
-    [TODO: Add key insights]
+    - Use stack to track indices
+    - Maintain increasing heights in stack
+    - Calculate area when popping
+    - Classic monotonic stack problem
     """
 
     def solve(self):
@@ -45,9 +55,9 @@ PROBLEM_METADATA = {
     "name": "Largest Rectangle in Histogram",
     "difficulty": "Hard",
     "pattern": "Stacks Queues",
-    "topics": [],  # TODO: Add topics
+    "topics": ['Array', 'Stack', 'Monotonic Stack'],
     "url": "https://leetcode.com/problems/largest-rectangle-in-histogram/",
-    "companies": [],  # TODO: Add companies
-    "time_complexity": "O(?)",
-    "space_complexity": "O(?)",
+    "companies": ['Amazon', 'Microsoft', 'Facebook', 'Google', 'Bloomberg'],
+    "time_complexity": "O(n)",
+    "space_complexity": "O(n)",
 }

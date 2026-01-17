@@ -6,15 +6,22 @@ Link: https://leetcode.com/problems/bitwise-and-of-numbers-range/
 
 Problem:
 --------
-[TODO: Add problem description]
+Given two integers left and right that represent the range [left, right], return the bitwise AND of all numbers in this range, inclusive.
 
 Constraints:
 -----------
-[TODO: Add constraints]
+- 0 <= left <= right <= 2^31 - 1
 
 Examples:
 ---------
-[TODO: Add examples]
+Input: left = 5, right = 7
+Output: 4
+
+Input: left = 0, right = 0
+Output: 0
+
+Input: left = 1, right = 2147483647
+Output: 0
 """
 
 from typing import List, Optional
@@ -24,12 +31,14 @@ class Solution:
     """
     Solution to LeetCode Problem #201: Bitwise AND of Numbers Range
 
-    Approach: [TODO: Describe approach]
-    Time Complexity: O(?)
-    Space Complexity: O(?)
+    Approach: Find common prefix
+    Time Complexity: O(log n)
+    Space Complexity: O(1)
 
     Key Insights:
-    [TODO: Add key insights]
+    - AND of range is common binary prefix
+    - Right shift both until they're equal
+    - Left shift result to restore position
     """
 
     def solve(self):
@@ -45,9 +54,9 @@ PROBLEM_METADATA = {
     "name": "Bitwise AND of Numbers Range",
     "difficulty": "Medium",
     "pattern": "Bit Manipulation",
-    "topics": [],  # TODO: Add topics
+    "topics": ['Bit Manipulation'],
     "url": "https://leetcode.com/problems/bitwise-and-of-numbers-range/",
-    "companies": [],  # TODO: Add companies
-    "time_complexity": "O(?)",
-    "space_complexity": "O(?)",
+    "companies": ['Amazon', 'Microsoft', 'Google'],
+    "time_complexity": "O(log n)",
+    "space_complexity": "O(1)",
 }

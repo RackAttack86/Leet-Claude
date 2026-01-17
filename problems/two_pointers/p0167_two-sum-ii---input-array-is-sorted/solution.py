@@ -34,12 +34,14 @@ class Solution:
     """
     Solution to LeetCode Problem #167: Two Sum II - Input Array Is Sorted
 
-    Approach: [TODO: Describe approach]
-    Time Complexity: O(?)
-    Space Complexity: O(?)
+    Approach: Two Pointers
+    Time Complexity: O(n)
+    Space Complexity: O(1)
 
     Key Insights:
-    [TODO: Add key insights]
+    - Array is sorted - use two pointers
+    - If sum < target, move left pointer right
+    - If sum > target, move right pointer left
     """
 
     def twoSum(self, numbers: List[int], target: int) -> List[int]:

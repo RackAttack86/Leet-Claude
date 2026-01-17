@@ -35,12 +35,15 @@ class Solution:
     """
     Solution to LeetCode Problem #56: Merge Intervals
 
-    Approach: [TODO: Describe approach]
-    Time Complexity: O(?)
-    Space Complexity: O(?)
+    Approach: Sort and merge
+    Time Complexity: O(n log n)
+    Space Complexity: O(n) for output
 
     Key Insights:
-    [TODO: Add key insights]
+    - Sort intervals by start time
+    - Merge if current.start <= prev.end
+    - Track end of current merged interval
+    - Classic interval merge pattern
     """
 
     def solve(self):

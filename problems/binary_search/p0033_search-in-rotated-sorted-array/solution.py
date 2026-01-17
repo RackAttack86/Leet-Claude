@@ -36,12 +36,15 @@ class Solution:
     """
     Solution to LeetCode Problem #33: Search in Rotated Sorted Array
 
-    Approach: [TODO: Describe approach]
-    Time Complexity: O(?)
-    Space Complexity: O(?)
+    Approach: Modified binary search
+    Time Complexity: O(log n)
+    Space Complexity: O(1)
 
     Key Insights:
-    [TODO: Add key insights]
+    - One half is always sorted
+    - Check which half is sorted
+    - Determine if target is in sorted half
+    - Adjust search range accordingly
     """
 
     def solve(self):

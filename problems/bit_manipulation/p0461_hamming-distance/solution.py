@@ -6,15 +6,23 @@ Link: https://leetcode.com/problems/hamming-distance/
 
 Problem:
 --------
-[TODO: Add problem description]
+The Hamming distance between two integers is the number of positions at which the corresponding bits are different.
+
+Given two integers x and y, return the Hamming distance between them.
 
 Constraints:
 -----------
-[TODO: Add constraints]
+- 0 <= x, y <= 2^31 - 1
 
 Examples:
 ---------
-[TODO: Add examples]
+Input: x = 1, y = 4
+Output: 2
+Explanation:
+1   (0 0 0 1)
+4   (0 1 0 0)
+       ^   ^
+The above arrows point to positions where bits are different.
 """
 
 from typing import List, Optional
@@ -24,12 +32,14 @@ class Solution:
     """
     Solution to LeetCode Problem #461: Hamming Distance
 
-    Approach: [TODO: Describe approach]
-    Time Complexity: O(?)
-    Space Complexity: O(?)
+    Approach: XOR and count bits
+    Time Complexity: O(1)
+    Space Complexity: O(1)
 
     Key Insights:
-    [TODO: Add key insights]
+    - XOR gives differing bits
+    - Count 1s in XOR result
+    - Use Brian Kernighan's algorithm
     """
 
     def solve(self):
@@ -45,9 +55,9 @@ PROBLEM_METADATA = {
     "name": "Hamming Distance",
     "difficulty": "Easy",
     "pattern": "Bit Manipulation",
-    "topics": [],  # TODO: Add topics
+    "topics": ['Bit Manipulation'],
     "url": "https://leetcode.com/problems/hamming-distance/",
-    "companies": [],  # TODO: Add companies
-    "time_complexity": "O(?)",
-    "space_complexity": "O(?)",
+    "companies": ['Facebook', 'Amazon', 'Microsoft'],
+    "time_complexity": "O(1)",
+    "space_complexity": "O(1)",
 }

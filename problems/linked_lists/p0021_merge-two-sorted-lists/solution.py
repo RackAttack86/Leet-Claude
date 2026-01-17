@@ -39,12 +39,15 @@ class Solution:
     """
     Solution to LeetCode Problem #21: Merge Two Sorted Lists
 
-    Approach: [TODO: Describe approach]
-    Time Complexity: O(?)
-    Space Complexity: O(?)
+    Approach: Two pointers merge
+    Time Complexity: O(m + n)
+    Space Complexity: O(1)
 
     Key Insights:
-    [TODO: Add key insights]
+    - Use dummy node to simplify
+    - Compare values and link smaller node
+    - Handle remaining nodes in either list
+    - Classic merge pattern
     """
 
     def solve(self):

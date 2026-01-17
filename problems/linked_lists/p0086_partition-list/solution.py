@@ -6,15 +6,23 @@ Link: https://leetcode.com/problems/partition-list/
 
 Problem:
 --------
-[TODO: Add problem description]
+Given the head of a linked list and a value x, partition it such that all nodes less than x come before nodes greater than or equal to x.
+
+You should preserve the original relative order of the nodes in each of the two partitions.
 
 Constraints:
 -----------
-[TODO: Add constraints]
+- The number of nodes in the list is in the range [0, 200]
+- -100 <= Node.val <= 100
+- -200 <= x <= 200
 
 Examples:
 ---------
-[TODO: Add examples]
+Input: head = [1,4,3,2,5,2], x = 3
+Output: [1,2,2,4,3,5]
+
+Input: head = [2,1], x = 2
+Output: [1,2]
 """
 
 from typing import List, Optional
@@ -24,12 +32,15 @@ class Solution:
     """
     Solution to LeetCode Problem #86: Partition List
 
-    Approach: [TODO: Describe approach]
-    Time Complexity: O(?)
-    Space Complexity: O(?)
+    Approach: Two dummy lists
+    Time Complexity: O(n)
+    Space Complexity: O(1)
 
     Key Insights:
-    [TODO: Add key insights]
+    - Create two separate lists: less and greater
+    - Traverse and append to appropriate list
+    - Connect less list to greater list
+    - Use dummy nodes for simplicity
     """
 
     def solve(self):
@@ -45,9 +56,9 @@ PROBLEM_METADATA = {
     "name": "Partition List",
     "difficulty": "Medium",
     "pattern": "Linked Lists",
-    "topics": [],  # TODO: Add topics
+    "topics": ['Linked List', 'Two Pointers'],
     "url": "https://leetcode.com/problems/partition-list/",
-    "companies": [],  # TODO: Add companies
-    "time_complexity": "O(?)",
-    "space_complexity": "O(?)",
+    "companies": ['Amazon', 'Microsoft', 'Google'],
+    "time_complexity": "O(n)",
+    "space_complexity": "O(1)",
 }

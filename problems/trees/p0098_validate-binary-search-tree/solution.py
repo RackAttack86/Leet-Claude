@@ -36,12 +36,15 @@ class Solution:
     """
     Solution to LeetCode Problem #98: Validate Binary Search Tree
 
-    Approach: [TODO: Describe approach]
-    Time Complexity: O(?)
-    Space Complexity: O(?)
+    Approach: Recursive with range validation or Inorder traversal
+    Time Complexity: O(n)
+    Space Complexity: O(h) where h is height
 
     Key Insights:
-    [TODO: Add key insights]
+    - Pass valid range (min, max) down recursion
+    - Left subtree must be in (min, root.val)
+    - Right subtree must be in (root.val, max)
+    - Inorder traversal of BST is sorted
     """
 
     def solve(self):

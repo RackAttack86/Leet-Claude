@@ -6,15 +6,30 @@ Link: https://leetcode.com/problems/valid-parenthesis-string/
 
 Problem:
 --------
-[TODO: Add problem description]
+Given a string s containing only three types of characters: '(', ')' and '*', return true if s is valid.
+
+The following rules define a valid string:
+
+Any left parenthesis '(' must have a corresponding right parenthesis ')'.
+Any right parenthesis ')' must have a corresponding left parenthesis '('.
+Left parenthesis '(' must go before the corresponding right parenthesis ')'.
+'*' could be treated as a single right parenthesis ')' or a single left parenthesis '(' or an empty string "".
 
 Constraints:
 -----------
-[TODO: Add constraints]
+- 1 <= s.length <= 100
+- s[i] is '(', ')' or '*'
 
 Examples:
 ---------
-[TODO: Add examples]
+Input: s = "()"
+Output: true
+
+Input: s = "(*)"
+Output: true
+
+Input: s = "(*))"
+Output: true
 """
 
 from typing import List, Optional
@@ -24,12 +39,15 @@ class Solution:
     """
     Solution to LeetCode Problem #678: Valid Parenthesis String
 
-    Approach: [TODO: Describe approach]
-    Time Complexity: O(?)
-    Space Complexity: O(?)
+    Approach: Greedy with range tracking
+    Time Complexity: O(n)
+    Space Complexity: O(1)
 
     Key Insights:
-    [TODO: Add key insights]
+    - Track range of possible open parentheses count
+    - low = minimum opens, high = maximum opens
+    - '*' can be (, ), or empty
+    - Valid if low <= 0 and high >= 0 at end
     """
 
     def solve(self):
@@ -45,9 +63,9 @@ PROBLEM_METADATA = {
     "name": "Valid Parenthesis String",
     "difficulty": "Medium",
     "pattern": "Greedy",
-    "topics": [],  # TODO: Add topics
+    "topics": ['String', 'Dynamic Programming', 'Stack', 'Greedy'],
     "url": "https://leetcode.com/problems/valid-parenthesis-string/",
-    "companies": [],  # TODO: Add companies
-    "time_complexity": "O(?)",
-    "space_complexity": "O(?)",
+    "companies": ['Amazon', 'Microsoft', 'Facebook', 'Google'],
+    "time_complexity": "O(n)",
+    "space_complexity": "O(1)",
 }

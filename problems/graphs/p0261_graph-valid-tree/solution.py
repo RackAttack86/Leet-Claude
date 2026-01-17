@@ -6,15 +6,26 @@ Link: https://leetcode.com/problems/graph-valid-tree/
 
 Problem:
 --------
-[TODO: Add problem description]
+You have a graph of n nodes labeled from 0 to n - 1. You are given an integer n and a list of edges where edges[i] = [ai, bi] indicates that there is an undirected edge between nodes ai and bi in the graph.
+
+Return true if the edges of the given graph make up a valid tree, and false otherwise.
 
 Constraints:
 -----------
-[TODO: Add constraints]
+- 1 <= n <= 2000
+- 0 <= edges.length <= 5000
+- edges[i].length == 2
+- 0 <= ai, bi < n
+- ai != bi
+- There are no self-loops or repeated edges
 
 Examples:
 ---------
-[TODO: Add examples]
+Input: n = 5, edges = [[0,1],[0,2],[0,3],[1,4]]
+Output: true
+
+Input: n = 5, edges = [[0,1],[1,2],[2,3],[1,3],[1,4]]
+Output: false
 """
 
 from typing import List, Optional
@@ -24,12 +35,15 @@ class Solution:
     """
     Solution to LeetCode Problem #261: Graph Valid Tree
 
-    Approach: [TODO: Describe approach]
-    Time Complexity: O(?)
-    Space Complexity: O(?)
+    Approach: Union Find or DFS
+    Time Complexity: O(E)
+    Space Complexity: O(n)
 
     Key Insights:
-    [TODO: Add key insights]
+    - Valid tree has n-1 edges
+    - Must be connected and acyclic
+    - Use Union Find to detect cycles
+    - Or DFS to check connectivity and cycles
     """
 
     def solve(self):
@@ -45,9 +59,9 @@ PROBLEM_METADATA = {
     "name": "Graph Valid Tree",
     "difficulty": "Medium",
     "pattern": "Graphs",
-    "topics": [],  # TODO: Add topics
+    "topics": ['Depth-First Search', 'Breadth-First Search', 'Union Find', 'Graph'],
     "url": "https://leetcode.com/problems/graph-valid-tree/",
-    "companies": [],  # TODO: Add companies
-    "time_complexity": "O(?)",
-    "space_complexity": "O(?)",
+    "companies": ['Amazon', 'Facebook', 'Google'],
+    "time_complexity": "O(E)",
+    "space_complexity": "O(n)",
 }

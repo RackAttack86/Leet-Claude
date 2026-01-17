@@ -33,12 +33,14 @@ class Solution:
     """
     Solution to LeetCode Problem #75: Sort Colors
 
-    Approach: [TODO: Describe approach]
+    Approach: Dutch National Flag (Three Pointers)
     Time Complexity: O(n)
     Space Complexity: O(1)
 
     Key Insights:
-    [TODO: Add key insights]
+    - Use three pointers: low, mid, high
+    - Swap 0s to front, 2s to back
+    - One pass solution
     """
 
     def sortColors(self, nums: List[int]) -> None:

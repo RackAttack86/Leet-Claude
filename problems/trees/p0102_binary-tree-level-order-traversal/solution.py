@@ -36,12 +36,15 @@ class Solution:
     """
     Solution to LeetCode Problem #102: Binary Tree Level Order Traversal
 
-    Approach: [TODO: Describe approach]
-    Time Complexity: O(?)
-    Space Complexity: O(?)
+    Approach: BFS with queue
+    Time Complexity: O(n)
+    Space Complexity: O(n)
 
     Key Insights:
-    [TODO: Add key insights]
+    - Use queue for BFS
+    - Process level by level
+    - Track level size before processing
+    - Classic BFS pattern
     """
 
     def solve(self):

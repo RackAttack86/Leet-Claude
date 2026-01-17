@@ -32,12 +32,15 @@ class Solution:
     """
     Solution to LeetCode Problem #133: Clone Graph
 
-    Approach: [TODO: Describe approach]
-    Time Complexity: O(?)
-    Space Complexity: O(?)
+    Approach: DFS or BFS with hash map
+    Time Complexity: O(V + E)
+    Space Complexity: O(V)
 
     Key Insights:
-    [TODO: Add key insights]
+    - Use hash map to track cloned nodes
+    - DFS/BFS to traverse graph
+    - Clone node and neighbors recursively
+    - Hash map prevents infinite loops
     """
 
     def solve(self):

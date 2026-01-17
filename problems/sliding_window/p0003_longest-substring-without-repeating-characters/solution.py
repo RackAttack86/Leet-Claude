@@ -39,12 +39,15 @@ class Solution:
     """
     Solution to LeetCode Problem #3: Longest Substring Without Repeating Characters
 
-    Approach: [TODO: Describe approach]
-    Time Complexity: O(?)
-    Space Complexity: O(?)
+    Approach: Sliding Window with hash map
+    Time Complexity: O(n)
+    Space Complexity: O(min(m, n)) where m is charset size
 
     Key Insights:
-    [TODO: Add key insights]
+    - Use hash map to track character positions
+    - Expand window with right pointer
+    - Contract window when duplicate found
+    - Track maximum window size
     """
 
     def solve(self):

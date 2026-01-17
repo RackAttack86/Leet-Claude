@@ -6,15 +6,22 @@ Link: https://leetcode.com/problems/remove-nth-node-from-end-of-list/
 
 Problem:
 --------
-[TODO: Add problem description]
+Given the head of a linked list, remove the nth node from the end of the list and return its head.
 
 Constraints:
 -----------
-[TODO: Add constraints]
+- The number of nodes in the list is sz
+- 1 <= sz <= 30
+- 0 <= Node.val <= 100
+- 1 <= n <= sz
 
 Examples:
 ---------
-[TODO: Add examples]
+Input: head = [1,2,3,4,5], n = 2
+Output: [1,2,3,5]
+
+Input: head = [1], n = 1
+Output: []
 """
 
 from typing import List, Optional
@@ -24,12 +31,15 @@ class Solution:
     """
     Solution to LeetCode Problem #19: Remove Nth Node From End of List
 
-    Approach: [TODO: Describe approach]
-    Time Complexity: O(?)
-    Space Complexity: O(?)
+    Approach: Two pointers with gap of n
+    Time Complexity: O(L) where L is list length
+    Space Complexity: O(1)
 
     Key Insights:
-    [TODO: Add key insights]
+    - Use two pointers n steps apart
+    - Move both until fast reaches end
+    - Slow pointer will be at node before target
+    - Use dummy node to handle edge cases
     """
 
     def solve(self):
@@ -45,9 +55,9 @@ PROBLEM_METADATA = {
     "name": "Remove Nth Node From End of List",
     "difficulty": "Medium",
     "pattern": "Linked Lists",
-    "topics": [],  # TODO: Add topics
+    "topics": ['Linked List', 'Two Pointers'],
     "url": "https://leetcode.com/problems/remove-nth-node-from-end-of-list/",
-    "companies": [],  # TODO: Add companies
-    "time_complexity": "O(?)",
-    "space_complexity": "O(?)",
+    "companies": ['Amazon', 'Microsoft', 'Facebook', 'Google', 'Apple'],
+    "time_complexity": "O(L) where L is list length",
+    "space_complexity": "O(1)",
 }

@@ -30,12 +30,14 @@ class Solution:
     """
     Solution to LeetCode Problem #338: Counting Bits
 
-    Approach: [TODO: Describe approach]
-    Time Complexity: O(?)
-    Space Complexity: O(?)
+    Approach: Dynamic Programming with bit manipulation
+    Time Complexity: O(n)
+    Space Complexity: O(1) excluding output
 
     Key Insights:
-    [TODO: Add key insights]
+    - ans[i] = ans[i >> 1] + (i & 1)
+    - Each number's count relates to i/2
+    - Or use ans[i] = ans[i & (i-1)] + 1
     """
 
     def solve(self):

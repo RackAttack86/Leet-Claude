@@ -35,12 +35,15 @@ class Solution:
     """
     Solution to LeetCode Problem #134: Gas Station
 
-    Approach: [TODO: Describe approach]
-    Time Complexity: O(?)
-    Space Complexity: O(?)
+    Approach: Greedy with total and current tank
+    Time Complexity: O(n)
+    Space Complexity: O(1)
 
     Key Insights:
-    [TODO: Add key insights]
+    - If total gas < total cost, impossible
+    - If tank becomes negative, start can't be before current
+    - Reset start position when tank negative
+    - One pass solution
     """
 
     def solve(self):

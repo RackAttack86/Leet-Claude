@@ -46,12 +46,15 @@ class Solution:
     """
     Solution to LeetCode Problem #200: Number of Islands
 
-    Approach: [TODO: Describe approach]
-    Time Complexity: O(?)
-    Space Complexity: O(?)
+    Approach: DFS or BFS
+    Time Complexity: O(m * n)
+    Space Complexity: O(m * n) for recursion/queue
 
     Key Insights:
-    [TODO: Add key insights]
+    - DFS/BFS from each unvisited land cell
+    - Mark visited cells
+    - Count number of DFS/BFS calls
+    - Classic connected components problem
     """
 
     def solve(self):

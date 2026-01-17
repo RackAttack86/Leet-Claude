@@ -32,12 +32,15 @@ class Solution:
     """
     Solution to LeetCode Problem #347: Top K Frequent Elements
 
-    Approach: [TODO: Describe approach]
-    Time Complexity: O(?)
-    Space Complexity: O(?)
+    Approach: Hash map + heap or bucket sort
+    Time Complexity: O(n log k) for heap, O(n) for bucket sort
+    Space Complexity: O(n)
 
     Key Insights:
-    [TODO: Add key insights]
+    - Count frequencies with hash map
+    - Use min heap of size k for top k
+    - Bucket sort: group by frequency
+    - Heap approach is more general
     """
 
     def solve(self):

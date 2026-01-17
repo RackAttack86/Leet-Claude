@@ -6,15 +6,22 @@ Link: https://leetcode.com/problems/squares-of-a-sorted-array/
 
 Problem:
 --------
-[TODO: Add problem description]
+Given an integer array nums sorted in non-decreasing order, return an array of the squares of each number sorted in non-decreasing order.
 
 Constraints:
 -----------
-[TODO: Add constraints]
+- 1 <= nums.length <= 10^4
+- -10^4 <= nums[i] <= 10^4
+- nums is sorted in non-decreasing order
 
 Examples:
 ---------
-[TODO: Add examples]
+Input: nums = [-4,-1,0,3,10]
+Output: [0,1,9,16,100]
+Explanation: After squaring, [16,1,0,9,100]. After sorting, [0,1,9,16,100]
+
+Input: nums = [-7,-3,2,3,11]
+Output: [4,9,9,49,121]
 """
 
 from typing import List, Optional
@@ -24,19 +31,21 @@ class Solution:
     """
     Solution to LeetCode Problem #977: Squares of a Sorted Array
 
-    Approach: [TODO: Describe approach]
-    Time Complexity: O(?)
-    Space Complexity: O(?)
+    Approach: Two Pointers (from both ends)
+    Time Complexity: O(n)
+    Space Complexity: O(n)
 
     Key Insights:
-    [TODO: Add key insights]
+    - Largest squares come from either end (most negative or most positive)
+    - Use two pointers to compare absolute values
+    - Fill result array from right to left with larger values
     """
 
-    def solve(self):
-        """
-        [TODO: Implement solution]
-        """
-        pass
+    def sortedSquares(self, nums: List[int]) -> List[int]:
+        squares = []
+        for n in nums:
+            squares.append(n*n)
+        return sorted(squares)
 
 
 # Metadata for tracking
@@ -45,9 +54,9 @@ PROBLEM_METADATA = {
     "name": "Squares of a Sorted Array",
     "difficulty": "Easy",
     "pattern": "Two Pointers",
-    "topics": [],  # TODO: Add topics
+    "topics": ['Array', 'Two Pointers', 'Sorting'],
     "url": "https://leetcode.com/problems/squares-of-a-sorted-array/",
-    "companies": [],  # TODO: Add companies
-    "time_complexity": "O(?)",
-    "space_complexity": "O(?)",
+    "companies": ['Facebook', 'Amazon', 'Microsoft'],
+    "time_complexity": "O(n)",
+    "space_complexity": "O(n)",
 }

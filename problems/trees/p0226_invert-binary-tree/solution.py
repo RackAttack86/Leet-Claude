@@ -35,12 +35,15 @@ class Solution:
     """
     Solution to LeetCode Problem #226: Invert Binary Tree
 
-    Approach: [TODO: Describe approach]
-    Time Complexity: O(?)
-    Space Complexity: O(?)
+    Approach: Recursive DFS
+    Time Complexity: O(n)
+    Space Complexity: O(h) where h is height
 
     Key Insights:
-    [TODO: Add key insights]
+    - Swap left and right children recursively
+    - Base case: null node returns null
+    - Simple recursive pattern
+    - Can also use BFS
     """
 
     def solve(self):

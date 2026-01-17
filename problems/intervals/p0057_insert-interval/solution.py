@@ -42,12 +42,15 @@ class Solution:
     """
     Solution to LeetCode Problem #57: Insert Interval
 
-    Approach: [TODO: Describe approach]
-    Time Complexity: O(?)
-    Space Complexity: O(?)
+    Approach: Three-way split: before, merge, after
+    Time Complexity: O(n)
+    Space Complexity: O(n) for output
 
     Key Insights:
-    [TODO: Add key insights]
+    - Add all intervals before newInterval
+    - Merge overlapping intervals
+    - Add all intervals after newInterval
+    - Linear time since already sorted
     """
 
     def solve(self):

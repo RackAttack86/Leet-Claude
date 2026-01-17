@@ -6,15 +6,26 @@ Link: https://leetcode.com/problems/number-of-connected-components-in-an-undirec
 
 Problem:
 --------
-[TODO: Add problem description]
+You have a graph of n nodes. You are given an integer n and an array edges where edges[i] = [ai, bi] indicates that there is an edge between ai and bi in the graph.
+
+Return the number of connected components in the graph.
 
 Constraints:
 -----------
-[TODO: Add constraints]
+- 1 <= n <= 2000
+- 1 <= edges.length <= 5000
+- edges[i].length == 2
+- 0 <= ai <= bi < n
+- ai != bi
+- There are no repeated edges
 
 Examples:
 ---------
-[TODO: Add examples]
+Input: n = 5, edges = [[0,1],[1,2],[3,4]]
+Output: 2
+
+Input: n = 5, edges = [[0,1],[1,2],[2,3],[3,4]]
+Output: 1
 """
 
 from typing import List, Optional
@@ -24,12 +35,15 @@ class Solution:
     """
     Solution to LeetCode Problem #323: Number of Connected Components in an Undirected Graph
 
-    Approach: [TODO: Describe approach]
-    Time Complexity: O(?)
-    Space Complexity: O(?)
+    Approach: Union Find or DFS
+    Time Complexity: O(E * α(n)) for Union Find
+    Space Complexity: O(n)
 
     Key Insights:
-    [TODO: Add key insights]
+    - Start with n components
+    - Union connected nodes
+    - Count remaining distinct roots
+    - Classic Union Find application
     """
 
     def solve(self):
@@ -45,9 +59,9 @@ PROBLEM_METADATA = {
     "name": "Number of Connected Components in an Undirected Graph",
     "difficulty": "Medium",
     "pattern": "Graphs",
-    "topics": [],  # TODO: Add topics
+    "topics": ['Depth-First Search', 'Breadth-First Search', 'Union Find', 'Graph'],
     "url": "https://leetcode.com/problems/number-of-connected-components-in-an-undirected-graph/",
-    "companies": [],  # TODO: Add companies
-    "time_complexity": "O(?)",
-    "space_complexity": "O(?)",
+    "companies": ['Amazon', 'Facebook', 'Google', 'LinkedIn'],
+    "time_complexity": "O(E * α(n)) for Union Find",
+    "space_complexity": "O(n)",
 }

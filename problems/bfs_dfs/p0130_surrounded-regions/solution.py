@@ -6,15 +6,25 @@ Link: https://leetcode.com/problems/surrounded-regions/
 
 Problem:
 --------
-[TODO: Add problem description]
+Given an m x n matrix board containing 'X' and 'O', capture all regions that are 4-directionally surrounded by 'X'.
+
+A region is captured by flipping all 'O's into 'X's in that surrounded region.
 
 Constraints:
 -----------
-[TODO: Add constraints]
+- m == board.length
+- n == board[i].length
+- 1 <= m, n <= 200
+- board[i][j] is 'X' or 'O'
 
 Examples:
 ---------
-[TODO: Add examples]
+Input: board = [["X","X","X","X"],["X","O","O","X"],["X","X","O","X"],["X","O","X","X"]]
+Output: [["X","X","X","X"],["X","X","X","X"],["X","X","X","X"],["X","O","X","X"]]
+Explanation: Notice that an 'O' should not be flipped if it is on the border, or adjacent to an 'O' that should not be flipped.
+
+Input: board = [["X"]]
+Output: [["X"]]
 """
 
 from typing import List, Optional
@@ -24,12 +34,15 @@ class Solution:
     """
     Solution to LeetCode Problem #130: Surrounded Regions
 
-    Approach: [TODO: Describe approach]
-    Time Complexity: O(?)
-    Space Complexity: O(?)
+    Approach: DFS/BFS from borders
+    Time Complexity: O(m * n)
+    Space Complexity: O(m * n) for recursion stack
 
     Key Insights:
-    [TODO: Add key insights]
+    - Mark border-connected O's
+    - DFS/BFS from all border O's
+    - Flip unmarked O's to X
+    - Restore marked O's
     """
 
     def solve(self):
@@ -45,9 +58,9 @@ PROBLEM_METADATA = {
     "name": "Surrounded Regions",
     "difficulty": "Medium",
     "pattern": "Bfs Dfs",
-    "topics": [],  # TODO: Add topics
+    "topics": ['Array', 'Depth-First Search', 'Breadth-First Search', 'Union Find', 'Matrix'],
     "url": "https://leetcode.com/problems/surrounded-regions/",
-    "companies": [],  # TODO: Add companies
-    "time_complexity": "O(?)",
-    "space_complexity": "O(?)",
+    "companies": ['Amazon', 'Microsoft', 'Facebook', 'Google'],
+    "time_complexity": "O(m * n)",
+    "space_complexity": "O(m * n) for recursion stack",
 }

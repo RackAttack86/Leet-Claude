@@ -34,12 +34,15 @@ class Solution:
     """
     Solution to LeetCode Problem #153: Find Minimum in Rotated Sorted Array
 
-    Approach: [TODO: Describe approach]
-    Time Complexity: O(?)
-    Space Complexity: O(?)
+    Approach: Binary search
+    Time Complexity: O(log n)
+    Space Complexity: O(1)
 
     Key Insights:
-    [TODO: Add key insights]
+    - Compare mid with right
+    - If mid > right, minimum is in right half
+    - If mid < right, minimum is in left half or mid
+    - Minimum is at rotation point
     """
 
     def solve(self):

@@ -38,12 +38,15 @@ class Solution:
     """
     Solution to LeetCode Problem #121: Best Time to Buy and Sell Stock
 
-    Approach: [TODO: Describe approach]
-    Time Complexity: O(?)
-    Space Complexity: O(?)
+    Approach: One pass tracking minimum price
+    Time Complexity: O(n)
+    Space Complexity: O(1)
 
     Key Insights:
-    [TODO: Add key insights]
+    - Track minimum price seen so far
+    - Calculate profit at each step
+    - Update maximum profit
+    - Single pass solution
     """
 
     def solve(self):

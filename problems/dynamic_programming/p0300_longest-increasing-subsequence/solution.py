@@ -31,12 +31,15 @@ class Solution:
     """
     Solution to LeetCode Problem #300: Longest Increasing Subsequence
 
-    Approach: [TODO: Describe approach]
-    Time Complexity: O(?)
-    Space Complexity: O(?)
+    Approach: Dynamic Programming or Binary Search
+    Time Complexity: O(n^2) for DP, O(n log n) for binary search
+    Space Complexity: O(n)
 
     Key Insights:
-    [TODO: Add key insights]
+    - DP: dp[i] = max length ending at i
+    - For each i, check all j < i where nums[j] < nums[i]
+    - Binary search: maintain array of smallest tail for each length
+    - Patience sorting algorithm for O(n log n)
     """
 
     def solve(self):

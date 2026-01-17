@@ -35,12 +35,15 @@ class Solution:
     """
     Solution to LeetCode Problem #206: Reverse Linked List
 
-    Approach: [TODO: Describe approach]
-    Time Complexity: O(?)
-    Space Complexity: O(?)
+    Approach: Iterative with three pointers
+    Time Complexity: O(n)
+    Space Complexity: O(1) for iterative, O(n) for recursive
 
     Key Insights:
-    [TODO: Add key insights]
+    - Use prev, curr, next pointers
+    - Reverse links one by one
+    - Can also solve recursively
+    - Classic linked list problem
     """
 
     def solve(self):

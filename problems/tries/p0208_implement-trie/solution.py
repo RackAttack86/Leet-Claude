@@ -30,12 +30,15 @@ class Solution:
     """
     Solution to LeetCode Problem #208: Implement Trie
 
-    Approach: [TODO: Describe approach]
-    Time Complexity: O(?)
-    Space Complexity: O(?)
+    Approach: Trie with TrieNode structure
+    Time Complexity: O(m) for all operations where m is word length
+    Space Complexity: O(n * m) where n is number of words
 
     Key Insights:
-    [TODO: Add key insights]
+    - Each node has 26 children (a-z)
+    - Mark end of word with flag
+    - Traverse character by character
+    - Efficient for prefix queries
     """
 
     def solve(self):

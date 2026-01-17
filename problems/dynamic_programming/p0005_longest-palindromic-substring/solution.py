@@ -30,12 +30,15 @@ class Solution:
     """
     Solution to LeetCode Problem #5: Longest Palindromic Substring
 
-    Approach: [TODO: Describe approach]
-    Time Complexity: O(?)
-    Space Complexity: O(?)
+    Approach: Expand around center or DP
+    Time Complexity: O(n^2)
+    Space Complexity: O(1) for expand around center, O(n^2) for DP
 
     Key Insights:
-    [TODO: Add key insights]
+    - Each center can expand to form palindrome
+    - Check both odd and even length palindromes
+    - DP approach: dp[i][j] = s[i]==s[j] and dp[i+1][j-1]
+    - Manacher's algorithm achieves O(n) but complex
     """
 
     def solve(self):

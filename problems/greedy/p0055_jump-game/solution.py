@@ -31,12 +31,15 @@ class Solution:
     """
     Solution to LeetCode Problem #55: Jump Game
 
-    Approach: [TODO: Describe approach]
-    Time Complexity: O(?)
-    Space Complexity: O(?)
+    Approach: Greedy tracking max reach
+    Time Complexity: O(n)
+    Space Complexity: O(1)
 
     Key Insights:
-    [TODO: Add key insights]
+    - Track maximum reachable position
+    - If current index > max reach, return false
+    - Update max reach at each step
+    - Simple one-pass solution
     """
 
     def solve(self):

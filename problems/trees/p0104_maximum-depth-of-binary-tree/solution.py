@@ -33,12 +33,15 @@ class Solution:
     """
     Solution to LeetCode Problem #104: Maximum Depth of Binary Tree
 
-    Approach: [TODO: Describe approach]
-    Time Complexity: O(?)
-    Space Complexity: O(?)
+    Approach: Recursive DFS
+    Time Complexity: O(n)
+    Space Complexity: O(h) where h is height
 
     Key Insights:
-    [TODO: Add key insights]
+    - Base case: null node has depth 0
+    - Depth = 1 + max(left_depth, right_depth)
+    - Simple recursive solution
+    - Can also use BFS
     """
 
     def solve(self):

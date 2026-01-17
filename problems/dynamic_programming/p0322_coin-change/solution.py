@@ -35,12 +35,15 @@ class Solution:
     """
     Solution to LeetCode Problem #322: Coin Change
 
-    Approach: [TODO: Describe approach]
-    Time Complexity: O(?)
-    Space Complexity: O(?)
+    Approach: Dynamic Programming (unbounded knapsack)
+    Time Complexity: O(amount * n) where n is number of coins
+    Space Complexity: O(amount)
 
     Key Insights:
-    [TODO: Add key insights]
+    - dp[i] = minimum coins to make amount i
+    - dp[i] = min(dp[i], dp[i-coin] + 1) for each coin
+    - Initialize dp with infinity except dp[0] = 0
+    - Bottom-up DP is more efficient than top-down
     """
 
     def solve(self):

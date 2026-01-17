@@ -33,12 +33,15 @@ class Solution:
     """
     Solution to LeetCode Problem #567: Permutation in String
 
-    Approach: [TODO: Describe approach]
-    Time Complexity: O(?)
-    Space Complexity: O(?)
+    Approach: Sliding Window with character frequency
+    Time Complexity: O(n)
+    Space Complexity: O(1) - only 26 lowercase letters
 
     Key Insights:
-    [TODO: Add key insights]
+    - Fixed window size = len(s1)
+    - Compare character frequencies in window
+    - Slide window through s2
+    - Similar to finding anagrams
     """
 
     def solve(self):

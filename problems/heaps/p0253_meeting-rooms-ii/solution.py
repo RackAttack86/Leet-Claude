@@ -6,15 +6,20 @@ Link: https://leetcode.com/problems/meeting-rooms-ii/
 
 Problem:
 --------
-[TODO: Add problem description]
+Given an array of meeting time intervals intervals where intervals[i] = [starti, endi], return the minimum number of conference rooms required.
 
 Constraints:
 -----------
-[TODO: Add constraints]
+- 1 <= intervals.length <= 10^4
+- 0 <= starti < endi <= 10^6
 
 Examples:
 ---------
-[TODO: Add examples]
+Input: intervals = [[0,30],[5,10],[15,20]]
+Output: 2
+
+Input: intervals = [[7,10],[2,4]]
+Output: 1
 """
 
 from typing import List, Optional
@@ -24,12 +29,15 @@ class Solution:
     """
     Solution to LeetCode Problem #253: Meeting Rooms II
 
-    Approach: [TODO: Describe approach]
-    Time Complexity: O(?)
-    Space Complexity: O(?)
+    Approach: Min heap or chronological ordering
+    Time Complexity: O(n log n)
+    Space Complexity: O(n)
 
     Key Insights:
-    [TODO: Add key insights]
+    - Use min heap to track end times
+    - Add meeting, remove finished ones
+    - Heap size = rooms needed at any time
+    - Or use start/end time arrays
     """
 
     def solve(self):
@@ -45,9 +53,9 @@ PROBLEM_METADATA = {
     "name": "Meeting Rooms II",
     "difficulty": "Medium",
     "pattern": "Heaps",
-    "topics": [],  # TODO: Add topics
+    "topics": ['Array', 'Two Pointers', 'Greedy', 'Sorting', 'Heap (Priority Queue)', 'Prefix Sum'],
     "url": "https://leetcode.com/problems/meeting-rooms-ii/",
-    "companies": [],  # TODO: Add companies
-    "time_complexity": "O(?)",
-    "space_complexity": "O(?)",
+    "companies": ['Amazon', 'Microsoft', 'Facebook', 'Google', 'Bloomberg'],
+    "time_complexity": "O(n log n)",
+    "space_complexity": "O(n)",
 }

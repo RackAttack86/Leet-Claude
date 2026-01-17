@@ -6,15 +6,19 @@ Link: https://leetcode.com/problems/sum-of-two-integers/
 
 Problem:
 --------
-[TODO: Add problem description]
+Given two integers a and b, return the sum of the two integers without using the operators + and -.
 
 Constraints:
 -----------
-[TODO: Add constraints]
+- -1000 <= a, b <= 1000
 
 Examples:
 ---------
-[TODO: Add examples]
+Input: a = 1, b = 2
+Output: 3
+
+Input: a = 2, b = 3
+Output: 5
 """
 
 from typing import List, Optional
@@ -24,12 +28,14 @@ class Solution:
     """
     Solution to LeetCode Problem #371: Sum of Two Integers
 
-    Approach: [TODO: Describe approach]
-    Time Complexity: O(?)
-    Space Complexity: O(?)
+    Approach: Bit manipulation (XOR and carry)
+    Time Complexity: O(1)
+    Space Complexity: O(1)
 
     Key Insights:
-    [TODO: Add key insights]
+    - XOR gives sum without carry
+    - AND gives carry positions
+    - Shift carry left and repeat
     """
 
     def solve(self):
@@ -45,9 +51,9 @@ PROBLEM_METADATA = {
     "name": "Sum of Two Integers",
     "difficulty": "Medium",
     "pattern": "Bit Manipulation",
-    "topics": [],  # TODO: Add topics
+    "topics": ['Math', 'Bit Manipulation'],
     "url": "https://leetcode.com/problems/sum-of-two-integers/",
-    "companies": [],  # TODO: Add companies
-    "time_complexity": "O(?)",
-    "space_complexity": "O(?)",
+    "companies": ['Amazon', 'Microsoft', 'Facebook', 'Google'],
+    "time_complexity": "O(1)",
+    "space_complexity": "O(1)",
 }

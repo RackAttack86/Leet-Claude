@@ -6,15 +6,23 @@ Link: https://leetcode.com/problems/sqrt(x)/
 
 Problem:
 --------
-[TODO: Add problem description]
+Given a non-negative integer x, return the square root of x rounded down to the nearest integer. The returned integer should be non-negative as well.
+
+You must not use any built-in exponent function or operator.
 
 Constraints:
 -----------
-[TODO: Add constraints]
+- 0 <= x <= 2^31 - 1
 
 Examples:
 ---------
-[TODO: Add examples]
+Input: x = 4
+Output: 2
+Explanation: The square root of 4 is 2.
+
+Input: x = 8
+Output: 2
+Explanation: The square root of 8 is 2.82842..., rounded down to 2.
 """
 
 from typing import List, Optional
@@ -24,12 +32,14 @@ class Solution:
     """
     Solution to LeetCode Problem #69: Sqrt(x)
 
-    Approach: [TODO: Describe approach]
-    Time Complexity: O(?)
-    Space Complexity: O(?)
+    Approach: Binary Search on answer space
+    Time Complexity: O(log n)
+    Space Complexity: O(1)
 
     Key Insights:
-    [TODO: Add key insights]
+    - Search for answer in range [0, x]
+    - Use mid * mid <= x to check
+    - Be careful with integer overflow
     """
 
     def solve(self):
@@ -45,9 +55,9 @@ PROBLEM_METADATA = {
     "name": "Sqrt(x)",
     "difficulty": "Easy",
     "pattern": "Binary Search",
-    "topics": [],  # TODO: Add topics
+    "topics": ['Math', 'Binary Search'],
     "url": "https://leetcode.com/problems/sqrt(x)/",
-    "companies": [],  # TODO: Add companies
-    "time_complexity": "O(?)",
-    "space_complexity": "O(?)",
+    "companies": ['Facebook', 'Amazon', 'Microsoft', 'Google'],
+    "time_complexity": "O(log n)",
+    "space_complexity": "O(1)",
 }

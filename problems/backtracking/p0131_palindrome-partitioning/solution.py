@@ -6,15 +6,20 @@ Link: https://leetcode.com/problems/palindrome-partitioning/
 
 Problem:
 --------
-[TODO: Add problem description]
+Given a string s, partition s such that every substring of the partition is a palindrome. Return all possible palindrome partitioning of s.
 
 Constraints:
 -----------
-[TODO: Add constraints]
+- 1 <= s.length <= 16
+- s contains only lowercase English letters
 
 Examples:
 ---------
-[TODO: Add examples]
+Input: s = "aab"
+Output: [["a","a","b"],["aa","b"]]
+
+Input: s = "a"
+Output: [["a"]]
 """
 
 from typing import List, Optional
@@ -24,12 +29,14 @@ class Solution:
     """
     Solution to LeetCode Problem #131: Palindrome Partitioning
 
-    Approach: [TODO: Describe approach]
-    Time Complexity: O(?)
-    Space Complexity: O(?)
+    Approach: Backtracking with palindrome checking
+    Time Complexity: O(n * 2^n)
+    Space Complexity: O(n)
 
     Key Insights:
-    [TODO: Add key insights]
+    - Try all possible partitions
+    - Check if each substring is palindrome
+    - Backtrack to build all valid partitions
     """
 
     def solve(self):
@@ -45,9 +52,9 @@ PROBLEM_METADATA = {
     "name": "Palindrome Partitioning",
     "difficulty": "Medium",
     "pattern": "Backtracking",
-    "topics": [],  # TODO: Add topics
+    "topics": ['String', 'Dynamic Programming', 'Backtracking'],
     "url": "https://leetcode.com/problems/palindrome-partitioning/",
-    "companies": [],  # TODO: Add companies
-    "time_complexity": "O(?)",
-    "space_complexity": "O(?)",
+    "companies": ['Amazon', 'Facebook', 'Microsoft', 'Google'],
+    "time_complexity": "O(n * 2^n)",
+    "space_complexity": "O(n)",
 }

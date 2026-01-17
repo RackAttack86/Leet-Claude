@@ -32,12 +32,14 @@ class Solution:
     """
     Solution to LeetCode Problem #136: Single Number
 
-    Approach: [TODO: Describe approach]
-    Time Complexity: O(?)
-    Space Complexity: O(?)
+    Approach: XOR all elements
+    Time Complexity: O(n)
+    Space Complexity: O(1)
 
     Key Insights:
-    [TODO: Add key insights]
+    - XOR of two equal numbers is 0
+    - XOR of 0 and any number is that number
+    - XOR all elements to find single one
     """
 
     def solve(self):

@@ -6,15 +6,25 @@ Link: https://leetcode.com/problems/minimum-knight-moves/
 
 Problem:
 --------
-[TODO: Add problem description]
+In an infinite chess board with coordinates from -infinity to +infinity, you have a knight at square [0, 0].
+
+A knight has 8 possible moves it can make, as illustrated below. Each move is two squares in a cardinal direction, then one square in an orthogonal direction.
+
+Return the minimum number of steps needed to move the knight to the square [x, y]. It is guaranteed the answer exists.
 
 Constraints:
 -----------
-[TODO: Add constraints]
+- | x| + |y| <= 300
 
 Examples:
 ---------
-[TODO: Add examples]
+Input: x = 2, y = 1
+Output: 1
+Explanation: [0, 0] -> [2, 1]
+
+Input: x = 5, y = 5
+Output: 4
+Explanation: [0, 0] -> [2, 1] -> [4, 2] -> [3, 4] -> [5, 5]
 """
 
 from typing import List, Optional
@@ -24,12 +34,15 @@ class Solution:
     """
     Solution to LeetCode Problem #1197: Minimum Knight Moves
 
-    Approach: [TODO: Describe approach]
-    Time Complexity: O(?)
-    Space Complexity: O(?)
+    Approach: BFS for shortest path
+    Time Complexity: O(max(|x|, |y|)^2)
+    Space Complexity: O(max(|x|, |y|)^2)
 
     Key Insights:
-    [TODO: Add key insights]
+    - Use BFS to find shortest path
+    - 8 possible knight moves
+    - Track visited positions
+    - Can optimize with symmetry
     """
 
     def solve(self):
@@ -45,9 +58,9 @@ PROBLEM_METADATA = {
     "name": "Minimum Knight Moves",
     "difficulty": "Medium",
     "pattern": "Bfs Dfs",
-    "topics": [],  # TODO: Add topics
+    "topics": ['Breadth-First Search'],
     "url": "https://leetcode.com/problems/minimum-knight-moves/",
-    "companies": [],  # TODO: Add companies
-    "time_complexity": "O(?)",
-    "space_complexity": "O(?)",
+    "companies": ['Amazon', 'Google'],
+    "time_complexity": "O(max(|x|, |y|)^2)",
+    "space_complexity": "O(max(|x|, |y|)^2)",
 }

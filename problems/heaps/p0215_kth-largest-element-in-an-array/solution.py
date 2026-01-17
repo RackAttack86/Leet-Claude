@@ -31,12 +31,15 @@ class Solution:
     """
     Solution to LeetCode Problem #215: Kth Largest Element in an Array
 
-    Approach: [TODO: Describe approach]
-    Time Complexity: O(?)
-    Space Complexity: O(?)
+    Approach: Min heap of size k or Quickselect
+    Time Complexity: O(n log k) for heap, O(n) average for quickselect
+    Space Complexity: O(k) for heap, O(1) for quickselect
 
     Key Insights:
-    [TODO: Add key insights]
+    - Maintain min heap of k largest elements
+    - Heap top is kth largest
+    - Quickselect is faster but harder to implement
+    - Can also sort in O(n log n)
     """
 
     def solve(self):

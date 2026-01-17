@@ -32,12 +32,15 @@ class Solution:
     """
     Solution to LeetCode Problem #211: Design Add and Search Words
 
-    Approach: [TODO: Describe approach]
-    Time Complexity: O(?)
-    Space Complexity: O(?)
+    Approach: Trie with DFS for wildcard matching
+    Time Complexity: O(m) for addWord, O(26^m) worst case for search
+    Space Complexity: O(n * m)
 
     Key Insights:
-    [TODO: Add key insights]
+    - Use Trie for storage
+    - DFS with backtracking for '.' wildcard
+    - Try all children when encountering '.'
+    - Regular Trie with recursive search
     """
 
     def solve(self):

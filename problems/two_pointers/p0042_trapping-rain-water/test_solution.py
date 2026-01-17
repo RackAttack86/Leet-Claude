@@ -15,9 +15,8 @@ class TestTrappingRainWater:
         return Solution()
 
     def test_example_1(self, solution):
-        """Example 1 from problem description"""
-        # TODO: Implement test
-        pass
+        result = Solution.solve([[0,1,0,2,1,0,1,3,2,1,2,1]])
+        assert(result) == 6
 
     def test_example_2(self, solution):
         """Example 2 from problem description"""

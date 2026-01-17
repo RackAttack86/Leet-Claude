@@ -6,15 +6,31 @@ Link: https://leetcode.com/problems/rotting-oranges/
 
 Problem:
 --------
-[TODO: Add problem description]
+You are given an m x n grid where each cell can have one of three values:
+
+0 representing an empty cell,
+1 representing a fresh orange, or
+2 representing a rotten orange.
+
+Every minute, any fresh orange that is 4-directionally adjacent to a rotten orange becomes rotten.
+
+Return the minimum number of minutes that must elapse until no cell has a fresh orange. If this is impossible, return -1.
 
 Constraints:
 -----------
-[TODO: Add constraints]
+- m == grid.length
+- n == grid[i].length
+- 1 <= m, n <= 10
+- grid[i][j] is 0, 1, or 2
 
 Examples:
 ---------
-[TODO: Add examples]
+Input: grid = [[2,1,1],[1,1,0],[0,1,1]]
+Output: 4
+
+Input: grid = [[2,1,1],[0,1,1],[1,0,1]]
+Output: -1
+Explanation: The orange in the bottom left corner (row 2, column 0) is never rotten, because rotting only happens 4-directionally.
 """
 
 from typing import List, Optional
@@ -24,12 +40,15 @@ class Solution:
     """
     Solution to LeetCode Problem #994: Rotting Oranges
 
-    Approach: [TODO: Describe approach]
-    Time Complexity: O(?)
-    Space Complexity: O(?)
+    Approach: Multi-source BFS
+    Time Complexity: O(m * n)
+    Space Complexity: O(m * n)
 
     Key Insights:
-    [TODO: Add key insights]
+    - Start BFS from all rotten oranges
+    - Track time/levels of BFS
+    - Count fresh oranges remaining
+    - Return -1 if fresh oranges remain
     """
 
     def solve(self):
@@ -45,9 +64,9 @@ PROBLEM_METADATA = {
     "name": "Rotting Oranges",
     "difficulty": "Medium",
     "pattern": "Bfs Dfs",
-    "topics": [],  # TODO: Add topics
+    "topics": ['Array', 'Breadth-First Search', 'Matrix'],
     "url": "https://leetcode.com/problems/rotting-oranges/",
-    "companies": [],  # TODO: Add companies
-    "time_complexity": "O(?)",
-    "space_complexity": "O(?)",
+    "companies": ['Amazon', 'Microsoft', 'Facebook', 'Google', 'Bloomberg'],
+    "time_complexity": "O(m * n)",
+    "space_complexity": "O(m * n)",
 }

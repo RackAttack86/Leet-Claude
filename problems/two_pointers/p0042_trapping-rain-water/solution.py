@@ -31,12 +31,14 @@ class Solution:
     """
     Solution to LeetCode Problem #42: Trapping Rain Water
 
-    Approach: [TODO: Describe approach]
-    Time Complexity: O(?)
-    Space Complexity: O(?)
+    Approach: Two Pointers or Dynamic Programming
+    Time Complexity: O(n)
+    Space Complexity: O(1) for two pointers, O(n) for DP
 
     Key Insights:
-    [TODO: Add key insights]
+    - Water trapped = min(max_left, max_right) - current_height
+    - Two pointers: move from side with smaller max
+    - Or precompute max left/right arrays
     """
 
     def solve(self, height: List[int]) -> int:

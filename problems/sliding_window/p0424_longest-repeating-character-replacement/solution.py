@@ -38,12 +38,15 @@ class Solution:
     """
     Solution to LeetCode Problem #424: Longest Repeating Character Replacement
 
-    Approach: [TODO: Describe approach]
-    Time Complexity: O(?)
-    Space Complexity: O(?)
+    Approach: Sliding Window with character frequency
+    Time Complexity: O(n)
+    Space Complexity: O(1) - only 26 uppercase letters
 
     Key Insights:
-    [TODO: Add key insights]
+    - Window valid if length - max_freq <= k
+    - Track frequency of each character
+    - Expand window and contract when invalid
+    - Max frequency character determines replacements needed
     """
 
     def solve(self):

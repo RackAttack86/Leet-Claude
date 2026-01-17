@@ -36,12 +36,14 @@ class Solution:
     """
     Solution to LeetCode Problem #11: Container With Most Water
 
-    Approach: [TODO: Describe approach]
-    Time Complexity: O(?)
-    Space Complexity: O(?)
+    Approach: Two Pointers (greedy)
+    Time Complexity: O(n)
+    Space Complexity: O(1)
 
     Key Insights:
-    [TODO: Add key insights]
+    - Start with widest container
+    - Move pointer with smaller height inward
+    - Width decreases so need taller heights to improve
     """
     def bruteForce(self, heights: List[int]) -> int:
         max_water = 0

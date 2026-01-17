@@ -6,15 +6,24 @@ Link: https://leetcode.com/problems/power-of-four/
 
 Problem:
 --------
-[TODO: Add problem description]
+Given an integer n, return true if it is a power of four. Otherwise, return false.
+
+An integer n is a power of four, if there exists an integer x such that n == 4^x.
 
 Constraints:
 -----------
-[TODO: Add constraints]
+- -2^31 <= n <= 2^31 - 1
 
 Examples:
 ---------
-[TODO: Add examples]
+Input: n = 16
+Output: true
+
+Input: n = 5
+Output: false
+
+Input: n = 1
+Output: true
 """
 
 from typing import List, Optional
@@ -24,12 +33,14 @@ class Solution:
     """
     Solution to LeetCode Problem #342: Power of Four
 
-    Approach: [TODO: Describe approach]
-    Time Complexity: O(?)
-    Space Complexity: O(?)
+    Approach: Bit manipulation
+    Time Complexity: O(1)
+    Space Complexity: O(1)
 
     Key Insights:
-    [TODO: Add key insights]
+    - Must be power of 2 first
+    - Power of 4 has 1 bit at even position
+    - Use (n & 0x55555555) != 0
     """
 
     def solve(self):
@@ -45,9 +56,9 @@ PROBLEM_METADATA = {
     "name": "Power of Four",
     "difficulty": "Easy",
     "pattern": "Bit Manipulation",
-    "topics": [],  # TODO: Add topics
+    "topics": ['Math', 'Bit Manipulation', 'Recursion'],
     "url": "https://leetcode.com/problems/power-of-four/",
-    "companies": [],  # TODO: Add companies
-    "time_complexity": "O(?)",
-    "space_complexity": "O(?)",
+    "companies": ['Google', 'Amazon'],
+    "time_complexity": "O(1)",
+    "space_complexity": "O(1)",
 }

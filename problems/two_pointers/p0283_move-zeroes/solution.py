@@ -31,12 +31,14 @@ class Solution:
     """
     Solution to LeetCode Problem #283: Move Zeroes
 
-    Approach: [TODO: Describe approach]
-    Time Complexity: O(?)
-    Space Complexity: O(?)
+    Approach: Two Pointers (in-place)
+    Time Complexity: O(n)
+    Space Complexity: O(1)
 
     Key Insights:
-    [TODO: Add key insights]
+    - Keep pointer for next non-zero position
+    - Swap non-zero elements forward
+    - Two passes: move non-zeros, then fill zeros
     """
 
     def moveZeroes(self, nums: List[int]) -> None:

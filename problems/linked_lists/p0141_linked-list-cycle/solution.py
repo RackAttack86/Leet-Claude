@@ -43,12 +43,15 @@ class Solution:
     """
     Solution to LeetCode Problem #141: Linked List Cycle
 
-    Approach: [TODO: Describe approach]
-    Time Complexity: O(?)
-    Space Complexity: O(?)
+    Approach: Floyd's Cycle Detection (fast and slow pointers)
+    Time Complexity: O(n)
+    Space Complexity: O(1)
 
     Key Insights:
-    [TODO: Add key insights]
+    - Use fast and slow pointers
+    - Fast moves 2 steps, slow moves 1 step
+    - If cycle exists, they will meet
+    - Classic tortoise and hare algorithm
     """
 
     def solve(self):

@@ -37,12 +37,15 @@ class Solution:
     """
     Solution to LeetCode Problem #100: Same Tree
 
-    Approach: [TODO: Describe approach]
-    Time Complexity: O(?)
-    Space Complexity: O(?)
+    Approach: Recursive DFS
+    Time Complexity: O(n)
+    Space Complexity: O(h) where h is height
 
     Key Insights:
-    [TODO: Add key insights]
+    - Base case: both null returns true
+    - If one null or values differ, return false
+    - Recursively check left and right subtrees
+    - Simple recursive pattern
     """
 
     def solve(self):

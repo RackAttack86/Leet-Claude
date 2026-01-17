@@ -40,12 +40,15 @@ class Solution:
     """
     Solution to LeetCode Problem #20: Valid Parentheses
 
-    Approach: [TODO: Describe approach]
-    Time Complexity: O(?)
-    Space Complexity: O(?)
+    Approach: Stack
+    Time Complexity: O(n)
+    Space Complexity: O(n)
 
     Key Insights:
-    [TODO: Add key insights]
+    - Push opening brackets to stack
+    - Pop and match with closing brackets
+    - Stack must be empty at end
+    - Classic stack application
     """
 
     def solve(self):

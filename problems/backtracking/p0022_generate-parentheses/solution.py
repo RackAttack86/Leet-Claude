@@ -6,15 +6,19 @@ Link: https://leetcode.com/problems/generate-parentheses/
 
 Problem:
 --------
-[TODO: Add problem description]
+Given n pairs of parentheses, write a function to generate all combinations of well-formed parentheses.
 
 Constraints:
 -----------
-[TODO: Add constraints]
+- 1 <= n <= 8
 
 Examples:
 ---------
-[TODO: Add examples]
+Input: n = 3
+Output: ["((()))","(()())","(())()","()(())","()()()"]
+
+Input: n = 1
+Output: ["()"]
 """
 
 from typing import List, Optional
@@ -24,12 +28,14 @@ class Solution:
     """
     Solution to LeetCode Problem #22: Generate Parentheses
 
-    Approach: [TODO: Describe approach]
-    Time Complexity: O(?)
-    Space Complexity: O(?)
+    Approach: Backtracking with constraints
+    Time Complexity: O(4^n / sqrt(n)) - Catalan number
+    Space Complexity: O(n)
 
     Key Insights:
-    [TODO: Add key insights]
+    - Add '(' if count < n
+    - Add ')' if ')' count < '(' count
+    - Backtrack to build all valid combinations
     """
 
     def solve(self):
@@ -45,9 +51,9 @@ PROBLEM_METADATA = {
     "name": "Generate Parentheses",
     "difficulty": "Medium",
     "pattern": "Backtracking",
-    "topics": [],  # TODO: Add topics
+    "topics": ['String', 'Dynamic Programming', 'Backtracking'],
     "url": "https://leetcode.com/problems/generate-parentheses/",
-    "companies": [],  # TODO: Add companies
-    "time_complexity": "O(?)",
-    "space_complexity": "O(?)",
+    "companies": ['Amazon', 'Microsoft', 'Facebook', 'Google', 'Apple'],
+    "time_complexity": "O(4^n / sqrt(n)) - Catalan number",
+    "space_complexity": "O(n)",
 }
