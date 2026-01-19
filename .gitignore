@@ -45,3 +45,6 @@ Thumbs.db
 scratch/
 notes/
 *.tmp
+
+# Claude
+.claude/settings.local.json
