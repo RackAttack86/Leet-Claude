@@ -26,6 +26,8 @@ Output: [1]
 """
 
 from typing import List, Optional
+from collections import Counter
+import heapq
 
 
 class Solution:
@@ -43,11 +45,18 @@ class Solution:
     - Heap approach is more general
     """
 
-    def solve(self):
-        """
-        [TODO: Implement solution]
-        """
-        pass
+    def topKFrequent(self, nums: List[int], k: int) -> List[int]:
+        counts = Counter(nums)
+        min_heap = []
+        for num, freq in counts.items():
+            heapq.heappush(min_heap, (freq, num))
+            if len(min_heap) > k:
+                heapq.heappop(min_heap)
+            
+        return [num for freq, num in min_heap]
+    
+    # Alternate solution that does not use a heap. *One Liner*
+    # return [key for key, _ in Counter(nums).most_common(k)]
 
 
 # Metadata for tracking
