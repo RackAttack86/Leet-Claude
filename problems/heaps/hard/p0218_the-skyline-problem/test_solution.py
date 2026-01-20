@@ -3,7 +3,7 @@ Tests for LeetCode Problem #218: The Skyline Problem
 """
 
 import pytest
-from .solution import Solution, PROBLEM_METADATA
+from solution import Solution, PROBLEM_METADATA
 
 
 class TestTheSkylineProblem:

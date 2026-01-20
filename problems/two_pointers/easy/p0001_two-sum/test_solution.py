@@ -2,12 +2,6 @@
 Tests for LeetCode Problem #1: Two Sum
 """
 
-import sys
-from pathlib import Path
-
-# Add the problem directory to the path so we can import solution
-sys.path.insert(0, str(Path(__file__).parent))
-
 import pytest
 from solution import Solution, PROBLEM_METADATA
 

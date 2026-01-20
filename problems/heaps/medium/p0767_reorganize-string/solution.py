@@ -25,6 +25,8 @@ Output: ""
 """
 
 from typing import List, Optional
+from collections import Counter
+import heapq
 
 
 class Solution:
@@ -42,11 +44,31 @@ class Solution:
     - If any char frequency > (n+1)/2, impossible
     """
 
-    def solve(self):
-        """
-        [TODO: Implement solution]
-        """
-        pass
+    def reorganizeString(self, s: str) -> str:
+        freq = Counter(s)
+
+        heap = [(-count, char) for char, count in freq.items()]
+        heapq.heapify(heap)
+
+        result = []
+        prev_count, prev_char = 0, ''
+
+        while heap:
+            count, char = heapq.heappop(heap)
+
+            if prev_count < 0:
+                heapq.heappush(heap, (prev_count, prev_char))
+            
+            result.append(char)
+            prev_count = count+1
+            prev_char = char
+        
+        result_str = ''.join(result)
+
+        if len(result_str) < len(s):
+            return ""
+        
+        return result_str
 
 
 # Metadata for tracking

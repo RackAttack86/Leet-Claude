@@ -29,6 +29,7 @@ Output: -5
 """
 
 from typing import List, Optional
+import heapq
 
 
 class Solution:
@@ -46,11 +47,15 @@ class Solution:
     - Both approaches have merits
     """
 
-    def solve(self):
-        """
-        [TODO: Implement solution]
-        """
-        pass
+    def kthSmallest(self, matrix: List[List[int]], k: int) -> int:
+        min_heap = []
+        n = len(matrix)
+        for arr in matrix:
+            for num in arr:
+                pass
+        return 0
+
+
 
 
 # Metadata for tracking

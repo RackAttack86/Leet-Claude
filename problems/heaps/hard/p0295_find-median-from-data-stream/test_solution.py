@@ -3,32 +3,78 @@ Tests for LeetCode Problem #295: Find Median from Data Stream
 """
 
 import pytest
-from .solution import Solution, PROBLEM_METADATA
+from solution import Solution, PROBLEM_METADATA
 
 
 class TestFindMedianFromDataStream:
     """Test cases for Find Median from Data Stream problem"""
 
-    @pytest.fixture
-    def solution(self):
-        """Create a Solution instance for each test"""
-        return Solution()
-
-    def test_example_1(self, solution):
+    def test_example_1(self):
         """Example 1 from problem description"""
-        # TODO: Implement test
-        pass
+        mf = Solution()
+        mf.addNum(1)
+        mf.addNum(2)
+        assert mf.findMedian() == 1.5
+        mf.addNum(3)
+        assert mf.findMedian() == 2.0
 
-    def test_example_2(self, solution):
-        """Example 2 from problem description"""
-        # TODO: Implement test
-        pass
+    def test_single_element(self):
+        """Single element"""
+        mf = Solution()
+        mf.addNum(5)
+        assert mf.findMedian() == 5.0
 
-    # Edge cases
-    def test_edge_case_1(self, solution):
-        """TODO: Describe edge case"""
-        # TODO: Implement test
-        pass
+    def test_two_elements(self):
+        """Two elements - even count"""
+        mf = Solution()
+        mf.addNum(1)
+        mf.addNum(2)
+        assert mf.findMedian() == 1.5
+
+    def test_three_elements(self):
+        """Three elements - odd count"""
+        mf = Solution()
+        mf.addNum(1)
+        mf.addNum(2)
+        mf.addNum(3)
+        assert mf.findMedian() == 2.0
+
+    def test_negative_numbers(self):
+        """Negative numbers"""
+        mf = Solution()
+        mf.addNum(-1)
+        mf.addNum(-2)
+        mf.addNum(-3)
+        assert mf.findMedian() == -2.0
+
+    def test_mixed_numbers(self):
+        """Mix of positive and negative"""
+        mf = Solution()
+        mf.addNum(-1)
+        mf.addNum(1)
+        assert mf.findMedian() == 0.0
+
+    def test_duplicates(self):
+        """Duplicate values"""
+        mf = Solution()
+        mf.addNum(2)
+        mf.addNum(2)
+        mf.addNum(2)
+        assert mf.findMedian() == 2.0
+
+    def test_sequential_adds(self):
+        """Sequential additions with multiple median checks"""
+        mf = Solution()
+        mf.addNum(6)
+        assert mf.findMedian() == 6.0
+        mf.addNum(10)
+        assert mf.findMedian() == 8.0
+        mf.addNum(2)
+        assert mf.findMedian() == 6.0
+        mf.addNum(6)
+        assert mf.findMedian() == 6.0
+        mf.addNum(5)
+        assert mf.findMedian() == 6.0
 
     # Metadata validation
     def test_metadata_exists(self):
