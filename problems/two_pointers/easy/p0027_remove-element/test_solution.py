@@ -3,7 +3,7 @@ Tests for LeetCode Problem #27: Remove Element
 """
 
 import pytest
-from .solution import Solution, PROBLEM_METADATA
+from solution import Solution, PROBLEM_METADATA
 
 
 
@@ -19,20 +19,19 @@ class TestRemoveElement:
 
     def test_example_1(self, solution):
         """Example 1 from problem description"""
-        nums = [3,2,2,3]
+        nums = [3, 2, 2, 3]
         val = 3
-        expected = 2, nums = [2,2,_,_]
-        result = solution.removeElement(nums, val)
-        assert result == expected
-
+        k = solution.removeElement(nums, val)
+        assert k == 2
+        assert sorted(nums[:k]) == [2, 2]
 
     def test_example_2(self, solution):
         """Example 2 from problem description"""
-        nums = [0,1,2,2,3,0,4,2]
+        nums = [0, 1, 2, 2, 3, 0, 4, 2]
         val = 2
-        expected = 5, nums = [0,1,4,0,3,_,_,_]
-        result = solution.removeElement(nums, val)
-        assert result == expected
+        k = solution.removeElement(nums, val)
+        assert k == 5
+        assert sorted(nums[:k]) == [0, 0, 1, 3, 4]
 
 
     def test_edge_case_empty(self, solution):
