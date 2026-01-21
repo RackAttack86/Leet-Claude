@@ -3,7 +3,7 @@ Tests for LeetCode Problem #80: Remove Duplicates from Sorted Array II
 """
 
 import pytest
-from .solution import Solution, PROBLEM_METADATA
+from solution import Solution, PROBLEM_METADATA
 
 
 
@@ -19,24 +19,52 @@ class TestRemoveDuplicatesFromSortedArrayIi:
 
     def test_example_1(self, solution):
         """Example 1 from problem description"""
-        nums = [1,1,1,2,2,3]
-        expected = 5, nums = [1,1,2,2,3,_]
-        result = solution.removeDuplicates(nums)
-        assert result == expected
-
+        nums = [1, 1, 1, 2, 2, 3]
+        k = solution.removeDuplicates(nums)
+        assert k == 5
+        assert nums[:k] == [1, 1, 2, 2, 3]
 
     def test_example_2(self, solution):
         """Example 2 from problem description"""
-        nums = [0,0,1,1,1,1,2,3,3]
-        expected = 7, nums = [0,0,1,1,2,3,3,_,_]
-        result = solution.removeDuplicates(nums)
-        assert result == expected
+        nums = [0, 0, 1, 1, 1, 1, 2, 3, 3]
+        k = solution.removeDuplicates(nums)
+        assert k == 7
+        assert nums[:k] == [0, 0, 1, 1, 2, 3, 3]
 
+    def test_edge_case_single_element(self, solution):
+        """Test with single element array"""
+        nums = [1]
+        k = solution.removeDuplicates(nums)
+        assert k == 1
+        assert nums[:k] == [1]
 
-    def test_edge_case_empty(self, solution):
-        """Test with empty/minimal input"""
-        # TODO: Implement edge case test
-        pass
+    def test_edge_case_two_same(self, solution):
+        """Test with two same elements"""
+        nums = [1, 1]
+        k = solution.removeDuplicates(nums)
+        assert k == 2
+        assert nums[:k] == [1, 1]
+
+    def test_edge_case_three_same(self, solution):
+        """Test with three same elements - should keep only two"""
+        nums = [1, 1, 1]
+        k = solution.removeDuplicates(nums)
+        assert k == 2
+        assert nums[:k] == [1, 1]
+
+    def test_no_duplicates(self, solution):
+        """Test with no duplicates"""
+        nums = [1, 2, 3, 4, 5]
+        k = solution.removeDuplicates(nums)
+        assert k == 5
+        assert nums[:k] == [1, 2, 3, 4, 5]
+
+    def test_all_duplicates_twice(self, solution):
+        """Test where all elements appear exactly twice"""
+        nums = [1, 1, 2, 2, 3, 3]
+        k = solution.removeDuplicates(nums)
+        assert k == 6
+        assert nums[:k] == [1, 1, 2, 2, 3, 3]
 
 
     # Metadata validation

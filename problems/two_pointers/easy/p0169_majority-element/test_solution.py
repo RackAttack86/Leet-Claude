@@ -3,7 +3,7 @@ Tests for LeetCode Problem #169: Majority Element
 """
 
 import pytest
-from .solution import Solution, PROBLEM_METADATA
+from solution import Solution, PROBLEM_METADATA
 
 
 
@@ -19,24 +19,38 @@ class TestMajorityElement:
 
     def test_example_1(self, solution):
         """Example 1 from problem description"""
-        nums = [3,2,3]
-        expected = 3
-        result = solution.majorityElement(nums)
-        assert result == expected
-
+        nums = [3, 2, 3]
+        assert solution.majorityElement(nums) == 3
 
     def test_example_2(self, solution):
         """Example 2 from problem description"""
-        nums = [2,2,1,1,1,2,2]
-        expected = 2
-        result = solution.majorityElement(nums)
-        assert result == expected
+        nums = [2, 2, 1, 1, 1, 2, 2]
+        assert solution.majorityElement(nums) == 2
 
+    def test_single_element(self, solution):
+        """Test with single element array"""
+        nums = [1]
+        assert solution.majorityElement(nums) == 1
 
-    def test_edge_case_empty(self, solution):
-        """Test with empty/minimal input"""
-        # TODO: Implement edge case test
-        pass
+    def test_all_same(self, solution):
+        """Test with all same elements"""
+        nums = [5, 5, 5, 5, 5]
+        assert solution.majorityElement(nums) == 5
+
+    def test_two_elements_same(self, solution):
+        """Test with two same elements"""
+        nums = [3, 3]
+        assert solution.majorityElement(nums) == 3
+
+    def test_majority_at_end(self, solution):
+        """Test where majority element appears mostly at end"""
+        nums = [1, 2, 3, 3, 3]
+        assert solution.majorityElement(nums) == 3
+
+    def test_majority_at_start(self, solution):
+        """Test where majority element appears mostly at start"""
+        nums = [7, 7, 7, 1, 2]
+        assert solution.majorityElement(nums) == 7
 
 
     # Metadata validation

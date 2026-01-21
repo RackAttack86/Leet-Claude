@@ -64,19 +64,26 @@ class Solution:
     """
     Solution to LeetCode Problem #80: Remove Duplicates from Sorted Array II
 
-    Approach: [TODO: Describe approach]
-    Time Complexity: O(?)
-    Space Complexity: O(?)
+    Approach: Two pointers - slow pointer (l) tracks where to place the next valid
+    element. For each element, either we haven't placed 2 yet (l < 2), or the
+    current element differs from the element 2 positions back.
+
+    Time Complexity: O(n) - single pass through array
+    Space Complexity: O(1) - in-place modification
 
     Key Insights:
-    [TODO: Add key insights]
+    - Compare with element at l-2 (not l-1) to allow at most 2 duplicates
+    - First two elements are always valid (l < 2 check)
+    - Generalizes to k duplicates by comparing with nums[l-k]
     """
 
     def removeDuplicates(self, nums: List[int]) -> int:
-        """
-        [TODO: Implement]
-        """
-        pass
+        l = 0
+        for r in range(len(nums)):
+            if l < 2 or nums[r] != nums[l - 2]:
+                nums[l] = nums[r]
+                l += 1
+        return l
 
 
 # Metadata for tracking
@@ -88,6 +95,6 @@ PROBLEM_METADATA = {
     "topics": ['Array', 'Two Pointers'],
     "url": "https://leetcode.com/problems/remove-duplicates-from-sorted-array-ii/",
     "companies": [],
-    "time_complexity": "O(?)",
-    "space_complexity": "O(?)",
+    "time_complexity": "O(n)",
+    "space_complexity": "O(1)",
 }
