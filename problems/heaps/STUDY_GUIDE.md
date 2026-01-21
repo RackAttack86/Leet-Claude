@@ -1,4 +1,4 @@
-# Heaps Pattern - Study Guide
+    # Heaps Pattern - Study Guide
 
 ## Overview
 A Heap is a specialized tree-based data structure that satisfies the heap property: in a max heap, parent nodes are greater than children; in a min heap, parent nodes are smaller than children. Heaps are commonly used for priority queues, finding top K elements, and maintaining running medians.

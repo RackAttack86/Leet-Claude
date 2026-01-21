@@ -37,7 +37,12 @@ Output: []
 """
 
 from typing import List, Optional
+import heapq
 
+class ListNode:
+     def __init__(self, val=0, next=None):
+         self.val = val
+         self.next = next
 
 class Solution:
     """
@@ -54,11 +59,32 @@ class Solution:
     - More efficient than merging pairs
     """
 
-    def solve(self):
-        """
-        [TODO: Implement solution]
-        """
-        pass
+    def mergeKLists(self, lists: List[Optional[ListNode]]) -> Optional[ListNode]:
+        # Filter out empty lists
+        if not lists:
+            return None
+
+        # Min heap: (node.val, index, node)
+        # Index is used as tiebreaker since ListNode isn't comparable
+        heap = []
+        for i, node in enumerate(lists):
+            if node:
+                heapq.heappush(heap, (node.val, i, node))
+
+        # Dummy head to simplify building result list
+        dummy = ListNode(0)
+        current = dummy
+
+        while heap:
+            val, idx, node = heapq.heappop(heap)
+            current.next = node
+            current = current.next
+
+            # If this list has more nodes, add next one to heap
+            if node.next:
+                heapq.heappush(heap, (node.next.val, idx, node.next))
+
+        return dummy.next
 
 
 # Metadata for tracking

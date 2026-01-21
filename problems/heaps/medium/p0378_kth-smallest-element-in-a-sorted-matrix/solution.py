@@ -48,12 +48,26 @@ class Solution:
     """
 
     def kthSmallest(self, matrix: List[List[int]], k: int) -> int:
-        min_heap = []
         n = len(matrix)
-        for arr in matrix:
-            for num in arr:
-                pass
-        return 0
+    
+        # (value, row, col)
+        min_heap = [(matrix[0][0], 0, 0)]
+        visited = {(0, 0)}
+        
+        for _ in range(k):
+            val, row, col = heapq.heappop(min_heap)
+            
+            # Add right neighbor
+            if col + 1 < n and (row, col + 1) not in visited:
+                heapq.heappush(min_heap, (matrix[row][col + 1], row, col + 1))
+                visited.add((row, col + 1))
+            
+            # Add bottom neighbor
+            if row + 1 < n and (row + 1, col) not in visited:
+                heapq.heappush(min_heap, (matrix[row + 1][col], row + 1, col))
+                visited.add((row + 1, col))
+        
+        return val
 
 
 

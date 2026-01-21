@@ -1,0 +1,59 @@
+# Problem 137: Single Number II
+
+**Difficulty:** Medium
+**Pattern:** Bit Manipulation
+**Link:** [LeetCode](https://leetcode.com/problems/single-number-ii/)
+
+## Problem Description
+
+Given an integer array `nums` where every element appears three times except for one, which appears exactly once. Find the single element and return it.
+
+You must implement a solution with a linear runtime complexity and use only constant extra space.
+
+## Constraints
+
+- `1
+- 2^31
+- Each element in `nums` appears exactly three times except for one element which appears once.
+
+## Examples
+
+Example 1:
+```
+Input: nums = [2,2,3,2]
+Output: 3
+
+```
+
+Example 2:
+```
+Input: nums = [0,1,0,1,0,1,99]
+Output: 99
+
+```
+
+## Approaches
+
+### 1. [Approach Name]
+
+**Time Complexity:** O(?)
+**Space Complexity:** O(?)
+
+```python
+# TODO: Add code snippet
+```
+
+**Why this works:**
+[TODO: Explain approach]
+
+## Key Insights
+
+[TODO: Add key insights]
+
+## Common Mistakes
+
+[TODO: Add common mistakes]
+
+## Related Problems
+
+[TODO: Add related problems]
