@@ -29,7 +29,7 @@ Explanation: The first 3 pairs are returned from the sequence: [1,2],[1,4],[1,6]
 Input: nums1 = [1,1,2], nums2 = [1,2,3], k = 2
 Output: [[1,1],[1,1]]
 """
-
+import heapq
 from typing import List, Optional
 
 
@@ -48,12 +48,17 @@ class Solution:
     - Use set to avoid duplicates
     """
 
-    def solve(self):
-        """
-        [TODO: Implement solution]
-        """
-        pass
+    def kSmallestPairs(self, nums1: List[int], nums2: List[int], k: int) -> List[List[int]]:
+        heap = []
+        for i in range(k):
+            for j in range(k):
+                heapq.heappush(heap, (nums1[i]+nums2[j], [nums1[i],nums2[j]]))
 
+        res = []
+        for i in range(k):
+            res.append(heapq.heappop(heap))
+        
+        return res
 
 # Metadata for tracking
 PROBLEM_METADATA = {

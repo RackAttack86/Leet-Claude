@@ -23,7 +23,12 @@ Output: 1
 """
 
 from typing import List, Optional
+import heapq
 
+class Interval(object):
+    def __init__(self, start, end):
+        self.start = start
+        self.end = end
 
 class Solution:
     """
@@ -40,12 +45,20 @@ class Solution:
     - Or use start/end time arrays
     """
 
-    def solve(self):
-        """
-        [TODO: Implement solution]
-        """
-        pass
+    def minMeetingRooms(self, intervals: List[Interval]) -> int:
+        if not intervals:
+            return 0
+        
+        intervals.sort(key=lambda x: x[0])
+        heap = []
 
+        for start, end in intervals:
+            if heap and heap[0] <= start:
+                heapq.heappop(heap)
+            
+            heapq.heappush(heap, end)
+        
+        return len(heap) # Number of rooms needed
 
 # Metadata for tracking
 PROBLEM_METADATA = {
