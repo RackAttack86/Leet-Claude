@@ -3,7 +3,7 @@ Tests for LeetCode Problem #26: Remove Duplicates from Sorted Array
 """
 
 import pytest
-from .solution import Solution, PROBLEM_METADATA
+from solution import Solution, PROBLEM_METADATA
 
 
 
@@ -19,24 +19,38 @@ class TestRemoveDuplicatesFromSortedArray:
 
     def test_example_1(self, solution):
         """Example 1 from problem description"""
-        nums = [1,1,2]
-        expected = 2, nums = [1,2,_]
-        result = solution.removeDuplicates(nums)
-        assert result == expected
-
+        nums = [1, 1, 2]
+        k = solution.removeDuplicates(nums)
+        assert k == 2
+        assert nums[:k] == [1, 2]
 
     def test_example_2(self, solution):
         """Example 2 from problem description"""
-        nums = [0,0,1,1,1,2,2,3,3,4]
-        expected = 5, nums = [0,1,2,3,4,_,_,_,_,_]
-        result = solution.removeDuplicates(nums)
-        assert result == expected
+        nums = [0, 0, 1, 1, 1, 2, 2, 3, 3, 4]
+        k = solution.removeDuplicates(nums)
+        assert k == 5
+        assert nums[:k] == [0, 1, 2, 3, 4]
 
+    def test_edge_case_single_element(self, solution):
+        """Test with single element array"""
+        nums = [1]
+        k = solution.removeDuplicates(nums)
+        assert k == 1
+        assert nums[:k] == [1]
 
-    def test_edge_case_empty(self, solution):
-        """Test with empty/minimal input"""
-        # TODO: Implement edge case test
-        pass
+    def test_edge_case_all_same(self, solution):
+        """Test with all same elements"""
+        nums = [5, 5, 5, 5]
+        k = solution.removeDuplicates(nums)
+        assert k == 1
+        assert nums[:k] == [5]
+
+    def test_no_duplicates(self, solution):
+        """Test with no duplicates"""
+        nums = [1, 2, 3, 4, 5]
+        k = solution.removeDuplicates(nums)
+        assert k == 5
+        assert nums[:k] == [1, 2, 3, 4, 5]
 
 
     # Metadata validation

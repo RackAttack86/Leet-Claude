@@ -62,19 +62,27 @@ class Solution:
     """
     Solution to LeetCode Problem #26: Remove Duplicates from Sorted Array
 
-    Approach: [TODO: Describe approach]
-    Time Complexity: O(?)
-    Space Complexity: O(?)
+    Approach: Two pointers - slow pointer tracks position for next unique element,
+    fast pointer scans through array. When we find a new unique value, copy it
+    to the slow pointer position and advance.
+
+    Time Complexity: O(n) - single pass through array
+    Space Complexity: O(1) - in-place modification
 
     Key Insights:
-    [TODO: Add key insights]
+    - Array is sorted, so duplicates are adjacent
+    - Compare current element with last unique element (at l-1)
+    - Only copy when we find a different value
     """
 
     def removeDuplicates(self, nums: List[int]) -> int:
-        """
-        [TODO: Implement]
-        """
-        pass
+        l = r = 1
+        while r < len(nums):
+            if nums[r] != nums[l - 1]:
+                nums[l] = nums[r]
+                l += 1
+            r += 1
+        return l
 
 
 # Metadata for tracking
@@ -86,6 +94,6 @@ PROBLEM_METADATA = {
     "topics": ['Array', 'Two Pointers'],
     "url": "https://leetcode.com/problems/remove-duplicates-from-sorted-array/",
     "companies": [],
-    "time_complexity": "O(?)",
-    "space_complexity": "O(?)",
+    "time_complexity": "O(n)",
+    "space_complexity": "O(1)",
 }
