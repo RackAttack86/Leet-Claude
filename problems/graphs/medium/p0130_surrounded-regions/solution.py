@@ -9,9 +9,9 @@ Problem:
 You are given an `m x n` matrix `board` containing letters `'X'` and `'O'`, capture regions that are surrounded:
 
 - Connect: A cell is connected to adjacent cells horizontally or vertically.
-	
+
 - Region: To form a region connect every `'O'` cell.
-	
+
 - Surround: The region is surrounded with `'X'` cells if you can connect the region with `'X'` cells and none of the region cells are on the edge of the `board`.
 
 To capture a surrounded region, replace all `'O'`s with `'X'`s in-place within the original board. You do not need to return anything.
@@ -46,19 +46,67 @@ class Solution:
     """
     Solution to LeetCode Problem #130: Surrounded Regions
 
-    Approach: [TODO: Describe approach]
-    Time Complexity: O(?)
-    Space Complexity: O(?)
+    Approach: Border DFS/BFS - Mark cells connected to border as safe
+
+    Instead of finding surrounded regions directly, we flip the problem:
+    1. Find all 'O's connected to the border (these cannot be captured)
+    2. Mark them temporarily with a different character
+    3. All remaining 'O's are surrounded - convert them to 'X'
+    4. Restore the border-connected cells back to 'O'
+
+    Time Complexity: O(m * n) - visit each cell at most once
+    Space Complexity: O(m * n) - recursion stack in worst case (all O's connected)
 
     Key Insights:
-    [TODO: Add key insights]
+    - 'O' cells on the border can never be captured
+    - Any 'O' connected to a border 'O' is also safe
+    - Use DFS/BFS from border cells to mark safe regions
+    - Remaining 'O's after marking are surrounded
     """
 
     def solve(self, board: List[List[str]]) -> None:
         """
-        [TODO: Implement]
+        Capture all surrounded 'O' regions by converting them to 'X'.
         """
-        pass
+        if not board or not board[0]:
+            return
+
+        m, n = len(board), len(board[0])
+
+        def dfs(r: int, c: int) -> None:
+            """Mark cell and all connected 'O's as safe (using 'S')."""
+            if r < 0 or r >= m or c < 0 or c >= n or board[r][c] != 'O':
+                return
+            board[r][c] = 'S'  # Mark as safe
+            dfs(r + 1, c)
+            dfs(r - 1, c)
+            dfs(r, c + 1)
+            dfs(r, c - 1)
+
+        # Step 1: Mark all 'O's connected to border as safe
+        # Check first and last row
+        for c in range(n):
+            if board[0][c] == 'O':
+                dfs(0, c)
+            if board[m - 1][c] == 'O':
+                dfs(m - 1, c)
+
+        # Check first and last column
+        for r in range(m):
+            if board[r][0] == 'O':
+                dfs(r, 0)
+            if board[r][n - 1] == 'O':
+                dfs(r, n - 1)
+
+        # Step 2: Process all cells
+        # - Convert remaining 'O's to 'X' (they were surrounded)
+        # - Restore 'S' back to 'O' (they were connected to border)
+        for r in range(m):
+            for c in range(n):
+                if board[r][c] == 'O':
+                    board[r][c] = 'X'
+                elif board[r][c] == 'S':
+                    board[r][c] = 'O'
 
 
 # Metadata for tracking
@@ -69,7 +117,7 @@ PROBLEM_METADATA = {
     "pattern": "Graphs",
     "topics": ['Array', 'Depth-First Search', 'Breadth-First Search', 'Union-Find', 'Matrix'],
     "url": "https://leetcode.com/problems/surrounded-regions/",
-    "companies": [],
-    "time_complexity": "O(?)",
-    "space_complexity": "O(?)",
+    "companies": ["Google", "Amazon", "Microsoft", "Facebook", "Bloomberg"],
+    "time_complexity": "O(m * n)",
+    "space_complexity": "O(m * n)",
 }

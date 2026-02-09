@@ -9,9 +9,9 @@ Problem:
 A transformation sequence from word `beginWord` to word `endWord` using a dictionary `wordList` is a sequence of words `beginWord -> s1 -> s2 -> ... -> sk` such that:
 
 - Every adjacent pair of words differs by a single letter.
-	
-- Every `si` for `1 
-	
+
+- Every `si` for `1
+
 - `sk == endWord`
 
 Given two words, `beginWord` and `endWord`, and a dictionary `wordList`, return the number of words in the shortest transformation sequence from `beginWord` to `endWord`, or `0` if no such sequence exists.
@@ -47,26 +47,76 @@ Explanation: The endWord "cog" is not in wordList, therefore there is no valid t
 """
 
 from typing import List, Optional
-from collections import Counter, defaultdict
+from collections import deque, defaultdict
 
 
 class Solution:
     """
     Solution to LeetCode Problem #127: Word Ladder
 
-    Approach: [TODO: Describe approach]
-    Time Complexity: O(?)
-    Space Complexity: O(?)
+    Approach: BFS with Pattern-Based Preprocessing
+
+    Create an intermediate graph where words connect through "wildcard patterns".
+    For word "hot", patterns are "*ot", "h*t", "ho*".
+    Words sharing a pattern differ by exactly one character.
+
+    This optimization reduces neighbor lookup from O(26*L*N) to O(L) per word.
+
+    Time Complexity: O(M^2 * N) where M = word length, N = number of words
+                     Preprocessing: O(M * N) for creating patterns
+                     BFS: O(M^2 * N) - for each word, check M patterns, each pattern lookup is O(M)
+    Space Complexity: O(M^2 * N) - pattern map storage
 
     Key Insights:
-    [TODO: Add key insights]
+    - BFS guarantees shortest path (minimum transformations)
+    - Wildcard patterns efficiently group words differing by one char
+    - endWord must be in wordList (beginWord doesn't need to be)
+    - Return count of words in sequence, not number of transformations
+    - Bidirectional BFS can optimize further but adds complexity
     """
 
     def ladderLength(self, beginWord: str, endWord: str, wordList: List[str]) -> int:
         """
-        [TODO: Implement]
+        Find length of shortest transformation sequence.
         """
-        pass
+        # endWord must be in wordList
+        word_set = set(wordList)
+        if endWord not in word_set:
+            return 0
+
+        # Build pattern map: pattern -> list of words
+        # e.g., "*ot" -> ["hot", "dot", "lot"]
+        word_len = len(beginWord)
+        pattern_map = defaultdict(list)
+
+        # Add beginWord to consideration (might not be in wordList)
+        all_words = word_set | {beginWord}
+
+        for word in all_words:
+            for i in range(word_len):
+                pattern = word[:i] + '*' + word[i+1:]
+                pattern_map[pattern].append(word)
+
+        # BFS
+        queue = deque([(beginWord, 1)])  # (word, length)
+        visited = {beginWord}
+
+        while queue:
+            current, length = queue.popleft()
+
+            # Try all patterns for current word
+            for i in range(word_len):
+                pattern = current[:i] + '*' + current[i+1:]
+
+                for neighbor in pattern_map[pattern]:
+                    if neighbor == endWord:
+                        return length + 1
+
+                    if neighbor not in visited:
+                        visited.add(neighbor)
+                        queue.append((neighbor, length + 1))
+
+        return 0
 
 
 # Metadata for tracking
@@ -77,7 +127,7 @@ PROBLEM_METADATA = {
     "pattern": "Graphs",
     "topics": ['Hash Table', 'String', 'Breadth-First Search'],
     "url": "https://leetcode.com/problems/word-ladder/",
-    "companies": [],
-    "time_complexity": "O(?)",
-    "space_complexity": "O(?)",
+    "companies": ["Amazon", "Facebook", "Google", "Microsoft", "Apple", "Bloomberg", "LinkedIn", "Uber", "Snapchat"],
+    "time_complexity": "O(M^2 * N)",
+    "space_complexity": "O(M^2 * N)",
 }

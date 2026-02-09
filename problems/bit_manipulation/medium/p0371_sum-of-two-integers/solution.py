@@ -38,11 +38,33 @@ class Solution:
     - Shift carry left and repeat
     """
 
-    def solve(self):
+    def getSum(self, a: int, b: int) -> int:
         """
-        [TODO: Implement solution]
+        Calculate the sum of two integers without using + or -.
+
+        Use bit manipulation:
+        - XOR (^) gives the sum without considering carry
+        - AND (&) followed by left shift gives the carry
+        - Repeat until there's no carry
+
+        In Python, we need to handle negative numbers specially since
+        Python integers have infinite precision. We use a 32-bit mask
+        to simulate 32-bit integer overflow behavior.
         """
-        pass
+        # 32-bit mask to simulate 32-bit integer
+        MASK = 0xFFFFFFFF
+        MAX_INT = 0x7FFFFFFF
+
+        # Keep iterating while there's a carry
+        while b != 0:
+            # Calculate sum without carry (XOR)
+            # Calculate carry (AND shifted left)
+            # Apply mask to handle Python's infinite precision
+            a, b = (a ^ b) & MASK, ((a & b) << 1) & MASK
+
+        # If result is negative in 32-bit representation (> MAX_INT),
+        # convert it back to Python's negative number representation
+        return a if a <= MAX_INT else ~(a ^ MASK)
 
 
 # Metadata for tracking

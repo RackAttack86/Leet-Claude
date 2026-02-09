@@ -3,7 +3,7 @@ Tests for LeetCode Problem #677: Map Sum Pairs
 """
 
 import pytest
-from .solution import Solution, PROBLEM_METADATA
+from solution import Solution, PROBLEM_METADATA
 
 
 class TestMapSumPairs:
@@ -16,19 +16,25 @@ class TestMapSumPairs:
 
     def test_example_1(self, solution):
         """Example 1 from problem description"""
-        # TODO: Implement test
-        pass
+        mapSum = solution.solve()
+        mapSum.insert("apple", 3)
+        assert mapSum.sum("ap") == 3
+        mapSum.insert("app", 2)
+        assert mapSum.sum("ap") == 5
 
     def test_example_2(self, solution):
-        """Example 2 from problem description"""
-        # TODO: Implement test
-        pass
+        """Test updating an existing key"""
+        mapSum = solution.solve()
+        mapSum.insert("apple", 3)
+        assert mapSum.sum("ap") == 3
+        mapSum.insert("apple", 2)  # Update existing key
+        assert mapSum.sum("ap") == 2
 
-    # Edge cases
     def test_edge_case_1(self, solution):
-        """TODO: Describe edge case"""
-        # TODO: Implement test
-        pass
+        """Test with no matching prefix"""
+        mapSum = solution.solve()
+        mapSum.insert("apple", 3)
+        assert mapSum.sum("b") == 0
 
     # Metadata validation
     def test_metadata_exists(self):

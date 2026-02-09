@@ -39,6 +39,12 @@ Explanation: There is no cycle in the linked list.
 from typing import List, Optional
 
 
+class ListNode:
+    def __init__(self, val=0, next=None):
+        self.val = val
+        self.next = next
+
+
 class Solution:
     """
     Solution to LeetCode Problem #141: Linked List Cycle
@@ -54,11 +60,20 @@ class Solution:
     - Classic tortoise and hare algorithm
     """
 
-    def solve(self):
-        """
-        [TODO: Implement solution]
-        """
-        pass
+    def hasCycle(self, head: Optional[ListNode]) -> bool:
+        if not head or not head.next:
+            return False
+
+        slow = head
+        fast = head
+
+        while fast and fast.next:
+            slow = slow.next
+            fast = fast.next.next
+            if slow == fast:
+                return True
+
+        return False
 
 
 # Metadata for tracking

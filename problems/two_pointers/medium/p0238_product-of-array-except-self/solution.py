@@ -42,19 +42,39 @@ class Solution:
     """
     Solution to LeetCode Problem #238: Product of Array Except Self
 
-    Approach: [TODO: Describe approach]
-    Time Complexity: O(?)
-    Space Complexity: O(?)
+    Approach: Two-pass approach using prefix and suffix products. First pass
+    computes prefix products (product of all elements to the left). Second
+    pass computes suffix products on-the-fly and multiplies with prefix.
+
+    Time Complexity: O(n) - Two passes through the array
+    Space Complexity: O(1) - Output array doesn't count as extra space per problem
 
     Key Insights:
-    [TODO: Add key insights]
+    1. answer[i] = product of all elements left of i * product of all elements right of i
+    2. First pass: Build prefix products in the result array
+    3. Second pass: Multiply by suffix products (computed on-the-fly with running product)
+    4. No division used, handles zeros naturally
     """
 
     def productExceptSelf(self, nums: List[int]) -> List[int]:
-        """
-        [TODO: Implement]
-        """
-        pass
+        n = len(nums)
+        answer = [1] * n
+
+        # First pass: Calculate prefix products
+        # answer[i] contains product of all elements to the left of i
+        prefix = 1
+        for i in range(n):
+            answer[i] = prefix
+            prefix *= nums[i]
+
+        # Second pass: Multiply by suffix products
+        # suffix contains product of all elements to the right of i
+        suffix = 1
+        for i in range(n - 1, -1, -1):
+            answer[i] *= suffix
+            suffix *= nums[i]
+
+        return answer
 
 
 # Metadata for tracking
@@ -65,7 +85,7 @@ PROBLEM_METADATA = {
     "pattern": "Two Pointers",
     "topics": ['Array', 'Prefix Sum'],
     "url": "https://leetcode.com/problems/product-of-array-except-self/",
-    "companies": [],
-    "time_complexity": "O(?)",
-    "space_complexity": "O(?)",
+    "companies": ["Amazon", "Facebook", "Microsoft", "Google", "Apple", "Bloomberg", "Uber", "Adobe"],
+    "time_complexity": "O(n)",
+    "space_complexity": "O(1)",
 }

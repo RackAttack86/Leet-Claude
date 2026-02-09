@@ -3,7 +3,7 @@ Tests for LeetCode Problem #290: Word Pattern
 """
 
 import pytest
-from .solution import Solution, PROBLEM_METADATA
+from solution import Solution, PROBLEM_METADATA
 
 
 
@@ -21,7 +21,7 @@ class TestWordPattern:
         """Example 1 from problem description"""
         pattern = "abba"
         s = "dog cat cat dog"
-        expected = true
+        expected = True
         result = solution.wordPattern(pattern, s)
         assert result == expected
 
@@ -30,7 +30,7 @@ class TestWordPattern:
         """Example 2 from problem description"""
         pattern = "abba"
         s = "dog cat cat fish"
-        expected = false
+        expected = False
         result = solution.wordPattern(pattern, s)
         assert result == expected
 
@@ -39,15 +39,18 @@ class TestWordPattern:
         """Example 3 from problem description"""
         pattern = "aaaa"
         s = "dog cat cat dog"
-        expected = false
+        expected = False
         result = solution.wordPattern(pattern, s)
         assert result == expected
 
 
-    def test_edge_case_empty(self, solution):
-        """Test with empty/minimal input"""
-        # TODO: Implement edge case test
-        pass
+    def test_edge_case_single_word(self, solution):
+        """Test with single pattern and single word"""
+        pattern = "a"
+        s = "dog"
+        expected = True
+        result = solution.wordPattern(pattern, s)
+        assert result == expected
 
 
     # Metadata validation

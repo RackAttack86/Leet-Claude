@@ -3,7 +3,7 @@ Tests for LeetCode Problem #213: House Robber II
 """
 
 import pytest
-from .solution import Solution, PROBLEM_METADATA
+from solution import Solution, PROBLEM_METADATA
 
 
 class TestHouseRobberIi:
@@ -16,19 +16,19 @@ class TestHouseRobberIi:
 
     def test_example_1(self, solution):
         """Example 1 from problem description"""
-        # TODO: Implement test
-        pass
+        nums = [2, 3, 2]
+        assert solution.rob(nums) == 3
 
     def test_example_2(self, solution):
         """Example 2 from problem description"""
-        # TODO: Implement test
-        pass
+        nums = [1, 2, 3, 1]
+        assert solution.rob(nums) == 4
 
     # Edge cases
     def test_edge_case_1(self, solution):
-        """TODO: Describe edge case"""
-        # TODO: Implement test
-        pass
+        """Test with single house"""
+        nums = [5]
+        assert solution.rob(nums) == 5
 
     # Metadata validation
     def test_metadata_exists(self):

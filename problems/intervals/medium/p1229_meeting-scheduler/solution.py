@@ -47,11 +47,35 @@ class Solution:
     - Return first valid slot
     """
 
-    def solve(self):
+    def minAvailableDuration(self, slots1: List[List[int]], slots2: List[List[int]], duration: int) -> List[int]:
         """
-        [TODO: Implement solution]
+        Find the earliest time slot that works for both people.
+
+        Sort both lists by start time, then use two pointers to find
+        the first intersection with length >= duration.
         """
-        pass
+        # Sort both lists by start time
+        slots1.sort(key=lambda x: x[0])
+        slots2.sort(key=lambda x: x[0])
+
+        i, j = 0, 0
+
+        while i < len(slots1) and j < len(slots2):
+            # Find the intersection
+            start = max(slots1[i][0], slots2[j][0])
+            end = min(slots1[i][1], slots2[j][1])
+
+            # Check if intersection is long enough
+            if end - start >= duration:
+                return [start, start + duration]
+
+            # Move the pointer with smaller end time
+            if slots1[i][1] < slots2[j][1]:
+                i += 1
+            else:
+                j += 1
+
+        return []
 
 
 # Metadata for tracking

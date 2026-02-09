@@ -3,9 +3,9 @@ Tests for LeetCode Problem #25: Reverse Nodes in k-Group
 """
 
 import pytest
-from .solution import Solution, PROBLEM_METADATA
-from .solution import ListNode
-from .solution import Node
+from solution import Solution, PROBLEM_METADATA
+from solution import ListNode
+from solution import Node
 
 
 def list_to_linked(arr):
@@ -40,26 +40,37 @@ class TestReverseNodesInKgroup:
 
     def test_example_1(self, solution):
         """Example 1 from problem description"""
-        head = [1,2,3,4,5]
+        head = list_to_linked([1,2,3,4,5])
         k = 2
         expected = [2,1,4,3,5]
         result = solution.reverseKGroup(head, k)
-        assert result == expected
+        assert linked_to_list(result) == expected
 
 
     def test_example_2(self, solution):
         """Example 2 from problem description"""
-        head = [1,2,3,4,5]
+        head = list_to_linked([1,2,3,4,5])
         k = 3
         expected = [3,2,1,4,5]
         result = solution.reverseKGroup(head, k)
-        assert result == expected
+        assert linked_to_list(result) == expected
 
 
-    def test_edge_case_empty(self, solution):
-        """Test with empty/minimal input"""
-        # TODO: Implement edge case test
-        pass
+    def test_edge_case_k_equals_1(self, solution):
+        """Test with k=1, list should remain unchanged"""
+        head = list_to_linked([1, 2, 3, 4, 5])
+        k = 1
+        expected = [1, 2, 3, 4, 5]
+        result = solution.reverseKGroup(head, k)
+        assert linked_to_list(result) == expected
+
+    def test_edge_case_empty_list(self, solution):
+        """Test with empty list"""
+        head = list_to_linked([])
+        k = 2
+        expected = []
+        result = solution.reverseKGroup(head, k)
+        assert linked_to_list(result) == expected
 
 
     # Metadata validation

@@ -43,11 +43,33 @@ class Solution:
     - All positive numbers simplify the problem
     """
 
-    def solve(self):
+    def numSubarrayProductLessThanK(self, nums: List[int], k: int) -> int:
         """
-        [TODO: Implement solution]
+        Count subarrays where product of all elements is strictly less than k.
+
+        Uses sliding window. For each position right, count subarrays ending at right
+        with product < k. When product >= k, shrink window from left.
         """
-        pass
+        if k <= 1:
+            return 0
+
+        count = 0
+        product = 1
+        left = 0
+
+        for right in range(len(nums)):
+            product *= nums[right]
+
+            # Shrink window while product >= k
+            while product >= k:
+                product //= nums[left]
+                left += 1
+
+            # All subarrays ending at right with start in [left, right] are valid
+            # Number of such subarrays = right - left + 1
+            count += right - left + 1
+
+        return count
 
 
 # Metadata for tracking

@@ -68,25 +68,37 @@ class Solution:
     """
     Solution to LeetCode Problem #112: Path Sum
 
-    Approach: [TODO: Describe approach]
-    Time Complexity: O(?)
-    Space Complexity: O(?)
+    Approach: Recursive DFS with running sum subtraction
+    - Subtract current node's value from targetSum as we traverse.
+    - At a leaf node, check if remaining targetSum equals the leaf's value.
+    - Recursively check both left and right subtrees.
+    - Return True if any path from root to leaf sums to targetSum.
+
+    Time Complexity: O(n) - visit each node once in worst case
+    Space Complexity: O(h) - recursion stack, where h is tree height
 
     Key Insights:
-    [TODO: Add key insights]
+    - Subtract node value from targetSum instead of accumulating sum (cleaner)
+    - A leaf is defined as a node with NO children (both left and right are None)
+    - Empty tree returns False (no paths exist)
+    - Only check sum at leaf nodes, not internal nodes
     """
-
-    def __init__(self, val=0: Any, left=None: Any, right=None: Any):
-        """
-        [TODO: Implement]
-        """
-        pass
 
     def hasPathSum(self, root: Optional[TreeNode], targetSum: int) -> bool:
         """
-        [TODO: Implement]
+        Check if there exists a root-to-leaf path with the given sum.
         """
-        pass
+        if not root:
+            return False
+
+        # Check if we're at a leaf node
+        if not root.left and not root.right:
+            return root.val == targetSum
+
+        # Subtract current value and check children
+        remaining = targetSum - root.val
+        return (self.hasPathSum(root.left, remaining) or
+                self.hasPathSum(root.right, remaining))
 
 
 # Metadata for tracking
@@ -97,7 +109,7 @@ PROBLEM_METADATA = {
     "pattern": "Trees",
     "topics": ['Tree', 'Depth-First Search', 'Breadth-First Search', 'Binary Tree'],
     "url": "https://leetcode.com/problems/path-sum/",
-    "companies": [],
-    "time_complexity": "O(?)",
-    "space_complexity": "O(?)",
+    "companies": ["Amazon", "Microsoft", "Facebook", "Google", "Apple", "Bloomberg", "Oracle"],
+    "time_complexity": "O(n)",
+    "space_complexity": "O(h)",
 }

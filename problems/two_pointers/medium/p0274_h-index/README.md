@@ -12,7 +12,9 @@ According to the definition of h-index on Wikipedia: The h-index is defined as t
 
 ## Constraints
 
-- `n == citations.length
+- `n == citations.length`
+- `1 <= n <= 5000`
+- `0 <= citations[i] <= 1000`
 
 ## Examples
 
@@ -36,26 +38,50 @@ Output: 1
 
 ## Approaches
 
-### 1. [Approach Name]
+### 1. Counting Sort
 
-**Time Complexity:** O(?)
-**Space Complexity:** O(?)
+**Time Complexity:** O(n) - Single pass to count, single pass to find h-index
+**Space Complexity:** O(n) - For the counting bucket array
 
 ```python
-# TODO: Add code snippet
+def hIndex(self, citations: List[int]) -> int:
+    n = len(citations)
+    # Bucket[i] = number of papers with i citations (citations >= n go in bucket n)
+    buckets = [0] * (n + 1)
+
+    for c in citations:
+        if c >= n:
+            buckets[n] += 1
+        else:
+            buckets[c] += 1
+
+    # Count papers from highest citations to lowest
+    total = 0
+    for h in range(n, -1, -1):
+        total += buckets[h]
+        # If we have at least h papers with >= h citations
+        if total >= h:
+            return h
+
+    return 0
 ```
 
 **Why this works:**
-[TODO: Explain approach]
+Counting sort approach. Create a bucket array where bucket[i] counts papers with exactly i citations (capped at n). Then traverse from highest to lowest to find h-index.
 
 ## Key Insights
 
-[TODO: Add key insights]
+1. H-index can be at most n (number of papers)
+2. Papers with citations >= n can be grouped together (count as n)
+3. Traverse buckets from high to low, accumulating paper count
+4. When accumulated count >= current index, we found h-index
 
 ## Common Mistakes
 
-[TODO: Add common mistakes]
+- Not capping citations at n
+- Traversing in wrong direction (should be high to low)
+- Off-by-one errors in bucket indexing
 
 ## Related Problems
 
-[TODO: Add related problems]
+- H-Index II (LeetCode #275)

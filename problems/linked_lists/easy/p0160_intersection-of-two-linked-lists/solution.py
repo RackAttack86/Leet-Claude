@@ -29,6 +29,12 @@ Output: No intersection
 from typing import List, Optional
 
 
+class ListNode:
+    def __init__(self, val=0, next=None):
+        self.val = val
+        self.next = next
+
+
 class Solution:
     """
     Solution to LeetCode Problem #160: Intersection of Two Linked Lists
@@ -44,11 +50,18 @@ class Solution:
     - Clever pointer switching eliminates length difference
     """
 
-    def solve(self):
-        """
-        [TODO: Implement solution]
-        """
-        pass
+    def getIntersectionNode(self, headA: ListNode, headB: ListNode) -> Optional[ListNode]:
+        if not headA or not headB:
+            return None
+
+        pA = headA
+        pB = headB
+
+        while pA != pB:
+            pA = pA.next if pA else headB
+            pB = pB.next if pB else headA
+
+        return pA
 
 
 # Metadata for tracking

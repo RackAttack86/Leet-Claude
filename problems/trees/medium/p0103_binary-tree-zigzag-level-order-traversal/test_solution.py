@@ -3,9 +3,9 @@ Tests for LeetCode Problem #103: Binary Tree Zigzag Level Order Traversal
 """
 
 import pytest
-from .solution import Solution, PROBLEM_METADATA
-from .solution import TreeNode
-from .solution import Node
+from solution import Solution, PROBLEM_METADATA
+from solution import TreeNode
+from solution import Node
 
 
 def array_to_tree(arr):
@@ -66,7 +66,7 @@ class TestBinaryTreeZigzagLevelOrderTraversal:
 
     def test_example_1(self, solution):
         """Example 1 from problem description"""
-        root = [3,9,20,None,None,15,7]
+        root = array_to_tree([3,9,20,None,None,15,7])
         expected = [[3],[20,9],[15,7]]
         result = solution.zigzagLevelOrder(root)
         assert result == expected
@@ -74,7 +74,7 @@ class TestBinaryTreeZigzagLevelOrderTraversal:
 
     def test_example_2(self, solution):
         """Example 2 from problem description"""
-        root = [1]
+        root = array_to_tree([1])
         expected = [[1]]
         result = solution.zigzagLevelOrder(root)
         assert result == expected
@@ -82,17 +82,55 @@ class TestBinaryTreeZigzagLevelOrderTraversal:
 
     def test_example_3(self, solution):
         """Example 3 from problem description"""
-        root = []
+        root = array_to_tree([])
         expected = []
         result = solution.zigzagLevelOrder(root)
         assert result == expected
 
 
-    def test_edge_case_empty(self, solution):
-        """Test with empty/minimal input"""
-        # TODO: Implement edge case test
-        pass
+    def test_single_level(self, solution):
+        """Test with single level (just root)"""
+        root = array_to_tree([5])
+        expected = [[5]]
+        result = solution.zigzagLevelOrder(root)
+        assert result == expected
 
+    def test_two_levels(self, solution):
+        """Test with two levels"""
+        root = array_to_tree([1, 2, 3])
+        # Level 0: left to right -> [1]
+        # Level 1: right to left -> [3, 2]
+        expected = [[1], [3, 2]]
+        result = solution.zigzagLevelOrder(root)
+        assert result == expected
+
+    def test_three_levels_complete(self, solution):
+        """Test with three levels complete tree"""
+        root = array_to_tree([1, 2, 3, 4, 5, 6, 7])
+        # Level 0: left to right -> [1]
+        # Level 1: right to left -> [3, 2]
+        # Level 2: left to right -> [4, 5, 6, 7]
+        expected = [[1], [3, 2], [4, 5, 6, 7]]
+        result = solution.zigzagLevelOrder(root)
+        assert result == expected
+
+    def test_left_skewed(self, solution):
+        """Test with left-skewed tree"""
+        root = TreeNode(1)
+        root.left = TreeNode(2)
+        root.left.left = TreeNode(3)
+        expected = [[1], [2], [3]]
+        result = solution.zigzagLevelOrder(root)
+        assert result == expected
+
+    def test_right_skewed(self, solution):
+        """Test with right-skewed tree"""
+        root = TreeNode(1)
+        root.right = TreeNode(2)
+        root.right.right = TreeNode(3)
+        expected = [[1], [2], [3]]
+        result = solution.zigzagLevelOrder(root)
+        assert result == expected
 
     # Metadata validation
     def test_metadata_exists(self):

@@ -3,7 +3,7 @@ Tests for LeetCode Problem #71: Simplify Path
 """
 
 import pytest
-from .solution import Solution, PROBLEM_METADATA
+from solution import Solution, PROBLEM_METADATA
 
 
 class TestSimplifyPath:
@@ -16,19 +16,28 @@ class TestSimplifyPath:
 
     def test_example_1(self, solution):
         """Example 1 from problem description"""
-        # TODO: Implement test
-        pass
+        path = "/home/"
+        expected = "/home"
+        assert solution.simplifyPath(path) == expected
 
     def test_example_2(self, solution):
         """Example 2 from problem description"""
-        # TODO: Implement test
-        pass
+        path = "/../"
+        expected = "/"
+        assert solution.simplifyPath(path) == expected
+
+    def test_example_3(self, solution):
+        """Example 3 from problem description"""
+        path = "/home//foo/"
+        expected = "/home/foo"
+        assert solution.simplifyPath(path) == expected
 
     # Edge cases
-    def test_edge_case_1(self, solution):
-        """TODO: Describe edge case"""
-        # TODO: Implement test
-        pass
+    def test_edge_case_root_only(self, solution):
+        """Just root directory"""
+        path = "/"
+        expected = "/"
+        assert solution.simplifyPath(path) == expected
 
     # Metadata validation
     def test_metadata_exists(self):

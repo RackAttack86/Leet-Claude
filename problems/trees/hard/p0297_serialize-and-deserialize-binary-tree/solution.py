@@ -25,9 +25,17 @@ Output: []
 """
 
 from typing import List, Optional
+from collections import deque
 
 
-class Solution:
+class TreeNode:
+    def __init__(self, val=0, left=None, right=None):
+        self.val = val
+        self.left = left
+        self.right = right
+
+
+class Codec:
     """
     Solution to LeetCode Problem #297: Serialize and Deserialize Binary Tree
 
@@ -42,11 +50,54 @@ class Solution:
     - Deserialize using queue or recursion
     """
 
-    def solve(self):
-        """
-        [TODO: Implement solution]
-        """
-        pass
+    def serialize(self, root: Optional[TreeNode]) -> str:
+        """Encodes a tree to a single string."""
+        if not root:
+            return ""
+
+        result = []
+        queue = deque([root])
+
+        while queue:
+            node = queue.popleft()
+            if node:
+                result.append(str(node.val))
+                queue.append(node.left)
+                queue.append(node.right)
+            else:
+                result.append("null")
+
+        return ",".join(result)
+
+    def deserialize(self, data: str) -> Optional[TreeNode]:
+        """Decodes your encoded data to tree."""
+        if not data:
+            return None
+
+        values = data.split(",")
+        root = TreeNode(int(values[0]))
+        queue = deque([root])
+        i = 1
+
+        while queue and i < len(values):
+            node = queue.popleft()
+
+            if i < len(values) and values[i] != "null":
+                node.left = TreeNode(int(values[i]))
+                queue.append(node.left)
+            i += 1
+
+            if i < len(values) and values[i] != "null":
+                node.right = TreeNode(int(values[i]))
+                queue.append(node.right)
+            i += 1
+
+        return root
+
+
+class Solution:
+    """Wrapper for LeetCode compatibility."""
+    pass
 
 
 # Metadata for tracking

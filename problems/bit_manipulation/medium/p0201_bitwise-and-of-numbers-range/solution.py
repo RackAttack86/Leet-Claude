@@ -41,11 +41,27 @@ class Solution:
     - Left shift result to restore position
     """
 
-    def solve(self):
+    def rangeBitwiseAnd(self, left: int, right: int) -> int:
         """
-        [TODO: Implement solution]
+        Find the bitwise AND of all numbers in the range [left, right].
+
+        The key insight is that when we AND all numbers in a range, any bit
+        position that changes (flips from 0 to 1 or 1 to 0) within the range
+        will result in 0 at that position. Only the common prefix bits that
+        remain the same across all numbers will survive.
+
+        We find the common prefix by right-shifting both left and right until
+        they are equal, then left-shift back by the same amount.
         """
-        pass
+        shift = 0
+        # Find common prefix by right-shifting until left equals right
+        while left < right:
+            left >>= 1
+            right >>= 1
+            shift += 1
+
+        # Left-shift to restore the position of the common prefix
+        return left << shift
 
 
 # Metadata for tracking

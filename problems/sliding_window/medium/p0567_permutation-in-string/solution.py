@@ -44,11 +44,43 @@ class Solution:
     - Similar to finding anagrams
     """
 
-    def solve(self):
+    def checkInclusion(self, s1: str, s2: str) -> bool:
         """
-        [TODO: Implement solution]
+        Check if s2 contains a permutation of s1.
+
+        Uses fixed-size sliding window of length len(s1).
+        Compare character frequencies to detect permutation.
         """
-        pass
+        len1, len2 = len(s1), len(s2)
+
+        if len1 > len2:
+            return False
+
+        # Count characters in s1
+        s1_count = [0] * 26
+        s2_count = [0] * 26
+
+        for char in s1:
+            s1_count[ord(char) - ord('a')] += 1
+
+        # Initialize first window
+        for i in range(len1):
+            s2_count[ord(s2[i]) - ord('a')] += 1
+
+        if s1_count == s2_count:
+            return True
+
+        # Slide window
+        for i in range(len1, len2):
+            # Add new character to window
+            s2_count[ord(s2[i]) - ord('a')] += 1
+            # Remove old character from window
+            s2_count[ord(s2[i - len1]) - ord('a')] -= 1
+
+            if s1_count == s2_count:
+                return True
+
+        return False
 
 
 # Metadata for tracking

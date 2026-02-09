@@ -57,25 +57,56 @@ class Solution:
     """
     Solution to LeetCode Problem #106: Construct Binary Tree from Inorder and Postorder Traversal
 
-    Approach: [TODO: Describe approach]
-    Time Complexity: O(?)
-    Space Complexity: O(?)
+    Approach: Divide and Conquer with Hash Map
+    - Postorder: [left subtree, right subtree, root]
+    - Inorder: [left subtree, root, right subtree]
+    - Last element of postorder is always the root
+    - Find root position in inorder to determine left/right subtree sizes
+    - Use hash map for O(1) lookup of root position in inorder
+
+    Time Complexity: O(n) - visit each node once, O(1) lookup with hash map
+    Space Complexity: O(n) - hash map and recursion stack (O(h) where h is height)
 
     Key Insights:
-    [TODO: Add key insights]
+    - Postorder's last element is the root (unlike preorder where first is root)
+    - Build right subtree before left subtree when processing postorder from end
+    - Inorder splits into left subtree, root, right subtree
+    - Number of elements to the left of root in inorder = left subtree size
     """
 
-    def __init__(self, val=0: Any, left=None: Any, right=None: Any):
-        """
-        [TODO: Implement]
-        """
-        pass
-
     def buildTree(self, inorder: List[int], postorder: List[int]) -> Optional[TreeNode]:
-        """
-        [TODO: Implement]
-        """
-        pass
+        # Build hash map for O(1) lookup of root position in inorder
+        inorder_map = {val: idx for idx, val in enumerate(inorder)}
+
+        def build(post_start: int, post_end: int, in_start: int, in_end: int) -> Optional[TreeNode]:
+            if post_start > post_end:
+                return None
+
+            # Root is the last element in postorder range
+            root_val = postorder[post_end]
+            root = TreeNode(root_val)
+
+            # Find root position in inorder
+            root_idx = inorder_map[root_val]
+
+            # Number of nodes in left subtree
+            left_size = root_idx - in_start
+
+            # Build left subtree
+            # Postorder: elements from post_start to post_start+left_size-1
+            # Inorder: elements from in_start to root_idx-1
+            root.left = build(post_start, post_start + left_size - 1,
+                             in_start, root_idx - 1)
+
+            # Build right subtree
+            # Postorder: elements from post_start+left_size to post_end-1
+            # Inorder: elements from root_idx+1 to in_end
+            root.right = build(post_start + left_size, post_end - 1,
+                              root_idx + 1, in_end)
+
+            return root
+
+        return build(0, len(postorder) - 1, 0, len(inorder) - 1)
 
 
 # Metadata for tracking
@@ -86,7 +117,7 @@ PROBLEM_METADATA = {
     "pattern": "Trees",
     "topics": ['Array', 'Hash Table', 'Divide and Conquer', 'Tree', 'Binary Tree'],
     "url": "https://leetcode.com/problems/construct-binary-tree-from-inorder-and-postorder-traversal/",
-    "companies": [],
-    "time_complexity": "O(?)",
-    "space_complexity": "O(?)",
+    "companies": ["Amazon", "Microsoft", "Google", "Facebook", "Bloomberg", "Apple"],
+    "time_complexity": "O(n)",
+    "space_complexity": "O(n)",
 }

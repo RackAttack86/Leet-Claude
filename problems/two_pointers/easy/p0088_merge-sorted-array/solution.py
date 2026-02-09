@@ -59,12 +59,15 @@ class Solution:
     """
     Solution to LeetCode Problem #88: Merge Sorted Array
 
-    Approach: [TODO: Describe approach]
-    Time Complexity: O(?)
-    Space Complexity: O(?)
+    Approach: Three Pointers from End
+    Time Complexity: O(m + n)
+    Space Complexity: O(1)
 
     Key Insights:
-    [TODO: Add key insights]
+    - Start from the end of both arrays to avoid overwriting elements
+    - Use three pointers: i for nums1, j for nums2, k for write position
+    - Compare and place larger elements at the end of nums1
+    - Only need to continue while j >= 0 (remaining nums1 elements already in place)
     """
 
     def merge(self, nums1: List[int], m: int, nums2: List[int], n: int) -> None:
@@ -88,6 +91,6 @@ PROBLEM_METADATA = {
     "topics": ['Array', 'Two Pointers', 'Sorting'],
     "url": "https://leetcode.com/problems/merge-sorted-array/",
     "companies": [],
-    "time_complexity": "O(?)",
-    "space_complexity": "O(?)",
+    "time_complexity": "O(m + n)",
+    "space_complexity": "O(1)",
 }

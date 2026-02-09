@@ -11,9 +11,9 @@ Design a data structure that follows the constraints of a Least Recently Used (L
 Implement the `LRUCache` class:
 
 - `LRUCache(int capacity)` Initialize the LRU cache with positive size `capacity`.
-	
+
 - `int get(int key)` Return the value of the `key` if the key exists, otherwise return `-1`.
-	
+
 - `void put(int key, int value)` Update the value of the `key` if the `key` exists. Otherwise, add the `key-value` pair to the cache. If the number of keys exceeds the `capacity` from this operation, evict the least recently used key.
 
 The functions `get` and `put` must each run in `O(1)` average time complexity.
@@ -52,35 +52,108 @@ from typing import List, Optional
 from collections import Counter, defaultdict
 
 
-class Solution:
+class DLLNode:
+    """Doubly Linked List Node for LRU Cache."""
+    def __init__(self, key: int = 0, val: int = 0):
+        self.key = key
+        self.val = val
+        self.prev = None
+        self.next = None
+
+
+class LRUCache:
     """
     Solution to LeetCode Problem #146: LRU Cache
 
-    Approach: [TODO: Describe approach]
-    Time Complexity: O(?)
-    Space Complexity: O(?)
+    Approach: Hash Map + Doubly Linked List
+    - Hash map provides O(1) access to any node by key
+    - Doubly linked list maintains order of usage (most recent at head, least recent at tail)
+    - On access (get/put), move the node to the head of the list
+    - On capacity overflow, remove from the tail (least recently used)
+
+    Time Complexity: O(1) for both get and put operations
+    Space Complexity: O(capacity) for storing the cache entries
 
     Key Insights:
-    [TODO: Add key insights]
+    - Doubly linked list allows O(1) removal from any position (unlike singly linked list)
+    - Sentinel/dummy head and tail nodes simplify edge case handling
+    - Storing key in node allows us to remove from hash map when evicting
+    - Moving to head on every access naturally maintains LRU order
     """
 
     def __init__(self, capacity: int):
         """
-        [TODO: Implement]
+        Initialize the LRU cache with the given capacity.
         """
-        pass
+        self.capacity = capacity
+        self.cache = {}  # key -> DLLNode
+
+        # Create dummy head and tail nodes to avoid edge cases
+        self.head = DLLNode()  # Most recently used
+        self.tail = DLLNode()  # Least recently used
+        self.head.next = self.tail
+        self.tail.prev = self.head
+
+    def _add_to_head(self, node: DLLNode) -> None:
+        """Add a node right after the head (most recently used position)."""
+        node.prev = self.head
+        node.next = self.head.next
+        self.head.next.prev = node
+        self.head.next = node
+
+    def _remove_node(self, node: DLLNode) -> None:
+        """Remove a node from the doubly linked list."""
+        node.prev.next = node.next
+        node.next.prev = node.prev
+
+    def _move_to_head(self, node: DLLNode) -> None:
+        """Move an existing node to the head (mark as most recently used)."""
+        self._remove_node(node)
+        self._add_to_head(node)
+
+    def _pop_tail(self) -> DLLNode:
+        """Remove and return the least recently used node (before tail)."""
+        lru_node = self.tail.prev
+        self._remove_node(lru_node)
+        return lru_node
 
     def get(self, key: int) -> int:
         """
-        [TODO: Implement]
+        Get the value of the key if it exists, otherwise return -1.
         """
-        pass
+        if key not in self.cache:
+            return -1
+
+        node = self.cache[key]
+        # Move to head since it was just accessed
+        self._move_to_head(node)
+        return node.val
 
     def put(self, key: int, value: int) -> None:
         """
-        [TODO: Implement]
+        Update or insert a key-value pair.
+        Evict LRU entry if capacity is exceeded.
         """
-        pass
+        if key in self.cache:
+            # Update existing node
+            node = self.cache[key]
+            node.val = value
+            self._move_to_head(node)
+        else:
+            # Create new node
+            new_node = DLLNode(key, value)
+            self.cache[key] = new_node
+            self._add_to_head(new_node)
+
+            # Check capacity
+            if len(self.cache) > self.capacity:
+                # Remove LRU node
+                lru_node = self._pop_tail()
+                del self.cache[lru_node.key]
+
+
+# Alias for LeetCode compatibility
+Solution = LRUCache
 
 
 # Metadata for tracking
@@ -91,7 +164,7 @@ PROBLEM_METADATA = {
     "pattern": "Linked Lists",
     "topics": ['Hash Table', 'Linked List', 'Design', 'Doubly-Linked List'],
     "url": "https://leetcode.com/problems/lru-cache/",
-    "companies": [],
-    "time_complexity": "O(?)",
-    "space_complexity": "O(?)",
+    "companies": ["Amazon", "Microsoft", "Facebook", "Google", "Apple", "Bloomberg", "Oracle", "Uber", "LinkedIn", "Snapchat", "Twitter"],
+    "time_complexity": "O(1)",
+    "space_complexity": "O(capacity)",
 }

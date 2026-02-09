@@ -41,11 +41,21 @@ class Solution:
     - Stop when combination has k elements
     """
 
-    def solve(self):
-        """
-        [TODO: Implement solution]
-        """
-        pass
+    def combine(self, n: int, k: int) -> List[List[int]]:
+        result = []
+
+        def backtrack(start: int, current: List[int]):
+            if len(current) == k:
+                result.append(current[:])
+                return
+
+            for i in range(start, n + 1):
+                current.append(i)
+                backtrack(i + 1, current)
+                current.pop()
+
+        backtrack(1, [])
+        return result
 
 
 # Metadata for tracking

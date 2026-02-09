@@ -44,11 +44,32 @@ class Solution:
     - Window size gives consecutive 1's after flips
     """
 
-    def solve(self):
+    def longestOnes(self, nums: List[int], k: int) -> int:
         """
-        [TODO: Implement solution]
+        Find maximum consecutive 1's if at most k 0's can be flipped.
+
+        Uses sliding window. Track count of zeros in window.
+        Shrink window when zeros exceed k.
         """
-        pass
+        max_length = 0
+        zero_count = 0
+        left = 0
+
+        for right in range(len(nums)):
+            # Add element to window
+            if nums[right] == 0:
+                zero_count += 1
+
+            # Shrink window while zeros exceed k
+            while zero_count > k:
+                if nums[left] == 0:
+                    zero_count -= 1
+                left += 1
+
+            # Update maximum length
+            max_length = max(max_length, right - left + 1)
+
+        return max_length
 
 
 # Metadata for tracking

@@ -3,7 +3,7 @@ Tests for LeetCode Problem #205: Isomorphic Strings
 """
 
 import pytest
-from .solution import Solution, PROBLEM_METADATA
+from solution import Solution, PROBLEM_METADATA
 
 
 
@@ -21,7 +21,7 @@ class TestIsomorphicStrings:
         """Example 1 from problem description"""
         s = "egg"
         t = "add"
-        expected = true
+        expected = True
         result = solution.isIsomorphic(s, t)
         assert result == expected
 
@@ -30,7 +30,7 @@ class TestIsomorphicStrings:
         """Example 2 from problem description"""
         s = "foo"
         t = "bar"
-        expected = false
+        expected = False
         result = solution.isIsomorphic(s, t)
         assert result == expected
 
@@ -39,15 +39,18 @@ class TestIsomorphicStrings:
         """Example 3 from problem description"""
         s = "paper"
         t = "title"
-        expected = true
+        expected = True
         result = solution.isIsomorphic(s, t)
         assert result == expected
 
 
-    def test_edge_case_empty(self, solution):
-        """Test with empty/minimal input"""
-        # TODO: Implement edge case test
-        pass
+    def test_edge_case_single_char(self, solution):
+        """Test with single character strings"""
+        s = "a"
+        t = "b"
+        expected = True
+        result = solution.isIsomorphic(s, t)
+        assert result == expected
 
 
     # Metadata validation

@@ -53,11 +53,42 @@ class Solution:
     - Reverse thinking: ocean to cells
     """
 
-    def solve(self):
-        """
-        [TODO: Implement solution]
-        """
-        pass
+    def pacificAtlantic(self, heights: List[List[int]]) -> List[List[int]]:
+        if not heights or not heights[0]:
+            return []
+
+        rows, cols = len(heights), len(heights[0])
+        pacific = set()
+        atlantic = set()
+
+        def dfs(r: int, c: int, reachable: set, prev_height: int):
+            if (r, c) in reachable:
+                return
+            if r < 0 or r >= rows or c < 0 or c >= cols:
+                return
+            if heights[r][c] < prev_height:
+                return
+
+            reachable.add((r, c))
+            dfs(r + 1, c, reachable, heights[r][c])
+            dfs(r - 1, c, reachable, heights[r][c])
+            dfs(r, c + 1, reachable, heights[r][c])
+            dfs(r, c - 1, reachable, heights[r][c])
+
+        # DFS from Pacific borders (top and left)
+        for c in range(cols):
+            dfs(0, c, pacific, heights[0][c])
+        for r in range(rows):
+            dfs(r, 0, pacific, heights[r][0])
+
+        # DFS from Atlantic borders (bottom and right)
+        for c in range(cols):
+            dfs(rows - 1, c, atlantic, heights[rows - 1][c])
+        for r in range(rows):
+            dfs(r, cols - 1, atlantic, heights[r][cols - 1])
+
+        # Return intersection
+        return [[r, c] for r, c in pacific & atlantic]
 
 
 # Metadata for tracking

@@ -75,19 +75,46 @@ class Solution:
     """
     Solution to LeetCode Problem #36: Valid Sudoku
 
-    Approach: [TODO: Describe approach]
-    Time Complexity: O(?)
-    Space Complexity: O(?)
+    Approach: Use hash sets to track seen digits for each row, column, and 3x3 box.
+              Iterate through each cell once and check if the digit already exists in
+              its corresponding row, column, or box set. If duplicate found, return False.
+    Time Complexity: O(1) - Fixed 9x9 board, effectively O(81) = O(1)
+    Space Complexity: O(1) - Fixed size sets for 9 rows, 9 columns, 9 boxes
 
     Key Insights:
-    [TODO: Add key insights]
+    - Each cell belongs to exactly one row, one column, and one 3x3 box
+    - Box index can be computed as (row // 3) * 3 + (col // 3)
+    - Only need to validate filled cells (digits 1-9), skip '.' cells
+    - Use three sets of hash sets: one for rows, columns, and boxes
     """
 
     def isValidSudoku(self, board: List[List[str]]) -> bool:
-        """
-        [TODO: Implement]
-        """
-        pass
+        # Initialize sets for each row, column, and 3x3 box
+        rows = [set() for _ in range(9)]
+        cols = [set() for _ in range(9)]
+        boxes = [set() for _ in range(9)]
+
+        for i in range(9):
+            for j in range(9):
+                cell = board[i][j]
+
+                # Skip empty cells
+                if cell == '.':
+                    continue
+
+                # Calculate box index
+                box_idx = (i // 3) * 3 + (j // 3)
+
+                # Check if digit already exists in row, column, or box
+                if cell in rows[i] or cell in cols[j] or cell in boxes[box_idx]:
+                    return False
+
+                # Add digit to the corresponding sets
+                rows[i].add(cell)
+                cols[j].add(cell)
+                boxes[box_idx].add(cell)
+
+        return True
 
 
 # Metadata for tracking
@@ -98,7 +125,7 @@ PROBLEM_METADATA = {
     "pattern": "Bfs Dfs",
     "topics": ['Array', 'Hash Table', 'Matrix'],
     "url": "https://leetcode.com/problems/valid-sudoku/",
-    "companies": [],
-    "time_complexity": "O(?)",
-    "space_complexity": "O(?)",
+    "companies": ["Amazon", "Google", "Microsoft", "Apple", "Facebook", "Uber", "Bloomberg"],
+    "time_complexity": "O(1)",
+    "space_complexity": "O(1)",
 }

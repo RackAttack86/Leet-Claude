@@ -56,11 +56,47 @@ class Solution:
     - If conflict found, not bipartite
     """
 
-    def solve(self):
+    def isBipartite(self, graph: List[List[int]]) -> bool:
         """
-        [TODO: Implement solution]
+        Determine if the graph is bipartite.
+
+        Args:
+            graph: Adjacency list where graph[u] contains neighbors of node u
+
+        Returns:
+            True if graph is bipartite, False otherwise
+
+        Approach:
+        1. Try to 2-color the graph using BFS
+        2. Adjacent nodes must have different colors
+        3. If we find a conflict, graph is not bipartite
+        4. Handle disconnected components
         """
-        pass
+        from collections import deque
+
+        n = len(graph)
+        color = [-1] * n  # -1 = uncolored, 0 or 1 = color
+
+        for start in range(n):
+            if color[start] != -1:
+                continue  # Already colored
+
+            # BFS to color this component
+            queue = deque([start])
+            color[start] = 0
+
+            while queue:
+                node = queue.popleft()
+                for neighbor in graph[node]:
+                    if color[neighbor] == -1:
+                        # Assign opposite color
+                        color[neighbor] = 1 - color[node]
+                        queue.append(neighbor)
+                    elif color[neighbor] == color[node]:
+                        # Same color as current node - not bipartite
+                        return False
+
+        return True
 
 
 # Metadata for tracking

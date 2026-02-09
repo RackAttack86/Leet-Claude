@@ -30,6 +30,11 @@ Then 4 is the first bad version.
 from typing import List, Optional
 
 
+# The isBadVersion API is already defined for you.
+def isBadVersion(version: int) -> bool:
+    pass  # This is provided by LeetCode
+
+
 class Solution:
     """
     Solution to LeetCode Problem #278: First Bad Version
@@ -44,11 +49,15 @@ class Solution:
     - If version is good, search right half
     """
 
-    def solve(self):
-        """
-        [TODO: Implement solution]
-        """
-        pass
+    def firstBadVersion(self, n: int) -> int:
+        left, right = 1, n
+        while left < right:
+            mid = (left + right) // 2
+            if isBadVersion(mid):
+                right = mid
+            else:
+                left = mid + 1
+        return left
 
 
 # Metadata for tracking

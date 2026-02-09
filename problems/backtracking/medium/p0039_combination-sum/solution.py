@@ -45,11 +45,23 @@ class Solution:
     - Include element and recurse with same index
     """
 
-    def solve(self):
-        """
-        [TODO: Implement solution]
-        """
-        pass
+    def combinationSum(self, candidates: List[int], target: int) -> List[List[int]]:
+        result = []
+
+        def backtrack(start: int, current: List[int], remaining: int):
+            if remaining == 0:
+                result.append(current[:])
+                return
+            if remaining < 0:
+                return
+
+            for i in range(start, len(candidates)):
+                current.append(candidates[i])
+                backtrack(i, current, remaining - candidates[i])  # Same index for reuse
+                current.pop()
+
+        backtrack(0, [], target)
+        return result
 
 
 # Metadata for tracking

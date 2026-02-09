@@ -50,11 +50,54 @@ class Solution:
     - Return -1 if any node unreachable
     """
 
-    def solve(self):
+    def networkDelayTime(self, times: List[List[int]], n: int, k: int) -> int:
         """
-        [TODO: Implement solution]
+        Find minimum time for signal to reach all nodes from source k.
+
+        Args:
+            times: List of [source, target, time] edges
+            n: Number of nodes (1-indexed)
+            k: Source node
+
+        Returns:
+            Minimum time for all nodes to receive signal, or -1 if impossible
+
+        Approach:
+        1. Build adjacency list graph
+        2. Use Dijkstra's algorithm to find shortest paths from k
+        3. Return maximum of all shortest paths
+        4. Return -1 if any node is unreachable
         """
-        pass
+        import heapq
+        from collections import defaultdict
+
+        # Build adjacency list
+        graph = defaultdict(list)
+        for u, v, w in times:
+            graph[u].append((v, w))
+
+        # Dijkstra's algorithm
+        dist = {k: 0}
+        min_heap = [(0, k)]  # (distance, node)
+
+        while min_heap:
+            d, node = heapq.heappop(min_heap)
+
+            # Skip if we've already found a shorter path
+            if d > dist.get(node, float('inf')):
+                continue
+
+            for neighbor, weight in graph[node]:
+                new_dist = d + weight
+                if new_dist < dist.get(neighbor, float('inf')):
+                    dist[neighbor] = new_dist
+                    heapq.heappush(min_heap, (new_dist, neighbor))
+
+        # Check if all nodes are reachable
+        if len(dist) < n:
+            return -1
+
+        return max(dist.values())
 
 
 # Metadata for tracking

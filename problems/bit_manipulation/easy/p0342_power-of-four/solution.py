@@ -43,11 +43,10 @@ class Solution:
     - Use (n & 0x55555555) != 0
     """
 
-    def solve(self):
-        """
-        [TODO: Implement solution]
-        """
-        pass
+    def isPowerOfFour(self, n: int) -> bool:
+        # First check if power of 2, then check if 1 bit is in odd position (0, 2, 4...)
+        # 0x55555555 = 01010101010101010101010101010101 in binary
+        return n > 0 and (n & (n - 1)) == 0 and (n & 0x55555555) != 0
 
 
 # Metadata for tracking

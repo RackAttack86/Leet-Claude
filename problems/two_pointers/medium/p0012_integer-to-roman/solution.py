@@ -104,19 +104,47 @@ class Solution:
     """
     Solution to LeetCode Problem #12: Integer to Roman
 
-    Approach: [TODO: Describe approach]
-    Time Complexity: O(?)
-    Space Complexity: O(?)
+    Approach: Greedy approach using a value-symbol mapping that includes
+    subtractive forms. Process from largest to smallest value, repeatedly
+    subtracting and appending symbols.
+
+    Time Complexity: O(1) - The number of iterations is bounded by the fixed
+    set of Roman numeral values (at most 13 values, each used at most 3 times)
+    Space Complexity: O(1) - Output string length is bounded (max ~15 chars for 3999)
 
     Key Insights:
-    [TODO: Add key insights]
+    1. Include subtractive forms (4, 9, 40, 90, 400, 900) in the mapping
+    2. Process values in descending order for greedy approach
+    3. The mapping table handles all edge cases naturally
+    4. Maximum number in constraints is 3999, limiting output size
     """
 
     def intToRoman(self, num: int) -> str:
-        """
-        [TODO: Implement]
-        """
-        pass
+        # Value-symbol pairs in descending order (including subtractive forms)
+        value_symbols = [
+            (1000, 'M'),
+            (900, 'CM'),
+            (500, 'D'),
+            (400, 'CD'),
+            (100, 'C'),
+            (90, 'XC'),
+            (50, 'L'),
+            (40, 'XL'),
+            (10, 'X'),
+            (9, 'IX'),
+            (5, 'V'),
+            (4, 'IV'),
+            (1, 'I')
+        ]
+
+        result = []
+        for value, symbol in value_symbols:
+            # Add as many of this symbol as possible
+            while num >= value:
+                result.append(symbol)
+                num -= value
+
+        return ''.join(result)
 
 
 # Metadata for tracking
@@ -127,7 +155,7 @@ PROBLEM_METADATA = {
     "pattern": "Two Pointers",
     "topics": ['Hash Table', 'Math', 'String'],
     "url": "https://leetcode.com/problems/integer-to-roman/",
-    "companies": [],
-    "time_complexity": "O(?)",
-    "space_complexity": "O(?)",
+    "companies": ["Amazon", "Microsoft", "Apple", "Bloomberg", "Google", "Facebook"],
+    "time_complexity": "O(1)",
+    "space_complexity": "O(1)",
 }

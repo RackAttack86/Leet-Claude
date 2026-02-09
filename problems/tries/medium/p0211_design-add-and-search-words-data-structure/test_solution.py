@@ -3,7 +3,7 @@ Tests for LeetCode Problem #211: Design Add and Search Words Data Structure
 """
 
 import pytest
-from .solution import Solution, PROBLEM_METADATA
+from solution import Solution, PROBLEM_METADATA
 
 
 
@@ -19,14 +19,18 @@ class TestDesignAddAndSearchWordsDataStructure:
 
     def test_example_1(self, solution):
         """Example 1 from problem description"""
-        # TODO: Parse and implement test for this example
-        pass
-
+        solution.addWord("bad")
+        solution.addWord("dad")
+        solution.addWord("mad")
+        assert solution.search("pad") == False
+        assert solution.search("bad") == True
+        assert solution.search(".ad") == True
+        assert solution.search("b..") == True
 
     def test_edge_case_empty(self, solution):
-        """Test with empty/minimal input"""
-        # TODO: Implement edge case test
-        pass
+        """Test searching before adding any words"""
+        assert solution.search("a") == False
+        assert solution.search(".") == False
 
 
     # Metadata validation

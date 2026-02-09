@@ -58,19 +58,35 @@ class Solution:
     """
     Solution to LeetCode Problem #66: Plus One
 
-    Approach: [TODO: Describe approach]
-    Time Complexity: O(?)
-    Space Complexity: O(?)
+    Approach: Right-to-Left Carry Propagation
+    Time Complexity: O(n) where n is the number of digits
+    Space Complexity: O(1) in-place, or O(n) if we need to add a new digit
 
     Key Insights:
-    [TODO: Add key insights]
+    - Start from the rightmost digit and add 1
+    - If digit becomes 10, set it to 0 and carry 1 to the next position
+    - If no carry remains, we're done
+    - If we've processed all digits and still have carry, prepend 1
     """
 
     def plusOne(self, digits: List[int]) -> List[int]:
         """
-        [TODO: Implement]
+        Increment the large integer represented by digits by one.
+
+        Args:
+            digits: Array of digits representing a large integer
+
+        Returns:
+            Array of digits representing the incremented integer
         """
-        pass
+        for i in range(len(digits) - 1, -1, -1):
+            if digits[i] < 9:
+                digits[i] += 1
+                return digits
+            digits[i] = 0
+
+        # If we're here, all digits were 9 (e.g., 999 -> 1000)
+        return [1] + digits
 
 
 # Metadata for tracking
@@ -81,7 +97,7 @@ PROBLEM_METADATA = {
     "pattern": "Two Pointers",
     "topics": ['Array', 'Math'],
     "url": "https://leetcode.com/problems/plus-one/",
-    "companies": [],
-    "time_complexity": "O(?)",
-    "space_complexity": "O(?)",
+    "companies": ['Google', 'Amazon', 'Microsoft', 'Apple'],
+    "time_complexity": "O(n)",
+    "space_complexity": "O(1)",
 }

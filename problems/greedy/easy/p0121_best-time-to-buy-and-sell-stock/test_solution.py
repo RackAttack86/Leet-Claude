@@ -3,7 +3,7 @@ Tests for LeetCode Problem #121: Best Time to Buy and Sell Stock
 """
 
 import pytest
-from .solution import Solution, PROBLEM_METADATA
+from solution import Solution, PROBLEM_METADATA
 
 
 
@@ -33,10 +33,12 @@ class TestBestTimeToBuyAndSellStock:
         assert result == expected
 
 
-    def test_edge_case_empty(self, solution):
-        """Test with empty/minimal input"""
-        # TODO: Implement edge case test
-        pass
+    def test_edge_case_single_price(self, solution):
+        """Test with single price (minimal input)"""
+        prices = [5]
+        expected = 0  # Cannot buy and sell with single price
+        result = solution.maxProfit(prices)
+        assert result == expected
 
 
     # Metadata validation

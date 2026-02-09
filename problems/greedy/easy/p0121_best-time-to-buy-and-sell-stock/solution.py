@@ -45,19 +45,45 @@ class Solution:
     """
     Solution to LeetCode Problem #121: Best Time to Buy and Sell Stock
 
-    Approach: [TODO: Describe approach]
-    Time Complexity: O(?)
-    Space Complexity: O(?)
+    Approach: One-pass greedy approach. Track the minimum price seen so far
+    and calculate the maximum profit at each step by comparing the current
+    price minus the minimum price with the current maximum profit.
+
+    Time Complexity: O(n) - single pass through the array
+    Space Complexity: O(1) - only using two variables
 
     Key Insights:
-    [TODO: Add key insights]
+    1. We need to buy before we sell, so we track the minimum price seen so far
+    2. At each position, the best profit is current price - minimum price so far
+    3. We greedily update both minimum price and maximum profit as we iterate
+    4. If prices are strictly decreasing, the answer is 0 (no profitable transaction)
     """
 
     def maxProfit(self, prices: List[int]) -> int:
         """
-        [TODO: Implement]
+        Find the maximum profit from buying and selling stock once.
+
+        Args:
+            prices: List of stock prices where prices[i] is the price on day i
+
+        Returns:
+            Maximum profit achievable, or 0 if no profit is possible
         """
-        pass
+        if not prices:
+            return 0
+
+        min_price = prices[0]
+        max_profit = 0
+
+        for price in prices:
+            # Update minimum price seen so far
+            min_price = min(min_price, price)
+            # Calculate profit if we sell at current price
+            current_profit = price - min_price
+            # Update maximum profit
+            max_profit = max(max_profit, current_profit)
+
+        return max_profit
 
 
 # Metadata for tracking
@@ -68,7 +94,7 @@ PROBLEM_METADATA = {
     "pattern": "Greedy",
     "topics": ['Array', 'Dynamic Programming'],
     "url": "https://leetcode.com/problems/best-time-to-buy-and-sell-stock/",
-    "companies": [],
-    "time_complexity": "O(?)",
-    "space_complexity": "O(?)",
+    "companies": ["Amazon", "Facebook", "Microsoft", "Google", "Apple", "Bloomberg", "Goldman Sachs", "Uber", "Adobe", "Morgan Stanley"],
+    "time_complexity": "O(n)",
+    "space_complexity": "O(1)",
 }

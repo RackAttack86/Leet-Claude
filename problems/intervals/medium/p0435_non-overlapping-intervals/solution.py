@@ -43,11 +43,35 @@ class Solution:
     - Answer = total - kept
     """
 
-    def solve(self):
+    def eraseOverlapIntervals(self, intervals: List[List[int]]) -> int:
         """
-        [TODO: Implement solution]
+        Find minimum number of intervals to remove to make the rest non-overlapping.
+
+        Args:
+            intervals: List of intervals [start, end]
+
+        Returns:
+            Minimum number of intervals to remove
         """
-        pass
+        if not intervals:
+            return 0
+
+        # Sort by end time - greedy approach keeps intervals that end earliest
+        intervals.sort(key=lambda x: x[1])
+
+        count = 0  # Number of intervals to remove
+        prev_end = intervals[0][1]
+
+        for i in range(1, len(intervals)):
+            start, end = intervals[i]
+            if start < prev_end:
+                # Overlapping - remove this interval (increment count)
+                count += 1
+            else:
+                # Non-overlapping - keep this interval, update prev_end
+                prev_end = end
+
+        return count
 
 
 # Metadata for tracking

@@ -48,11 +48,31 @@ class Solution:
     - Similar to interval scheduling
     """
 
-    def solve(self):
+    def findMinArrowShots(self, points: List[List[int]]) -> int:
         """
-        [TODO: Implement solution]
+        Find minimum arrows to burst all balloons.
+
+        Greedy approach: Sort balloons by end coordinate.
+        Shoot an arrow at the end of the first balloon, then skip all
+        balloons that would be burst by that arrow.
         """
-        pass
+        if not points:
+            return 0
+
+        # Sort by end coordinate
+        points.sort(key=lambda x: x[1])
+
+        arrows = 1
+        arrow_pos = points[0][1]  # Shoot arrow at end of first balloon
+
+        for i in range(1, len(points)):
+            # If balloon starts after current arrow position
+            if points[i][0] > arrow_pos:
+                # Need a new arrow
+                arrows += 1
+                arrow_pos = points[i][1]  # Shoot at end of this balloon
+
+        return arrows
 
 
 # Metadata for tracking

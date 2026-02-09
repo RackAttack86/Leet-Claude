@@ -45,11 +45,15 @@ class Solution:
     - Each cell's paths = sum of paths from top and left
     """
 
-    def solve(self):
-        """
-        [TODO: Implement solution]
-        """
-        pass
+    def uniquePaths(self, m: int, n: int) -> int:
+        # Use 1D DP array
+        dp = [1] * n
+
+        for i in range(1, m):
+            for j in range(1, n):
+                dp[j] += dp[j - 1]
+
+        return dp[n - 1]
 
 
 # Metadata for tracking

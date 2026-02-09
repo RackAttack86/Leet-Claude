@@ -42,11 +42,19 @@ class Solution:
     - 2^n total subsets
     """
 
-    def solve(self):
-        """
-        [TODO: Implement solution]
-        """
-        pass
+    def subsets(self, nums: List[int]) -> List[List[int]]:
+        result = []
+
+        def backtrack(start: int, current: List[int]):
+            result.append(current[:])
+
+            for i in range(start, len(nums)):
+                current.append(nums[i])
+                backtrack(i + 1, current)
+                current.pop()
+
+        backtrack(0, [])
+        return result
 
 
 # Metadata for tracking

@@ -3,7 +3,7 @@ Tests for LeetCode Problem #918: Maximum Sum Circular Subarray
 """
 
 import pytest
-from .solution import Solution, PROBLEM_METADATA
+from solution import Solution, PROBLEM_METADATA
 
 
 
@@ -41,10 +41,10 @@ class TestMaximumSumCircularSubarray:
         assert result == expected
 
 
-    def test_edge_case_empty(self, solution):
-        """Test with empty/minimal input"""
-        # TODO: Implement edge case test
-        pass
+    def test_edge_case_single_element(self, solution):
+        """Test with single element array"""
+        nums = [5]
+        assert solution.maxSubarraySumCircular(nums) == 5
 
 
     # Metadata validation

@@ -70,6 +70,45 @@ class TestKthSmallestElementInASortedMatrix:
         # Sorted: 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16
         assert solution.kthSmallest(matrix, k) == 10
 
+    def test_k_equals_one_smallest(self, solution):
+        """k=1 returns the smallest element"""
+        matrix = [[5, 10, 15], [20, 25, 30], [35, 40, 45]]
+        k = 1
+        assert solution.kthSmallest(matrix, k) == 5
+
+    def test_k_equals_n_squared_largest(self, solution):
+        """k=n*n returns the largest element"""
+        matrix = [[1, 2, 3], [4, 5, 6], [7, 8, 9]]
+        k = 9
+        assert solution.kthSmallest(matrix, k) == 9
+
+    def test_all_same_values(self, solution):
+        """Matrix with all identical values"""
+        matrix = [[5, 5, 5], [5, 5, 5], [5, 5, 5]]
+        k = 5
+        assert solution.kthSmallest(matrix, k) == 5
+
+    def test_2x2_matrix_all_k(self, solution):
+        """2x2 matrix with all k values"""
+        matrix = [[1, 2], [3, 4]]
+        assert solution.kthSmallest(matrix, 1) == 1
+        assert solution.kthSmallest(matrix, 2) == 2
+        assert solution.kthSmallest(matrix, 3) == 3
+        assert solution.kthSmallest(matrix, 4) == 4
+
+    def test_matrix_with_zeros(self, solution):
+        """Matrix including zero values"""
+        matrix = [[0, 0, 1], [0, 1, 2], [1, 2, 3]]
+        k = 4
+        # Sorted: 0, 0, 0, 1, 1, 1, 2, 2, 3 -> 4th is 1
+        assert solution.kthSmallest(matrix, k) == 1
+
+    def test_large_single_row(self, solution):
+        """1xn matrix (single row)"""
+        matrix = [[1, 3, 5, 7, 9]]
+        k = 3
+        assert solution.kthSmallest(matrix, k) == 5
+
     # Metadata validation
     def test_metadata_exists(self):
         """Verify problem metadata is complete"""

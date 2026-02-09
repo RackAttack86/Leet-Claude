@@ -3,7 +3,7 @@ Tests for LeetCode Problem #977: Squares of a Sorted Array
 """
 
 import pytest
-from .solution import Solution, PROBLEM_METADATA
+from solution import Solution, PROBLEM_METADATA
 
 
 class TestSquaresOfASortedArray:
@@ -16,19 +16,24 @@ class TestSquaresOfASortedArray:
 
     def test_example_1(self, solution):
         """Example 1 from problem description"""
-        # TODO: Implement test
-        pass
+        nums = [-4, -1, 0, 3, 10]
+        expected = [0, 1, 9, 16, 100]
+        result = solution.sortedSquares(nums)
+        assert result == expected
 
     def test_example_2(self, solution):
         """Example 2 from problem description"""
-        # TODO: Implement test
-        pass
+        nums = [-7, -3, 2, 3, 11]
+        expected = [4, 9, 9, 49, 121]
+        result = solution.sortedSquares(nums)
+        assert result == expected
 
-    # Edge cases
-    def test_edge_case_1(self, solution):
-        """TODO: Describe edge case"""
-        # TODO: Implement test
-        pass
+    def test_edge_case_single_element(self, solution):
+        """Test with single element array"""
+        nums = [5]
+        expected = [25]
+        result = solution.sortedSquares(nums)
+        assert result == expected
 
     # Metadata validation
     def test_metadata_exists(self):

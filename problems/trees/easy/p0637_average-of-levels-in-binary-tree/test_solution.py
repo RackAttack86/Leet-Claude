@@ -3,9 +3,9 @@ Tests for LeetCode Problem #637: Average of Levels in Binary Tree
 """
 
 import pytest
-from .solution import Solution, PROBLEM_METADATA
-from .solution import TreeNode
-from .solution import Node
+from solution import Solution, PROBLEM_METADATA
+from solution import TreeNode
+from solution import Node
 
 
 def array_to_tree(arr):
@@ -66,24 +66,32 @@ class TestAverageOfLevelsInBinaryTree:
 
     def test_example_1(self, solution):
         """Example 1 from problem description"""
-        root = [3,9,20,None,None,15,7]
-        expected = [3.00000,14.50000,11.00000]
+        root = array_to_tree([3,9,20,None,None,15,7])
+        expected = [3.0, 14.5, 11.0]
         result = solution.averageOfLevels(root)
-        assert result == expected
+        assert len(result) == len(expected)
+        for r, e in zip(result, expected):
+            assert abs(r - e) < 1e-5
 
 
     def test_example_2(self, solution):
         """Example 2 from problem description"""
-        root = [3,9,20,15,7]
-        expected = [3.00000,14.50000,11.00000]
+        root = array_to_tree([3,9,20,15,7])
+        expected = [3.0, 14.5, 11.0]
         result = solution.averageOfLevels(root)
-        assert result == expected
+        assert len(result) == len(expected)
+        for r, e in zip(result, expected):
+            assert abs(r - e) < 1e-5
 
 
-    def test_edge_case_empty(self, solution):
-        """Test with empty/minimal input"""
-        # TODO: Implement edge case test
-        pass
+    def test_edge_case_single_node(self, solution):
+        """Test with single node tree"""
+        root = array_to_tree([5])
+        expected = [5.0]
+        result = solution.averageOfLevels(root)
+        assert len(result) == len(expected)
+        for r, e in zip(result, expected):
+            assert abs(r - e) < 1e-5
 
 
     # Metadata validation

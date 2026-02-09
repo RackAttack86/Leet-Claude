@@ -3,7 +3,7 @@ Tests for LeetCode Problem #66: Plus One
 """
 
 import pytest
-from .solution import Solution, PROBLEM_METADATA
+from solution import Solution, PROBLEM_METADATA
 
 
 
@@ -41,10 +41,12 @@ class TestPlusOne:
         assert result == expected
 
 
-    def test_edge_case_empty(self, solution):
-        """Test with empty/minimal input"""
-        # TODO: Implement edge case test
-        pass
+    def test_edge_case_all_nines(self, solution):
+        """Test with all 9s (carry propagation)"""
+        digits = [9, 9, 9]
+        expected = [1, 0, 0, 0]
+        result = solution.plusOne(digits)
+        assert result == expected
 
 
     # Metadata validation

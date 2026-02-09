@@ -3,7 +3,7 @@ Tests for LeetCode Problem #438: Find All Anagrams in a String
 """
 
 import pytest
-from .solution import Solution, PROBLEM_METADATA
+from solution import Solution, PROBLEM_METADATA
 
 
 class TestFindAllAnagramsInAString:
@@ -16,19 +16,22 @@ class TestFindAllAnagramsInAString:
 
     def test_example_1(self, solution):
         """Example 1 from problem description"""
-        # TODO: Implement test
-        pass
+        s = "cbaebabacd"
+        p = "abc"
+        assert solution.findAnagrams(s, p) == [0, 6]
 
     def test_example_2(self, solution):
         """Example 2 from problem description"""
-        # TODO: Implement test
-        pass
+        s = "abab"
+        p = "ab"
+        assert solution.findAnagrams(s, p) == [0, 1, 2]
 
     # Edge cases
     def test_edge_case_1(self, solution):
-        """TODO: Describe edge case"""
-        # TODO: Implement test
-        pass
+        """Test when pattern is longer than string"""
+        s = "a"
+        p = "abc"
+        assert solution.findAnagrams(s, p) == []
 
     # Metadata validation
     def test_metadata_exists(self):

@@ -42,19 +42,61 @@ class Solution:
     """
     Solution to LeetCode Problem #149: Max Points on a Line
 
-    Approach: [TODO: Describe approach]
-    Time Complexity: O(?)
-    Space Complexity: O(?)
+    Approach: For each point, calculate the slope to all other points
+    and group by slope using a hash map. The max points on a line through
+    the current point is the max count in any slope group + 1.
+
+    Time Complexity: O(n^2) - For each point, check all other points
+    Space Complexity: O(n) - Hash map for slope counts per point
 
     Key Insights:
-    [TODO: Add key insights]
+    1. Two points define a unique line
+    2. Use slope as key to group collinear points
+    3. Handle vertical lines (infinite slope) separately
+    4. Use GCD to normalize slope as fraction to avoid floating point errors
+    5. For each anchor point, track slopes to all other points
     """
 
     def maxPoints(self, points: List[List[int]]) -> int:
-        """
-        [TODO: Implement]
-        """
-        pass
+        from math import gcd
+
+        n = len(points)
+        if n <= 2:
+            return n
+
+        def get_slope(p1: List[int], p2: List[int]) -> tuple:
+            """Return normalized slope as (dy, dx) tuple."""
+            dx = p2[0] - p1[0]
+            dy = p2[1] - p1[1]
+
+            if dx == 0:
+                # Vertical line
+                return (1, 0)
+            if dy == 0:
+                # Horizontal line
+                return (0, 1)
+
+            # Normalize using GCD
+            g = gcd(abs(dx), abs(dy))
+            dx //= g
+            dy //= g
+
+            # Ensure consistent sign (dx always positive, or if dx=0, dy positive)
+            if dx < 0:
+                dx, dy = -dx, -dy
+
+            return (dy, dx)
+
+        max_points = 1
+
+        for i in range(n):
+            slope_count = defaultdict(int)
+            for j in range(i + 1, n):
+                slope = get_slope(points[i], points[j])
+                slope_count[slope] += 1
+                max_points = max(max_points, slope_count[slope] + 1)
+
+        return max_points
 
 
 # Metadata for tracking
@@ -65,7 +107,7 @@ PROBLEM_METADATA = {
     "pattern": "Two Pointers",
     "topics": ['Array', 'Hash Table', 'Math', 'Geometry'],
     "url": "https://leetcode.com/problems/max-points-on-a-line/",
-    "companies": [],
-    "time_complexity": "O(?)",
-    "space_complexity": "O(?)",
+    "companies": ["Google", "Amazon", "LinkedIn", "Apple", "Microsoft", "Facebook"],
+    "time_complexity": "O(n^2)",
+    "space_complexity": "O(n)",
 }

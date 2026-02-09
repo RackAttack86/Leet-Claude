@@ -35,6 +35,7 @@ Output: [3.00000,14.50000,11.00000]
 """
 
 from typing import List, Optional
+from collections import deque
 
 class TreeNode:
     def __init__(self, val=0, left=None, right=None):
@@ -53,25 +54,49 @@ class Solution:
     """
     Solution to LeetCode Problem #637: Average of Levels in Binary Tree
 
-    Approach: [TODO: Describe approach]
-    Time Complexity: O(?)
-    Space Complexity: O(?)
+    Approach: Level-order traversal (BFS) with level sums
+    - Use a queue to process nodes level by level.
+    - For each level, sum all node values and count nodes.
+    - Calculate average as sum / count for each level.
+    - Add children to queue for next level processing.
+
+    Time Complexity: O(n) - visit each node exactly once
+    Space Complexity: O(w) - queue holds at most one level, w is max width
 
     Key Insights:
-    [TODO: Add key insights]
+    - BFS naturally processes nodes level by level
+    - Process all nodes at current level before moving to next
+    - Use queue length at start of each iteration to know level size
+    - Be careful with integer overflow for large node values (use float division)
     """
-
-    def __init__(self, val=0: Any, left=None: Any, right=None: Any):
-        """
-        [TODO: Implement]
-        """
-        pass
 
     def averageOfLevels(self, root: Optional[TreeNode]) -> List[float]:
         """
-        [TODO: Implement]
+        Calculate the average value of nodes at each level.
         """
-        pass
+        if not root:
+            return []
+
+        result = []
+        queue = deque([root])
+
+        while queue:
+            level_size = len(queue)
+            level_sum = 0
+
+            for _ in range(level_size):
+                node = queue.popleft()
+                level_sum += node.val
+
+                if node.left:
+                    queue.append(node.left)
+                if node.right:
+                    queue.append(node.right)
+
+            # Calculate average for this level
+            result.append(level_sum / level_size)
+
+        return result
 
 
 # Metadata for tracking
@@ -82,7 +107,7 @@ PROBLEM_METADATA = {
     "pattern": "Trees",
     "topics": ['Tree', 'Depth-First Search', 'Breadth-First Search', 'Binary Tree'],
     "url": "https://leetcode.com/problems/average-of-levels-in-binary-tree/",
-    "companies": [],
-    "time_complexity": "O(?)",
-    "space_complexity": "O(?)",
+    "companies": ["Amazon", "Microsoft", "Facebook", "Google", "Bloomberg", "Apple"],
+    "time_complexity": "O(n)",
+    "space_complexity": "O(w)",
 }

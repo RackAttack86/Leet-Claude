@@ -1,0 +1,92 @@
+"""
+LeetCode Problem #120: Triangle
+Difficulty: Medium
+Pattern: Dynamic Programming
+Link: https://leetcode.com/problems/triangle/
+
+Problem:
+--------
+Given a `triangle` array, return the minimum path sum from top to bottom.
+
+For each step, you may move to an adjacent number of the row below. More formally, if you are on index `i` on the current row, you may move to either index `i` or index `i + 1` on the next row.
+
+Constraints:
+-----------
+- `1
+- triangle[0].length == 1
+- triangle[i].length == triangle[i - 1].length + 1
+- 10^4
+
+Examples:
+---------
+Example 1:
+```
+
+Input: triangle = [[2],[3,4],[6,5,7],[4,1,8,3]]
+Output: 11
+Explanation: The triangle looks like:
+   2
+  3 4
+ 6 5 7
+4 1 8 3
+The minimum path sum from top to bottom is 2 + 3 + 5 + 1 = 11 (underlined above).
+
+```
+
+Example 2:
+```
+
+Input: triangle = [[-10]]
+Output: -10
+
+```
+"""
+
+from typing import List, Optional
+
+
+class Solution:
+    """
+    Solution to LeetCode Problem #120: Triangle
+
+    Approach: Bottom-up Dynamic Programming
+    - Start from the bottom row and work upward.
+    - For each cell, compute the minimum path sum by adding the current value
+      to the minimum of the two adjacent cells in the row below.
+    - dp[j] = triangle[i][j] + min(dp[j], dp[j+1])
+    - The answer will be in dp[0] after processing all rows.
+
+    Time Complexity: O(n^2) where n is the number of rows
+    Space Complexity: O(n) - using the bottom row as our dp array
+
+    Key Insights:
+    1. Bottom-up approach is cleaner than top-down for this problem.
+    2. From any position (i, j), we can only reach (i+1, j) or (i+1, j+1).
+    3. Working bottom-up, we process each row and update in place.
+    4. We can use O(n) space by reusing a single array.
+    """
+    def minimumTotal(self, triangle: List[List[int]]) -> int:
+        """
+        Find the minimum path sum from top to bottom of the triangle.
+
+        Args:
+            triangle: List of lists representing the triangle
+
+        Returns:
+            Minimum path sum from top to bottom
+        """
+        pass
+
+
+
+PROBLEM_METADATA = {
+    "number": 120,
+    "name": "Triangle",
+    "difficulty": "Medium",
+    "pattern": "Dynamic Programming",
+    "topics": ['Array', 'Dynamic Programming'],
+    "url": "https://leetcode.com/problems/triangle/",
+    "companies": ["Amazon", "Google", "Microsoft", "Apple", "Bloomberg", "Facebook"],
+    "time_complexity": "O(n^2)",
+    "space_complexity": "O(n)",
+}

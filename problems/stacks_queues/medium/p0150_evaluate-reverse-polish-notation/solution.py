@@ -53,11 +53,41 @@ class Solution:
     - Final stack element is answer
     """
 
-    def solve(self):
+    def evalRPN(self, tokens: List[str]) -> int:
         """
-        [TODO: Implement solution]
+        Evaluate expression in Reverse Polish Notation using a stack.
+
+        For each token:
+        - If number, push to stack
+        - If operator, pop two operands, apply operator, push result
+
+        Division truncates toward zero (use int() for Python).
         """
-        pass
+        stack = []
+        operators = {'+', '-', '*', '/'}
+
+        for token in tokens:
+            if token in operators:
+                # Pop two operands (order matters for - and /)
+                b = stack.pop()
+                a = stack.pop()
+
+                if token == '+':
+                    result = a + b
+                elif token == '-':
+                    result = a - b
+                elif token == '*':
+                    result = a * b
+                else:  # token == '/'
+                    # Truncate toward zero
+                    result = int(a / b)
+
+                stack.append(result)
+            else:
+                # It's a number
+                stack.append(int(token))
+
+        return stack[0]
 
 
 # Metadata for tracking

@@ -3,7 +3,7 @@ Tests for LeetCode Problem #392: Is Subsequence
 """
 
 import pytest
-from .solution import Solution, PROBLEM_METADATA
+from solution import Solution, PROBLEM_METADATA
 
 
 
@@ -21,7 +21,7 @@ class TestIsSubsequence:
         """Example 1 from problem description"""
         s = "abc"
         t = "ahbgdc"
-        expected = true
+        expected = True
         result = solution.isSubsequence(s, t)
         assert result == expected
 
@@ -30,15 +30,18 @@ class TestIsSubsequence:
         """Example 2 from problem description"""
         s = "axc"
         t = "ahbgdc"
-        expected = false
+        expected = False
         result = solution.isSubsequence(s, t)
         assert result == expected
 
 
-    def test_edge_case_empty(self, solution):
-        """Test with empty/minimal input"""
-        # TODO: Implement edge case test
-        pass
+    def test_edge_case_empty_s(self, solution):
+        """Test with empty s (always a subsequence)"""
+        s = ""
+        t = "ahbgdc"
+        expected = True
+        result = solution.isSubsequence(s, t)
+        assert result == expected
 
 
     # Metadata validation

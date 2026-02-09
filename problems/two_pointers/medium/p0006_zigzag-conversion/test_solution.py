@@ -3,7 +3,7 @@ Tests for LeetCode Problem #6: Zigzag Conversion
 """
 
 import pytest
-from .solution import Solution, PROBLEM_METADATA
+from solution import Solution, PROBLEM_METADATA
 
 
 
@@ -44,10 +44,21 @@ class TestZigzagConversion:
         assert result == expected
 
 
-    def test_edge_case_empty(self, solution):
-        """Test with empty/minimal input"""
-        # TODO: Implement edge case test
-        pass
+    def test_edge_case_numrows_equals_length(self, solution):
+        """Test when numRows equals string length"""
+        s = "ABC"
+        numRows = 3
+        expected = "ABC"
+        result = solution.convert(s, numRows)
+        assert result == expected
+
+    def test_edge_case_numrows_greater_than_length(self, solution):
+        """Test when numRows is greater than string length"""
+        s = "AB"
+        numRows = 5
+        expected = "AB"
+        result = solution.convert(s, numRows)
+        assert result == expected
 
 
     # Metadata validation

@@ -3,32 +3,41 @@ Tests for LeetCode Problem #155: Min Stack
 """
 
 import pytest
-from .solution import Solution, PROBLEM_METADATA
+from solution import MinStack, PROBLEM_METADATA
 
 
 class TestMinStack:
     """Test cases for Min Stack problem"""
 
-    @pytest.fixture
-    def solution(self):
-        """Create a Solution instance for each test"""
-        return Solution()
-
-    def test_example_1(self, solution):
+    def test_example_1(self):
         """Example 1 from problem description"""
-        # TODO: Implement test
-        pass
+        min_stack = MinStack()
+        min_stack.push(-2)
+        min_stack.push(0)
+        min_stack.push(-3)
+        assert min_stack.getMin() == -3
+        min_stack.pop()
+        assert min_stack.top() == 0
+        assert min_stack.getMin() == -2
 
-    def test_example_2(self, solution):
-        """Example 2 from problem description"""
-        # TODO: Implement test
-        pass
+    def test_example_2(self):
+        """Test with multiple push and pop operations"""
+        min_stack = MinStack()
+        min_stack.push(1)
+        min_stack.push(2)
+        assert min_stack.top() == 2
+        assert min_stack.getMin() == 1
+        min_stack.pop()
+        assert min_stack.top() == 1
+        assert min_stack.getMin() == 1
 
     # Edge cases
-    def test_edge_case_1(self, solution):
-        """TODO: Describe edge case"""
-        # TODO: Implement test
-        pass
+    def test_edge_case_single_element(self):
+        """Single element in stack"""
+        min_stack = MinStack()
+        min_stack.push(42)
+        assert min_stack.top() == 42
+        assert min_stack.getMin() == 42
 
     # Metadata validation
     def test_metadata_exists(self):

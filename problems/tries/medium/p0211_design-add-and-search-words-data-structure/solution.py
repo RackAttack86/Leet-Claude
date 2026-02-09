@@ -69,35 +69,88 @@ Output: [See LeetCode]
 from typing import List, Optional
 
 
+class TrieNode:
+    """A node in the Trie structure."""
+
+    def __init__(self):
+        self.children = {}  # Maps character to TrieNode
+        self.is_end = False  # Marks end of a word
+
+
 class Solution:
     """
     Solution to LeetCode Problem #211: Design Add and Search Words Data Structure
 
-    Approach: [TODO: Describe approach]
-    Time Complexity: O(?)
-    Space Complexity: O(?)
+    Approach: Trie with DFS for wildcard matching
+    - Use a standard Trie structure for storing words
+    - addWord: standard trie insertion
+    - search: use DFS/recursion to handle '.' wildcard
+    - When '.' is encountered, try all possible children recursively
+
+    Time Complexity:
+    - addWord: O(m) where m is word length
+    - search: O(m) for words without '.', O(26^d * m) worst case with d dots
+
+    Space Complexity: O(n * m) for trie storage, O(m) for recursion stack
 
     Key Insights:
-    [TODO: Add key insights]
+    1. Trie provides efficient prefix-based storage and retrieval
+    2. The '.' wildcard requires exploring all possible paths at that position
+    3. DFS/recursion naturally handles the branching for wildcards
+    4. With at most 2 dots constraint, worst case is manageable (26^2 = 676 branches)
+    5. Early termination when path doesn't exist saves time
     """
 
     def __init__(self):
         """
-        [TODO: Implement]
+        Initialize the WordDictionary with an empty Trie.
         """
-        pass
+        self.root = TrieNode()
 
     def addWord(self, word: str) -> None:
         """
-        [TODO: Implement]
+        Add a word to the data structure.
+        Time: O(m) where m is word length
         """
-        pass
+        node = self.root
+        for char in word:
+            if char not in node.children:
+                node.children[char] = TrieNode()
+            node = node.children[char]
+        node.is_end = True
 
     def search(self, word: str) -> bool:
         """
-        [TODO: Implement]
+        Search for a word, where '.' can match any letter.
+        Time: O(m) without dots, O(26^d * m) with d dots
         """
-        pass
+        return self._search_from(word, 0, self.root)
+
+    def _search_from(self, word: str, index: int, node: TrieNode) -> bool:
+        """
+        Recursive helper to search from a given node and index.
+        """
+        # Base case: reached end of word
+        if index == len(word):
+            return node.is_end
+
+        char = word[index]
+
+        if char == '.':
+            # Wildcard: try all possible children
+            for child in node.children.values():
+                if self._search_from(word, index + 1, child):
+                    return True
+            return False
+        else:
+            # Regular character: follow the specific path
+            if char not in node.children:
+                return False
+            return self._search_from(word, index + 1, node.children[char])
+
+
+# Alias for LeetCode compatibility (expects class named WordDictionary)
+WordDictionary = Solution
 
 
 # Metadata for tracking
@@ -108,7 +161,7 @@ PROBLEM_METADATA = {
     "pattern": "Tries",
     "topics": ['String', 'Depth-First Search', 'Design', 'Trie'],
     "url": "https://leetcode.com/problems/design-add-and-search-words-data-structure/",
-    "companies": [],
-    "time_complexity": "O(?)",
-    "space_complexity": "O(?)",
+    "companies": ["Google", "Amazon", "Facebook", "Microsoft", "Apple", "Bloomberg", "Snapchat", "Salesforce"],
+    "time_complexity": "O(m) addWord, O(26^d * m) search",
+    "space_complexity": "O(n * m)",
 }

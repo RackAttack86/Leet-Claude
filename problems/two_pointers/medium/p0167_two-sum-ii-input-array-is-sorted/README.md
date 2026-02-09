@@ -6,7 +6,9 @@
 
 ## Problem Description
 
-Given a 1-indexed array of integers `numbers` that is already sorted in non-decreasing order, find two numbers such that they add up to a specific `target` number. Let these two numbers be `numbers[index1]` and `numbers[index2]` where `1 1 2 1` and `index2`, added by one as an integer array `[index1, index2]` of length 2.
+Given a 1-indexed array of integers `numbers` that is already sorted in non-decreasing order, find two numbers such that they add up to a specific `target` number. Let these two numbers be `numbers[index1]` and `numbers[index2]` where `1 <= index1 < index2 <= numbers.length`.
+
+Return the indices of the two numbers, `index1` and `index2`, added by one as an integer array `[index1, index2]` of length 2.
 
 The tests are generated such that there is exactly one solution. You may not use the same element twice.
 
@@ -14,10 +16,10 @@ Your solution must use only constant extra space.
 
 ## Constraints
 
-- `2
-- 1000
-- numbers` is sorted in non-decreasing order.
-- 1000
+- `2 <= numbers.length <= 3 * 10^4`
+- `-1000 <= numbers[i] <= 1000`
+- `numbers` is sorted in non-decreasing order.
+- `-1000 <= target <= 1000`
 - The tests are generated such that there is exactly one solution.
 
 ## Examples
@@ -51,26 +53,50 @@ Explanation: The sum of -1 and 0 is -1. Therefore index1 = 1, index2 = 2. We ret
 
 ## Approaches
 
-### 1. [Approach Name]
+### 1. Two Pointers
 
-**Time Complexity:** O(?)
-**Space Complexity:** O(?)
+**Time Complexity:** O(n) - Single pass with two pointers
+**Space Complexity:** O(1) - Only using two pointer variables
 
 ```python
-# TODO: Add code snippet
+def twoSum(self, numbers: List[int], target: int) -> List[int]:
+    left, right = 0, len(numbers) - 1
+
+    while left < right:
+        current_sum = numbers[left] + numbers[right]
+
+        if current_sum == target:
+            # Return 1-indexed positions
+            return [left + 1, right + 1]
+        elif current_sum < target:
+            # Need larger sum, move left pointer right
+            left += 1
+        else:
+            # Need smaller sum, move right pointer left
+            right -= 1
+
+    # Problem guarantees a solution exists
+    return []
 ```
 
 **Why this works:**
-[TODO: Explain approach]
+Classic two-pointer technique. Use one pointer at the start and one at the end. If sum is too large, move right pointer left. If sum is too small, move left pointer right. The sorted property guarantees we will find the solution.
 
 ## Key Insights
 
-[TODO: Add key insights]
+1. Sorted array enables two-pointer approach
+2. Moving left pointer increases sum, moving right decreases it
+3. Guaranteed exactly one solution, so we will always find it
+4. Return 1-indexed positions as required by the problem
 
 ## Common Mistakes
 
-[TODO: Add common mistakes]
+- Returning 0-indexed instead of 1-indexed positions
+- Using hash map (works but doesn't meet O(1) space requirement)
+- Not leveraging the sorted property of the array
 
 ## Related Problems
 
-[TODO: Add related problems]
+- Two Sum (LeetCode #1)
+- 3Sum (LeetCode #15)
+- Two Sum IV - Input is a BST (LeetCode #653)

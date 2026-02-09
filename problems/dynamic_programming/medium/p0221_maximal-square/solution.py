@@ -48,19 +48,57 @@ class Solution:
     """
     Solution to LeetCode Problem #221: Maximal Square
 
-    Approach: [TODO: Describe approach]
-    Time Complexity: O(?)
-    Space Complexity: O(?)
+    Approach: Dynamic Programming with space optimization
+    - dp[i][j] represents the side length of the largest square with bottom-right corner at (i, j).
+    - If matrix[i][j] == '1', then dp[i][j] = min(dp[i-1][j], dp[i][j-1], dp[i-1][j-1]) + 1
+    - The answer is the maximum dp value squared.
+    - Optimize space to O(n) using a single row.
+
+    Time Complexity: O(m * n)
+    Space Complexity: O(n) - using 1D array optimization
 
     Key Insights:
-    [TODO: Add key insights]
+    1. A square at (i,j) can only extend if all three neighbors (top, left, top-left) can form squares.
+    2. The size is limited by the smallest of the three neighbors.
+    3. This is because any larger square would require all three directions to have equally large squares.
+    4. We need to track the previous diagonal value when using 1D optimization.
     """
 
     def maximalSquare(self, matrix: List[List[str]]) -> int:
         """
-        [TODO: Implement]
+        Find the area of the largest square containing only 1s.
+
+        Args:
+            matrix: 2D binary matrix of '0' and '1' characters
+
+        Returns:
+            Area of the largest square containing only 1s
         """
-        pass
+        if not matrix or not matrix[0]:
+            return 0
+
+        m, n = len(matrix), len(matrix[0])
+        max_side = 0
+
+        # dp[j] represents the side length of largest square ending at current row, column j
+        dp = [0] * (n + 1)
+
+        for i in range(m):
+            prev_diagonal = 0  # This stores dp[i-1][j-1]
+
+            for j in range(1, n + 1):
+                temp = dp[j]  # Save current value before updating (will be prev_diagonal for next iteration)
+
+                if matrix[i][j - 1] == '1':
+                    # Take minimum of top (dp[j]), left (dp[j-1]), and top-left (prev_diagonal)
+                    dp[j] = min(dp[j], dp[j - 1], prev_diagonal) + 1
+                    max_side = max(max_side, dp[j])
+                else:
+                    dp[j] = 0
+
+                prev_diagonal = temp
+
+        return max_side * max_side
 
 
 # Metadata for tracking
@@ -71,7 +109,7 @@ PROBLEM_METADATA = {
     "pattern": "Dynamic Programming",
     "topics": ['Array', 'Dynamic Programming', 'Matrix'],
     "url": "https://leetcode.com/problems/maximal-square/",
-    "companies": [],
-    "time_complexity": "O(?)",
-    "space_complexity": "O(?)",
+    "companies": ["Amazon", "Google", "Microsoft", "Facebook", "Apple", "Bloomberg", "Uber", "Airbnb", "IBM"],
+    "time_complexity": "O(m * n)",
+    "space_complexity": "O(n)",
 }

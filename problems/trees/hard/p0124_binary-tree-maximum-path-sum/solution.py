@@ -57,25 +57,52 @@ class Solution:
     """
     Solution to LeetCode Problem #124: Binary Tree Maximum Path Sum
 
-    Approach: [TODO: Describe approach]
-    Time Complexity: O(?)
-    Space Complexity: O(?)
+    Approach: DFS with Global Maximum Tracking
+    - At each node, compute max path sum that can be extended to parent
+    - Also compute max path sum that goes through current node (left + node + right)
+    - Track global maximum across all possible paths
+    - Return to parent only the best single-direction path (can't split at parent)
+
+    Time Complexity: O(n) - visit each node once
+    Space Complexity: O(h) - recursion stack where h is tree height
 
     Key Insights:
-    [TODO: Add key insights]
+    - Path can start/end anywhere - doesn't need to pass through root
+    - At each node, we have two choices:
+      1. Path going through node (left path + node + right path) - update global max
+      2. Path extending to parent (node + max(left, right)) - return to parent
+    - Negative paths should be treated as 0 (don't include them)
+    - A node itself can be a valid path (important for all-negative trees)
     """
 
-    def __init__(self, val=0: Any, left=None: Any, right=None: Any):
-        """
-        [TODO: Implement]
-        """
-        pass
-
     def maxPathSum(self, root: Optional[TreeNode]) -> int:
-        """
-        [TODO: Implement]
-        """
-        pass
+        self.max_sum = float('-inf')
+
+        def max_gain(node: TreeNode) -> int:
+            """
+            Returns maximum path sum starting from this node going down (one direction).
+            Also updates global max_sum if path through this node is better.
+            """
+            if not node:
+                return 0
+
+            # Get maximum gain from left and right subtrees
+            # Use max with 0 to ignore negative paths
+            left_gain = max(max_gain(node.left), 0)
+            right_gain = max(max_gain(node.right), 0)
+
+            # Path sum going through current node (potential global max)
+            path_through_node = node.val + left_gain + right_gain
+
+            # Update global maximum if this path is better
+            self.max_sum = max(self.max_sum, path_through_node)
+
+            # Return max gain if we extend path to parent
+            # Can only go one direction (either left or right, not both)
+            return node.val + max(left_gain, right_gain)
+
+        max_gain(root)
+        return self.max_sum
 
 
 # Metadata for tracking
@@ -86,7 +113,7 @@ PROBLEM_METADATA = {
     "pattern": "Trees",
     "topics": ['Dynamic Programming', 'Tree', 'Depth-First Search', 'Binary Tree'],
     "url": "https://leetcode.com/problems/binary-tree-maximum-path-sum/",
-    "companies": [],
-    "time_complexity": "O(?)",
-    "space_complexity": "O(?)",
+    "companies": ["Facebook", "Amazon", "Microsoft", "Google", "Bloomberg", "Apple", "DoorDash", "ByteDance", "Uber"],
+    "time_complexity": "O(n)",
+    "space_complexity": "O(h)",
 }

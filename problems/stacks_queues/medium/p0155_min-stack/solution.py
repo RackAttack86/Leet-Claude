@@ -43,26 +43,61 @@ minStack.getMin(); // return -2
 from typing import List, Optional
 
 
-class Solution:
+class MinStack:
     """
     Solution to LeetCode Problem #155: Min Stack
 
-    Approach: Two stacks or stack with pairs
+    Approach: Stack with pairs storing (value, current_min)
     Time Complexity: O(1) for all operations
     Space Complexity: O(n)
 
     Key Insights:
     - Store (value, current_min) pairs
-    - Or use two stacks: main and min
-    - Update min on push
-    - Pop from both stacks together
+    - Each element knows the minimum at that point
+    - Update min on push by comparing with previous min
     """
 
-    def solve(self):
+    def __init__(self):
         """
-        [TODO: Implement solution]
+        Initialize the stack.
+        Each element stores (value, min_so_far).
         """
-        pass
+        self.stack = []
+
+    def push(self, val: int) -> None:
+        """
+        Push element onto stack with current minimum.
+        """
+        if not self.stack:
+            self.stack.append((val, val))
+        else:
+            current_min = min(val, self.stack[-1][1])
+            self.stack.append((val, current_min))
+
+    def pop(self) -> None:
+        """
+        Remove the top element from stack.
+        """
+        self.stack.pop()
+
+    def top(self) -> int:
+        """
+        Get the top element.
+        """
+        return self.stack[-1][0]
+
+    def getMin(self) -> int:
+        """
+        Retrieve the minimum element in O(1).
+        """
+        return self.stack[-1][1]
+
+
+class Solution:
+    """
+    Wrapper class for compatibility with test framework.
+    """
+    pass
 
 
 # Metadata for tracking

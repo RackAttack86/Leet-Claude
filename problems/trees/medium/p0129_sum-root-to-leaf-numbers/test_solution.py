@@ -3,9 +3,9 @@ Tests for LeetCode Problem #129: Sum Root to Leaf Numbers
 """
 
 import pytest
-from .solution import Solution, PROBLEM_METADATA
-from .solution import TreeNode
-from .solution import Node
+from solution import Solution, PROBLEM_METADATA
+from solution import TreeNode
+from solution import Node
 
 
 def array_to_tree(arr):
@@ -66,7 +66,7 @@ class TestSumRootToLeafNumbers:
 
     def test_example_1(self, solution):
         """Example 1 from problem description"""
-        root = [1,2,3]
+        root = array_to_tree([1,2,3])
         expected = 25
         result = solution.sumNumbers(root)
         assert result == expected
@@ -74,17 +74,70 @@ class TestSumRootToLeafNumbers:
 
     def test_example_2(self, solution):
         """Example 2 from problem description"""
-        root = [4,9,0,5,1]
+        root = array_to_tree([4,9,0,5,1])
         expected = 1026
         result = solution.sumNumbers(root)
         assert result == expected
 
 
-    def test_edge_case_empty(self, solution):
-        """Test with empty/minimal input"""
-        # TODO: Implement edge case test
-        pass
+    def test_edge_case_single_node(self, solution):
+        """Test with single node"""
+        root = array_to_tree([5])
+        expected = 5
+        result = solution.sumNumbers(root)
+        assert result == expected
 
+    def test_single_path_left(self, solution):
+        """Test with single path going left"""
+        root = TreeNode(1)
+        root.left = TreeNode(2)
+        root.left.left = TreeNode(3)
+        # Path: 1 -> 2 -> 3 = 123
+        expected = 123
+        result = solution.sumNumbers(root)
+        assert result == expected
+
+    def test_single_path_right(self, solution):
+        """Test with single path going right"""
+        root = TreeNode(1)
+        root.right = TreeNode(2)
+        root.right.right = TreeNode(3)
+        # Path: 1 -> 2 -> 3 = 123
+        expected = 123
+        result = solution.sumNumbers(root)
+        assert result == expected
+
+    def test_zero_root(self, solution):
+        """Test with zero as root"""
+        root = array_to_tree([0, 1, 2])
+        # Paths: 0->1 = 01 = 1, 0->2 = 02 = 2, sum = 3
+        expected = 3
+        result = solution.sumNumbers(root)
+        assert result == expected
+
+    def test_all_zeros(self, solution):
+        """Test with all zeros"""
+        root = array_to_tree([0, 0, 0])
+        # Paths: 0->0 = 0, 0->0 = 0, sum = 0
+        expected = 0
+        result = solution.sumNumbers(root)
+        assert result == expected
+
+    def test_large_numbers(self, solution):
+        """Test with values 0-9 forming larger numbers"""
+        root = array_to_tree([9, 9, 9])
+        # Paths: 9->9 = 99, 9->9 = 99, sum = 198
+        expected = 198
+        result = solution.sumNumbers(root)
+        assert result == expected
+
+    def test_complete_tree_three_levels(self, solution):
+        """Test with complete tree of three levels"""
+        root = array_to_tree([1, 2, 3, 4, 5, 6, 7])
+        # Paths: 1->2->4 = 124, 1->2->5 = 125, 1->3->6 = 136, 1->3->7 = 137
+        expected = 124 + 125 + 136 + 137
+        result = solution.sumNumbers(root)
+        assert result == expected
 
     # Metadata validation
     def test_metadata_exists(self):

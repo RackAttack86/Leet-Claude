@@ -3,7 +3,7 @@ Tests for LeetCode Problem #274: H-Index
 """
 
 import pytest
-from .solution import Solution, PROBLEM_METADATA
+from solution import Solution, PROBLEM_METADATA
 
 
 
@@ -33,10 +33,19 @@ class TestHindex:
         assert result == expected
 
 
-    def test_edge_case_empty(self, solution):
-        """Test with empty/minimal input"""
-        # TODO: Implement edge case test
-        pass
+    def test_edge_case_single_paper(self, solution):
+        """Test with single paper"""
+        citations = [0]
+        expected = 0
+        result = solution.hIndex(citations)
+        assert result == expected
+
+    def test_edge_case_high_citations(self, solution):
+        """Test with all high citations"""
+        citations = [100]
+        expected = 1
+        result = solution.hIndex(citations)
+        assert result == expected
 
 
     # Metadata validation

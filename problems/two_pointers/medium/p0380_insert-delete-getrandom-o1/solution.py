@@ -56,37 +56,54 @@ class Solution:
     """
     Solution to LeetCode Problem #380: Insert Delete GetRandom O(1)
 
-    Approach: [TODO: Describe approach]
-    Time Complexity: O(?)
-    Space Complexity: O(?)
+    Approach: Combine a hash map and dynamic array. The array stores values
+    for O(1) random access. The hash map stores value-to-index mappings for
+    O(1) insert/remove. For removal, swap with last element to avoid shifting.
+
+    Time Complexity: O(1) average for all operations
+    Space Complexity: O(n) where n is number of elements
 
     Key Insights:
-    [TODO: Add key insights]
+    1. Array enables O(1) random access via random.choice
+    2. Hash map enables O(1) lookup for insert/remove
+    3. Swap-with-last trick enables O(1) removal from array
+    4. Must update hash map when swapping during removal
     """
 
     def __init__(self):
-        """
-        [TODO: Implement]
-        """
-        pass
+        self.val_to_index = {}  # Maps value to its index in the list
+        self.values = []  # List of values for random access
 
     def insert(self, val: int) -> bool:
-        """
-        [TODO: Implement]
-        """
-        pass
+        if val in self.val_to_index:
+            return False
+
+        # Add to end of list and record index in map
+        self.val_to_index[val] = len(self.values)
+        self.values.append(val)
+        return True
 
     def remove(self, val: int) -> bool:
-        """
-        [TODO: Implement]
-        """
-        pass
+        if val not in self.val_to_index:
+            return False
+
+        # Get index of element to remove
+        idx = self.val_to_index[val]
+        last_val = self.values[-1]
+
+        # Move last element to the position of removed element
+        self.values[idx] = last_val
+        self.val_to_index[last_val] = idx
+
+        # Remove last element
+        self.values.pop()
+        del self.val_to_index[val]
+
+        return True
 
     def getRandom(self) -> int:
-        """
-        [TODO: Implement]
-        """
-        pass
+        import random
+        return random.choice(self.values)
 
 
 # Metadata for tracking
@@ -97,7 +114,7 @@ PROBLEM_METADATA = {
     "pattern": "Two Pointers",
     "topics": ['Array', 'Hash Table', 'Math', 'Design', 'Randomized'],
     "url": "https://leetcode.com/problems/insert-delete-getrandom-o1/",
-    "companies": [],
-    "time_complexity": "O(?)",
-    "space_complexity": "O(?)",
+    "companies": ["Facebook", "Amazon", "Microsoft", "Google", "Apple", "Bloomberg", "Uber", "LinkedIn"],
+    "time_complexity": "O(1)",
+    "space_complexity": "O(n)",
 }

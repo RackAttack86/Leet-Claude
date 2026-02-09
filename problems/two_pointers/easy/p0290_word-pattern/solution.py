@@ -58,19 +58,51 @@ class Solution:
     """
     Solution to LeetCode Problem #290: Word Pattern
 
-    Approach: [TODO: Describe approach]
-    Time Complexity: O(?)
-    Space Complexity: O(?)
+    Approach: Bidirectional Hash Map Mapping
+    Time Complexity: O(n) where n is the length of pattern/words
+    Space Complexity: O(n) for storing the mappings
 
     Key Insights:
-    [TODO: Add key insights]
+    - Similar to Isomorphic Strings, but with chars and words
+    - Need bidirectional mapping: pattern char <-> word
+    - First check if lengths match, then verify mappings
     """
 
     def wordPattern(self, pattern: str, s: str) -> bool:
         """
-        [TODO: Implement]
+        Check if string s follows the given pattern.
+
+        Args:
+            pattern: Pattern string with single characters
+            s: String of space-separated words
+
+        Returns:
+            True if s follows the pattern
         """
-        pass
+        words = s.split()
+
+        if len(pattern) != len(words):
+            return False
+
+        char_to_word = {}
+        word_to_char = {}
+
+        for char, word in zip(pattern, words):
+            # Check char -> word mapping
+            if char in char_to_word:
+                if char_to_word[char] != word:
+                    return False
+            else:
+                char_to_word[char] = word
+
+            # Check word -> char mapping
+            if word in word_to_char:
+                if word_to_char[word] != char:
+                    return False
+            else:
+                word_to_char[word] = char
+
+        return True
 
 
 # Metadata for tracking
@@ -81,7 +113,7 @@ PROBLEM_METADATA = {
     "pattern": "Two Pointers",
     "topics": ['Hash Table', 'String'],
     "url": "https://leetcode.com/problems/word-pattern/",
-    "companies": [],
-    "time_complexity": "O(?)",
-    "space_complexity": "O(?)",
+    "companies": ['Amazon', 'Google', 'Microsoft'],
+    "time_complexity": "O(n)",
+    "space_complexity": "O(n)",
 }

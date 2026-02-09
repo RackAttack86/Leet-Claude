@@ -6,34 +6,100 @@
 
 ## Problem Description
 
-[TODO: Add problem description]
+There is an m x n rectangular island that borders both the Pacific Ocean and Atlantic Ocean. The Pacific Ocean touches the island's left and top edges, and the Atlantic Ocean touches the island's right and bottom edges.
+
+The island is partitioned into a grid of square cells. You are given an m x n integer matrix heights where heights[r][c] represents the height above sea level of the cell at coordinate (r, c).
+
+The island receives a lot of rain, and the rain water can flow to neighboring cells directly north, south, east, and west if the neighboring cell's height is less than or equal to the current cell's height. Water can flow from any cell adjacent to an ocean into the ocean.
+
+Return a 2D list of grid coordinates result where result[i] = [ri, ci] denotes that rain water can flow from cell (ri, ci) to both the Pacific and Atlantic oceans.
+
+## Constraints
+
+- m == heights.length
+- n == heights[r].length
+- 1 <= m, n <= 200
+- 0 <= heights[r][c] <= 10^5
+
+## Examples
+
+```
+Input: heights = [[1,2,2,3,5],[3,2,3,4,4],[2,4,5,3,1],[6,7,1,4,5],[5,1,1,2,4]]
+Output: [[0,4],[1,3],[1,4],[2,2],[3,0],[3,1],[4,0]]
+Explanation: The following cells can flow to the Pacific and Atlantic oceans...
+
+Input: heights = [[1]]
+Output: [[0,0]]
+Explanation: The water can flow from the only cell to both oceans.
+```
 
 ## Approaches
 
-### 1. [Approach Name]
+### 1. DFS from Ocean Borders
 
-**Time Complexity:** O(?)
-**Space Complexity:** O(?)
+**Time Complexity:** O(m * n)
+**Space Complexity:** O(m * n)
 
 ```python
-# TODO: Add code snippet
+def pacificAtlantic(self, heights: List[List[int]]) -> List[List[int]]:
+    if not heights or not heights[0]:
+        return []
+
+    rows, cols = len(heights), len(heights[0])
+    pacific = set()
+    atlantic = set()
+
+    def dfs(r: int, c: int, reachable: set, prev_height: int):
+        if (r, c) in reachable:
+            return
+        if r < 0 or r >= rows or c < 0 or c >= cols:
+            return
+        if heights[r][c] < prev_height:
+            return
+
+        reachable.add((r, c))
+        dfs(r + 1, c, reachable, heights[r][c])
+        dfs(r - 1, c, reachable, heights[r][c])
+        dfs(r, c + 1, reachable, heights[r][c])
+        dfs(r, c - 1, reachable, heights[r][c])
+
+    # DFS from Pacific borders (top and left)
+    for c in range(cols):
+        dfs(0, c, pacific, heights[0][c])
+    for r in range(rows):
+        dfs(r, 0, pacific, heights[r][0])
+
+    # DFS from Atlantic borders (bottom and right)
+    for c in range(cols):
+        dfs(rows - 1, c, atlantic, heights[rows - 1][c])
+    for r in range(rows):
+        dfs(r, cols - 1, atlantic, heights[r][cols - 1])
+
+    # Return intersection
+    return [[r, c] for r, c in pacific & atlantic]
 ```
 
 **Why this works:**
-[TODO: Explain approach]
+Instead of checking from each cell if it can reach both oceans (expensive), we reverse the problem: find all cells reachable from each ocean by going uphill. Start DFS from Pacific borders and Atlantic borders separately. The intersection gives cells that can reach both oceans.
 
 ## Key Insights
 
-[TODO: Add key insights]
+- DFS from Pacific and Atlantic borders
+- Mark cells reachable from each ocean
+- Find intersection of both sets
+- Reverse thinking: ocean to cells
 
 ## Common Mistakes
 
-[TODO: Add common mistakes]
+- Trying to do DFS from each cell to both oceans (O(m*n) * O(m*n) = O((m*n)^2))
+- Confusing the direction of water flow vs DFS direction
+- Not handling the case where a single cell touches both oceans
 
 ## Related Problems
 
-[TODO: Add related problems]
+- Number of Islands
+- Surrounded Regions
 
 ## Tags
 
-[TODO: Add tags]
+Array, Depth-First Search, Breadth-First Search, Matrix

@@ -17,16 +17,18 @@ For the last line of text, it should be left-justified, and no extra space is in
 Note:
 
 - A word is defined as a character sequence consisting of non-space characters only.
-	
+
 - Each word's length is guaranteed to be greater than `0` and not exceed `maxWidth`.
-	
+
 - The input array `words` contains at least one word.
 
 ## Constraints
 
-- `1
-- words[i]` consists of only English letters and symbols.
-- words[i].length
+- `1 <= words.length <= 300`
+- `1 <= words[i].length <= 20`
+- `words[i]` consists of only English letters and symbols.
+- `1 <= maxWidth <= 100`
+- `words[i].length <= maxWidth`
 
 ## Examples
 
@@ -36,9 +38,9 @@ Example 1:
 Input: words = ["This", "is", "an", "example", "of", "text", "justification."], maxWidth = 16
 Output:
 [
-   "This    is    an",
-   "example  of text",
-   "justification.  "
+   "This    is    an",
+   "example  of text",
+   "justification.  "
 ]
 ```
 
@@ -48,9 +50,9 @@ Example 2:
 Input: words = ["What","must","be","acknowledgment","shall","be"], maxWidth = 16
 Output:
 [
-  "What   must   be",
-  "acknowledgment  ",
-  "shall be        "
+  "What   must   be",
+  "acknowledgment  ",
+  "shall be        "
 ]
 Explanation: Note that the last line is "shall be    " instead of "shall     be", because the last line must be left-justified instead of fully-justified.
 Note that the second line is also left-justified because it contains only one word.
@@ -62,37 +64,90 @@ Example 3:
 Input: words = ["Science","is","what","we","understand","well","enough","to","explain","to","a","computer.","Art","is","everything","else","we","do"], maxWidth = 20
 Output:
 [
-  "Science  is  what we",
-  "understand      well",
-  "enough to explain to",
-  "a  computer.  Art is",
-  "everything  else  we",
-  "do                  "
+  "Science  is  what we",
+  "understand      well",
+  "enough to explain to",
+  "a  computer.  Art is",
+  "everything  else  we",
+  "do                  "
 ]
 ```
 
 ## Approaches
 
-### 1. [Approach Name]
+### 1. Greedy Line Packing
 
-**Time Complexity:** O(?)
-**Space Complexity:** O(?)
+**Time Complexity:** O(n) where n is total characters in all words
+**Space Complexity:** O(n) for the result
 
 ```python
-# TODO: Add code snippet
+def fullJustify(self, words: List[str], maxWidth: int) -> List[str]:
+    result = []
+    i = 0
+    n = len(words)
+
+    while i < n:
+        # Find words that fit on current line
+        line_words = []
+        line_length = 0
+
+        while i < n:
+            # Check if we can add the next word
+            spaces_needed = len(line_words)  # One space between each word
+            if line_length + len(words[i]) + spaces_needed <= maxWidth:
+                line_words.append(words[i])
+                line_length += len(words[i])
+                i += 1
+            else:
+                break
+
+        # Build the line
+        if i == n:
+            # Last line: left-justify
+            line = ' '.join(line_words)
+            line += ' ' * (maxWidth - len(line))
+        elif len(line_words) == 1:
+            # Single word: left-justify
+            line = line_words[0] + ' ' * (maxWidth - len(line_words[0]))
+        else:
+            # Middle line: full justify
+            total_spaces = maxWidth - line_length
+            gaps = len(line_words) - 1
+            space_per_gap = total_spaces // gaps
+            extra_spaces = total_spaces % gaps
+
+            line = ''
+            for j, word in enumerate(line_words):
+                line += word
+                if j < gaps:
+                    # Add spaces (extra spaces go to left gaps first)
+                    spaces = space_per_gap + (1 if j < extra_spaces else 0)
+                    line += ' ' * spaces
+
+        result.append(line)
+
+    return result
 ```
 
 **Why this works:**
-[TODO: Explain approach]
+Greedy line packing with two-pointer technique. Pack words greedily into each line, then distribute spaces evenly. Handle three cases: middle lines (full justify), last line (left justify), and single-word lines (left justify).
 
 ## Key Insights
 
-[TODO: Add key insights]
+1. Greedily pack words until next word would exceed maxWidth
+2. For middle lines: distribute extra spaces left-to-right
+3. For last line: left-justify with single spaces
+4. Single-word lines: left-justify (pad right with spaces)
+5. Extra spaces = maxWidth - (sum of word lengths) - (min spaces needed)
 
 ## Common Mistakes
 
-[TODO: Add common mistakes]
+- Not handling the last line correctly (should be left-justified)
+- Not handling single-word lines correctly (should be left-justified)
+- Distributing extra spaces right-to-left instead of left-to-right
+- Off-by-one errors in space distribution
 
 ## Related Problems
 
-[TODO: Add related problems]
+- Word Wrap problem
+- Rearrange Spaces Between Words (LeetCode #1592)

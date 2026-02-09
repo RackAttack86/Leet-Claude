@@ -66,12 +66,15 @@ class Solution:
     """
     Solution to LeetCode Problem #27: Remove Element
 
-    Approach: [TODO: Describe approach]
-    Time Complexity: O(?)
-    Space Complexity: O(?)
+    Approach: Two Pointers (Read-Write)
+    Time Complexity: O(n)
+    Space Complexity: O(1)
 
     Key Insights:
-    [TODO: Add key insights]
+    - Use two pointers: l (write position) and r (read position)
+    - Skip elements equal to val, copy others to the write position
+    - The order of remaining elements can change
+    - Return l as the count of elements not equal to val
     """
 
     def removeElement(self, nums: List[int], val: int) -> int:
@@ -93,6 +96,6 @@ PROBLEM_METADATA = {
     "topics": ['Array', 'Two Pointers'],
     "url": "https://leetcode.com/problems/remove-element/",
     "companies": [],
-    "time_complexity": "O(?)",
-    "space_complexity": "O(?)",
+    "time_complexity": "O(n)",
+    "space_complexity": "O(1)",
 }

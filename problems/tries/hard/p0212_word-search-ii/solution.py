@@ -51,11 +51,49 @@ class Solution:
     - Optimize by removing words from trie once found
     """
 
-    def solve(self):
-        """
-        [TODO: Implement solution]
-        """
-        pass
+    def findWords(self, board: List[List[str]], words: List[str]) -> List[str]:
+        # Build Trie
+        trie = {}
+        for word in words:
+            node = trie
+            for char in word:
+                if char not in node:
+                    node[char] = {}
+                node = node[char]
+            node['$'] = word  # Mark end with the word itself
+
+        rows, cols = len(board), len(board[0])
+        result = set()
+
+        def dfs(r: int, c: int, node: dict):
+            if r < 0 or r >= rows or c < 0 or c >= cols:
+                return
+
+            char = board[r][c]
+            if char not in node:
+                return
+
+            next_node = node[char]
+            if '$' in next_node:
+                result.add(next_node['$'])
+
+            # Mark as visited
+            board[r][c] = '#'
+
+            # Explore neighbors
+            dfs(r + 1, c, next_node)
+            dfs(r - 1, c, next_node)
+            dfs(r, c + 1, next_node)
+            dfs(r, c - 1, next_node)
+
+            # Restore
+            board[r][c] = char
+
+        for r in range(rows):
+            for c in range(cols):
+                dfs(r, c, trie)
+
+        return list(result)
 
 
 # Metadata for tracking

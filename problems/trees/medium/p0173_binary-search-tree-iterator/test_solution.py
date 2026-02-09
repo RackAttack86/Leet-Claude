@@ -3,9 +3,8 @@ Tests for LeetCode Problem #173: Binary Search Tree Iterator
 """
 
 import pytest
-from .solution import Solution, PROBLEM_METADATA
-from .solution import TreeNode
-from .solution import Node
+from solution import BSTIterator, PROBLEM_METADATA
+from solution import TreeNode
 
 
 def array_to_tree(arr):
@@ -31,50 +30,98 @@ def array_to_tree(arr):
     return root
 
 
-def tree_to_array(root):
-    """Convert binary tree to level-order array"""
-    if not root:
-        return []
-
-    result = []
-    queue = [root]
-
-    while queue:
-        node = queue.pop(0)
-        if node:
-            result.append(node.val)
-            queue.append(node.left)
-            queue.append(node.right)
-        else:
-            result.append(None)
-
-    # Remove trailing Nones
-    while result and result[-1] is None:
-        result.pop()
-
-    return result
-
-
 class TestBinarySearchTreeIterator:
     """Test cases for Binary Search Tree Iterator problem"""
 
-    @pytest.fixture
-    def solution(self):
-        """Create a Solution instance for each test"""
-        return Solution()
-
-
-    def test_example_1(self, solution):
+    def test_example_1(self):
         """Example 1 from problem description"""
-        # TODO: Parse and implement test for this example
-        pass
+        root = array_to_tree([7, 3, 15, None, None, 9, 20])
+        iterator = BSTIterator(root)
+
+        assert iterator.next() == 3
+        assert iterator.next() == 7
+        assert iterator.hasNext() == True
+        assert iterator.next() == 9
+        assert iterator.hasNext() == True
+        assert iterator.next() == 15
+        assert iterator.hasNext() == True
+        assert iterator.next() == 20
+        assert iterator.hasNext() == False
 
 
-    def test_edge_case_empty(self, solution):
-        """Test with empty/minimal input"""
-        # TODO: Implement edge case test
-        pass
+    def test_single_node(self):
+        """Test with single node tree"""
+        root = array_to_tree([5])
+        iterator = BSTIterator(root)
 
+        assert iterator.hasNext() == True
+        assert iterator.next() == 5
+        assert iterator.hasNext() == False
+
+
+    def test_left_skewed_tree(self):
+        """Test with left-skewed tree"""
+        root = TreeNode(3)
+        root.left = TreeNode(2)
+        root.left.left = TreeNode(1)
+
+        iterator = BSTIterator(root)
+
+        assert iterator.next() == 1
+        assert iterator.next() == 2
+        assert iterator.next() == 3
+        assert iterator.hasNext() == False
+
+
+    def test_right_skewed_tree(self):
+        """Test with right-skewed tree"""
+        root = TreeNode(1)
+        root.right = TreeNode(2)
+        root.right.right = TreeNode(3)
+
+        iterator = BSTIterator(root)
+
+        assert iterator.next() == 1
+        assert iterator.next() == 2
+        assert iterator.next() == 3
+        assert iterator.hasNext() == False
+
+    def test_empty_tree(self):
+        """Test with empty tree"""
+        iterator = BSTIterator(None)
+        assert iterator.hasNext() == False
+
+    def test_large_tree(self):
+        """Test with larger tree"""
+        root = array_to_tree([7, 3, 15, 1, 5, 9, 20])
+        iterator = BSTIterator(root)
+
+        # Inorder: 1, 3, 5, 7, 9, 15, 20
+        assert iterator.hasNext() == True
+        assert iterator.next() == 1
+        assert iterator.next() == 3
+        assert iterator.next() == 5
+        assert iterator.next() == 7
+        assert iterator.next() == 9
+        assert iterator.next() == 15
+        assert iterator.next() == 20
+        assert iterator.hasNext() == False
+
+    def test_interleaved_operations(self):
+        """Test with interleaved hasNext and next calls"""
+        root = array_to_tree([2, 1, 3])
+        iterator = BSTIterator(root)
+
+        # Inorder: 1, 2, 3
+        assert iterator.hasNext() == True
+        assert iterator.hasNext() == True  # Multiple hasNext calls should be idempotent
+        assert iterator.next() == 1
+        assert iterator.hasNext() == True
+        assert iterator.next() == 2
+        assert iterator.hasNext() == True
+        assert iterator.next() == 3
+        assert iterator.hasNext() == False
+        assert iterator.hasNext() == False  # Multiple hasNext calls at end
 
     # Metadata validation
     def test_metadata_exists(self):

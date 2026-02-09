@@ -31,6 +31,12 @@ Output: []
 from typing import List, Optional
 
 
+class ListNode:
+    def __init__(self, val=0, next=None):
+        self.val = val
+        self.next = next
+
+
 class Solution:
     """
     Solution to LeetCode Problem #206: Reverse Linked List
@@ -46,11 +52,15 @@ class Solution:
     - Classic linked list problem
     """
 
-    def solve(self):
-        """
-        [TODO: Implement solution]
-        """
-        pass
+    def reverseList(self, head: Optional[ListNode]) -> Optional[ListNode]:
+        prev = None
+        curr = head
+        while curr:
+            next_node = curr.next
+            curr.next = prev
+            prev = curr
+            curr = next_node
+        return prev
 
 
 # Metadata for tracking

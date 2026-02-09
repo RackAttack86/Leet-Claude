@@ -45,11 +45,32 @@ class Solution:
     - Update result when finding greater element
     """
 
-    def solve(self):
+    def nextGreaterElements(self, nums: List[int]) -> List[int]:
         """
-        [TODO: Implement solution]
+        Find next greater element for each position in circular array.
+
+        Use monotonic decreasing stack storing indices.
+        Process array twice to handle circular nature.
+        When we find a greater element, update result for all
+        stack indices with smaller values.
         """
-        pass
+        n = len(nums)
+        result = [-1] * n
+        stack = []  # Stack of indices
+
+        # Process array twice for circular effect
+        for i in range(2 * n):
+            idx = i % n
+
+            # While current element is greater than element at stack top
+            while stack and nums[idx] > nums[stack[-1]]:
+                result[stack.pop()] = nums[idx]
+
+            # Only push indices from first pass (avoid duplicates)
+            if i < n:
+                stack.append(idx)
+
+        return result
 
 
 # Metadata for tracking

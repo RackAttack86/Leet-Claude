@@ -3,9 +3,7 @@ Tests for LeetCode Problem #36: Valid Sudoku
 """
 
 import pytest
-from .solution import Solution, PROBLEM_METADATA
-
-
+from solution import Solution, PROBLEM_METADATA
 
 
 class TestValidSudoku:
@@ -16,34 +14,39 @@ class TestValidSudoku:
         """Create a Solution instance for each test"""
         return Solution()
 
-
     def test_example_1(self, solution):
-        """Example 1 from problem description"""
-        board = [["5","3",".",".","7",".",".",".","."]
-        expected = true
+        """Example 1 from problem description - valid board"""
+        board = [
+            ["5","3",".",".","7",".",".",".","."],
+            ["6",".",".","1","9","5",".",".","."],
+            [".","9","8",".",".",".",".","6","."],
+            ["8",".",".",".","6",".",".",".","3"],
+            ["4",".",".","8",".","3",".",".","1"],
+            ["7",".",".",".","2",".",".",".","6"],
+            [".","6",".",".",".",".","2","8","."],
+            [".",".",".","4","1","9",".",".","5"],
+            [".",".",".",".","8",".",".","7","9"]
+        ]
+        expected = True
         result = solution.isValidSudoku(board)
         assert result == expected
-
 
     def test_example_2(self, solution):
-        """Example 2 from problem description"""
-        board = [["8","3",".",".","7",".",".",".","."]
-        expected = false
+        """Example 2 from problem description - invalid board"""
+        board = [
+            ["8","3",".",".","7",".",".",".","."],
+            ["6",".",".","1","9","5",".",".","."],
+            [".","9","8",".",".",".",".","6","."],
+            ["8",".",".",".","6",".",".",".","3"],
+            ["4",".",".","8",".","3",".",".","1"],
+            ["7",".",".",".","2",".",".",".","6"],
+            [".","6",".",".",".",".","2","8","."],
+            [".",".",".","4","1","9",".",".","5"],
+            [".",".",".",".","8",".",".","7","9"]
+        ]
+        expected = False
         result = solution.isValidSudoku(board)
         assert result == expected
-
-
-    def test_example_3(self, solution):
-        """Example 3 from problem description"""
-        # TODO: Parse and implement test for this example
-        pass
-
-
-    def test_edge_case_empty(self, solution):
-        """Test with empty/minimal input"""
-        # TODO: Implement edge case test
-        pass
-
 
     # Metadata validation
     def test_metadata_exists(self):

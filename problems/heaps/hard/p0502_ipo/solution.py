@@ -39,6 +39,7 @@ Output: 6
 """
 
 from typing import List, Optional
+import heapq
 
 
 class Solution:
@@ -56,11 +57,29 @@ class Solution:
     - Add newly affordable projects after each pick
     """
 
-    def solve(self):
-        """
-        [TODO: Implement solution]
-        """
-        pass
+    def findMaximizedCapital(self, k: int, w: int, profits: List[int], capital: List[int]) -> int:
+        # Pair projects with (capital, profit) and sort by capital
+        projects = sorted(zip(capital, profits))
+
+        # Max heap for available projects (use negative profit)
+        available = []
+        i = 0
+        n = len(projects)
+
+        for _ in range(k):
+            # Add all affordable projects to the heap
+            while i < n and projects[i][0] <= w:
+                heapq.heappush(available, -projects[i][1])
+                i += 1
+
+            # If no available projects, we can't continue
+            if not available:
+                break
+
+            # Pick the project with highest profit
+            w += -heapq.heappop(available)
+
+        return w
 
 
 # Metadata for tracking

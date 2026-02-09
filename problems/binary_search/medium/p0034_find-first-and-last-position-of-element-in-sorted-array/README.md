@@ -44,26 +44,64 @@ Output: [-1,-1]
 
 ## Approaches
 
-### 1. [Approach Name]
+### 1. Two Binary Searches - Find Left and Right Boundaries
 
-**Time Complexity:** O(?)
-**Space Complexity:** O(?)
+**Time Complexity:** O(log n) - Two binary searches, each O(log n)
+**Space Complexity:** O(1) - Only using constant extra space
 
 ```python
-# TODO: Add code snippet
+def searchRange(self, nums: List[int], target: int) -> List[int]:
+    def findFirst(nums: List[int], target: int) -> int:
+        left, right = 0, len(nums) - 1
+        result = -1
+        while left <= right:
+            mid = left + (right - left) // 2
+            if nums[mid] == target:
+                result = mid
+                right = mid - 1  # Continue searching left for first occurrence
+            elif nums[mid] < target:
+                left = mid + 1
+            else:
+                right = mid - 1
+        return result
+
+    def findLast(nums: List[int], target: int) -> int:
+        left, right = 0, len(nums) - 1
+        result = -1
+        while left <= right:
+            mid = left + (right - left) // 2
+            if nums[mid] == target:
+                result = mid
+                left = mid + 1  # Continue searching right for last occurrence
+            elif nums[mid] < target:
+                left = mid + 1
+            else:
+                right = mid - 1
+        return result
+
+    return [findFirst(nums, target), findLast(nums, target)]
 ```
 
 **Why this works:**
-[TODO: Explain approach]
+We perform two separate binary searches with slight modifications:
+1. First search finds the leftmost (first) occurrence of target by continuing to search left when target is found
+2. Second search finds the rightmost (last) occurrence of target by continuing to search right when target is found
 
 ## Key Insights
 
-[TODO: Add key insights]
+- Use binary search twice with slight modifications for left/right boundary
+- When finding left boundary: if nums[mid] >= target, search left half
+- When finding right boundary: if nums[mid] <= target, search right half
+- Handle edge cases: empty array, target not found
 
 ## Common Mistakes
 
-[TODO: Add common mistakes]
+- Not continuing to search after finding the target
+- Off-by-one errors when updating the search bounds
+- Not handling empty array case
 
 ## Related Problems
 
-[TODO: Add related problems]
+- First Bad Version (#278)
+- Search Insert Position (#35)
+- Binary Search (#704)

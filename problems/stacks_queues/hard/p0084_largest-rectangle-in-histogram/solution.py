@@ -42,11 +42,23 @@ class Solution:
     - Classic monotonic stack problem
     """
 
-    def solve(self):
-        """
-        [TODO: Implement solution]
-        """
-        pass
+    def largestRectangleArea(self, heights: List[int]) -> int:
+        stack = []  # Stack of indices
+        max_area = 0
+
+        for i, h in enumerate(heights):
+            start = i
+            while stack and stack[-1][1] > h:
+                idx, height = stack.pop()
+                max_area = max(max_area, height * (i - idx))
+                start = idx
+            stack.append((start, h))
+
+        # Process remaining bars in stack
+        for idx, height in stack:
+            max_area = max(max_area, height * (len(heights) - idx))
+
+        return max_area
 
 
 # Metadata for tracking

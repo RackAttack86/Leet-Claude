@@ -48,11 +48,33 @@ class Solution:
     - One pass solution
     """
 
-    def solve(self):
+    def partitionLabels(self, s: str) -> List[int]:
         """
-        [TODO: Implement solution]
+        Partition string so each letter appears in at most one part.
+
+        Args:
+            s: Input string of lowercase letters
+
+        Returns:
+            List of partition sizes
         """
-        pass
+        # Record last occurrence of each character
+        last = {char: i for i, char in enumerate(s)}
+
+        result = []
+        start = 0
+        end = 0
+
+        for i, char in enumerate(s):
+            # Extend partition to include all occurrences of current char
+            end = max(end, last[char])
+
+            # When we reach the end of current partition
+            if i == end:
+                result.append(end - start + 1)
+                start = i + 1
+
+        return result
 
 
 # Metadata for tracking

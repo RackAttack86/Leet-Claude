@@ -8,12 +8,12 @@
 
 Given an unsorted array of integers `nums`, return the length of the longest consecutive elements sequence.
 
-You must write an algorithm that runs in `O(n)` time.
+You must write an algorithm that runs in `O(n)` time.
 
 ## Constraints
 
-- `0
-- 10^9
+- `0 <= nums.length <= 10^5`
+- `-10^9 <= nums[i] <= 10^9`
 
 ## Examples
 
@@ -44,26 +44,52 @@ Output: 3
 
 ## Approaches
 
-### 1. [Approach Name]
+### 1. Hash Set with Sequence Start Detection
 
-**Time Complexity:** O(?)
-**Space Complexity:** O(?)
+**Time Complexity:** O(n) - Each element is visited at most twice
+**Space Complexity:** O(n) - For storing elements in the set
 
 ```python
-# TODO: Add code snippet
+def longestConsecutive(self, nums: List[int]) -> int:
+    if not nums:
+        return 0
+
+    num_set = set(nums)
+    longest = 0
+
+    for num in num_set:
+        # Only start counting if this is the beginning of a sequence
+        if num - 1 not in num_set:
+            current_num = num
+            current_streak = 1
+
+            # Count consecutive numbers
+            while current_num + 1 in num_set:
+                current_num += 1
+                current_streak += 1
+
+            longest = max(longest, current_streak)
+
+    return longest
 ```
 
 **Why this works:**
-[TODO: Explain approach]
+Use a hash set for O(1) lookups. For each number, only start counting a sequence if the number is the beginning of a sequence (i.e., num-1 is not in the set). This ensures each element is visited at most twice.
 
 ## Key Insights
 
-[TODO: Add key insights]
+1. Only start counting from sequence beginnings (num-1 not in set)
+2. This optimization makes the algorithm O(n) despite nested loops
+3. Converting to set removes duplicates and enables O(1) lookup
+4. Each number is part of exactly one sequence count operation
 
 ## Common Mistakes
 
-[TODO: Add common mistakes]
+- Starting a sequence count from every element (makes it O(n^2))
+- Not handling empty input
+- Using sorting (would be O(n log n))
 
 ## Related Problems
 
-[TODO: Add related problems]
+- Binary Tree Longest Consecutive Sequence (LeetCode #298)
+- Consecutive Numbers Sum (LeetCode #829)

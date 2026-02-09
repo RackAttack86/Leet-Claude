@@ -49,11 +49,51 @@ class Solution:
     - Return last such edge found
     """
 
-    def solve(self):
+    def findRedundantConnection(self, edges: List[List[int]]) -> List[int]:
         """
-        [TODO: Implement solution]
+        Find the edge that can be removed to make the graph a tree.
+
+        Args:
+            edges: List of edges [a, b] (1-indexed nodes)
+
+        Returns:
+            The redundant edge that occurs last in the input
+
+        Approach:
+        1. Use Union Find
+        2. Process edges one by one
+        3. If an edge connects two already-connected nodes, it's redundant
+        4. Return the last such edge found (process in order)
         """
-        pass
+        n = len(edges)
+        # Nodes are 1-indexed, so we need size n+1
+        parent = list(range(n + 1))
+        rank = [0] * (n + 1)
+
+        def find(x: int) -> int:
+            if parent[x] != x:
+                parent[x] = find(parent[x])  # Path compression
+            return parent[x]
+
+        def union(x: int, y: int) -> bool:
+            """Returns False if x and y are already connected."""
+            px, py = find(x), find(y)
+            if px == py:
+                return False  # Already connected
+            # Union by rank
+            if rank[px] < rank[py]:
+                px, py = py, px
+            parent[py] = px
+            if rank[px] == rank[py]:
+                rank[px] += 1
+            return True
+
+        # Process edges and find the redundant one
+        for a, b in edges:
+            if not union(a, b):
+                return [a, b]
+
+        return []  # Should never reach here per problem constraints
 
 
 # Metadata for tracking

@@ -3,7 +3,7 @@ Tests for LeetCode Problem #54: Spiral Matrix
 """
 
 import pytest
-from .solution import Solution, PROBLEM_METADATA
+from solution import Solution, PROBLEM_METADATA
 
 
 
@@ -19,7 +19,7 @@ class TestSpiralMatrix:
 
     def test_example_1(self, solution):
         """Example 1 from problem description"""
-        matrix = [[1,2,3]
+        matrix = [[1,2,3],[4,5,6],[7,8,9]]
         expected = [1,2,3,6,9,8,7,4,5]
         result = solution.spiralOrder(matrix)
         assert result == expected
@@ -27,16 +27,18 @@ class TestSpiralMatrix:
 
     def test_example_2(self, solution):
         """Example 2 from problem description"""
-        matrix = [[1,2,3,4]
+        matrix = [[1,2,3,4],[5,6,7,8],[9,10,11,12]]
         expected = [1,2,3,4,8,12,11,10,9,5,6,7]
         result = solution.spiralOrder(matrix)
         assert result == expected
 
 
-    def test_edge_case_empty(self, solution):
-        """Test with empty/minimal input"""
-        # TODO: Implement edge case test
-        pass
+    def test_edge_case_single_element(self, solution):
+        """Test with single element matrix"""
+        matrix = [[1]]
+        expected = [1]
+        result = solution.spiralOrder(matrix)
+        assert result == expected
 
 
     # Metadata validation

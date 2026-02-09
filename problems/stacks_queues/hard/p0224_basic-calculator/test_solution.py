@@ -3,7 +3,7 @@ Tests for LeetCode Problem #224: Basic Calculator
 """
 
 import pytest
-from .solution import Solution, PROBLEM_METADATA
+from solution import Solution, PROBLEM_METADATA
 
 
 
@@ -41,10 +41,12 @@ class TestBasicCalculator:
         assert result == expected
 
 
-    def test_edge_case_empty(self, solution):
-        """Test with empty/minimal input"""
-        # TODO: Implement edge case test
-        pass
+    def test_edge_case_single_number(self, solution):
+        """Test with single number"""
+        s = "42"
+        expected = 42
+        result = solution.calculate(s)
+        assert result == expected
 
 
     # Metadata validation

@@ -14,7 +14,7 @@ Return the answers to all queries. If a single answer cannot be determined, retu
 
 Note: The input is always valid. You may assume that evaluating the queries will not result in division by zero and that there is no contradiction.
 
-Note: The variables that do not occur in the list of equations are undefined, so the answer cannot be determined for them.
+Note: The variables that do not occur in the list of equations are undefined, so the answer cannot be determined for them.
 
 Constraints:
 -----------
@@ -34,9 +34,9 @@ Example 1:
 
 Input: equations = [["a","b"],["b","c"]], values = [2.0,3.0], queries = [["a","c"],["b","a"],["a","e"],["a","a"],["x","x"]]
 Output: [6.00000,0.50000,-1.00000,1.00000,-1.00000]
-Explanation: 
+Explanation:
 Given: a / b = 2.0, b / c = 3.0
-queries are: a / c = ?, b / a = ?, a / e = ?, a / a = ?, x / x = ? 
+queries are: a / c = ?, b / a = ?, a / e = ?, a / a = ?, x / x = ?
 return: [6.0, 0.5, -1.0, 1.0, -1.0 ]
 note: x is undefined => -1.0
 ```
@@ -59,25 +59,74 @@ Output: [0.50000,2.00000,-1.00000,-1.00000]
 """
 
 from typing import List, Optional
+from collections import defaultdict
 
 
 class Solution:
     """
     Solution to LeetCode Problem #399: Evaluate Division
 
-    Approach: [TODO: Describe approach]
-    Time Complexity: O(?)
-    Space Complexity: O(?)
+    Approach: Graph with DFS - Build weighted directed graph
+
+    Model the problem as a graph where:
+    - Each variable is a node
+    - Edge A -> B with weight w means A / B = w
+    - Edge B -> A with weight 1/w means B / A = 1/w
+
+    For query (C, D), find path from C to D and multiply edge weights.
+
+    Time Complexity: O(Q * (V + E)) - Q queries, each does DFS over graph
+    Space Complexity: O(V + E) - graph storage + recursion stack
 
     Key Insights:
-    [TODO: Add key insights]
+    - a/b = 2 implies b/a = 0.5 (store both directions)
+    - a/c = (a/b) * (b/c) (multiply weights along path)
+    - If no path exists between variables, result is -1
+    - a/a = 1 only if 'a' exists in the graph
     """
 
     def calcEquation(self, equations: List[List[str]], values: List[float], queries: List[List[str]]) -> List[float]:
         """
-        [TODO: Implement]
+        Evaluate division queries using graph traversal.
         """
-        pass
+        # Build graph: graph[a][b] = a / b
+        graph = defaultdict(dict)
+
+        for (a, b), value in zip(equations, values):
+            graph[a][b] = value
+            graph[b][a] = 1.0 / value
+
+        def dfs(start: str, end: str, visited: set) -> float:
+            """Find path from start to end, return product of edge weights."""
+            # Start variable doesn't exist
+            if start not in graph:
+                return -1.0
+
+            # Direct edge exists
+            if end in graph[start]:
+                return graph[start][end]
+
+            visited.add(start)
+
+            # Try all neighbors
+            for neighbor, weight in graph[start].items():
+                if neighbor not in visited:
+                    result = dfs(neighbor, end, visited)
+                    if result != -1.0:
+                        return weight * result
+
+            return -1.0
+
+        results = []
+        for c, d in queries:
+            if c not in graph or d not in graph:
+                results.append(-1.0)
+            elif c == d:
+                results.append(1.0)
+            else:
+                results.append(dfs(c, d, set()))
+
+        return results
 
 
 # Metadata for tracking
@@ -88,7 +137,7 @@ PROBLEM_METADATA = {
     "pattern": "Graphs",
     "topics": ['Array', 'String', 'Depth-First Search', 'Breadth-First Search', 'Union-Find', 'Graph Theory', 'Shortest Path'],
     "url": "https://leetcode.com/problems/evaluate-division/",
-    "companies": [],
-    "time_complexity": "O(?)",
-    "space_complexity": "O(?)",
+    "companies": ["Google", "Facebook", "Amazon", "Microsoft", "Bloomberg", "Uber"],
+    "time_complexity": "O(Q * (V + E))",
+    "space_complexity": "O(V + E)",
 }

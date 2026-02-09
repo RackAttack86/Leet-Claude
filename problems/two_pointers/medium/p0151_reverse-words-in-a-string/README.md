@@ -16,8 +16,8 @@ Note that `s` may contain leading or trailing spaces or multiple spaces between 
 
 ## Constraints
 
-- `1
-- s` contains English letters (upper-case and lower-case), digits, and spaces `' '`.
+- `1 <= s.length <= 10^4`
+- `s` contains English letters (upper-case and lower-case), digits, and spaces `' '`.
 - There is at least one word in `s`.
 
 ## Examples
@@ -50,26 +50,35 @@ Explanation: You need to reduce multiple spaces between two words to a single sp
 
 ## Approaches
 
-### 1. [Approach Name]
+### 1. Split, Reverse, Join
 
-**Time Complexity:** O(?)
-**Space Complexity:** O(?)
+**Time Complexity:** O(n) where n is the length of the string
+**Space Complexity:** O(n) for storing the words
 
 ```python
-# TODO: Add code snippet
+def reverseWords(self, s: str) -> str:
+    # Split by whitespace, reverse, and join with single space
+    words = s.split()
+    return ' '.join(reversed(words))
 ```
 
 **Why this works:**
-[TODO: Explain approach]
+Split the string by whitespace to get words, filter out empty strings (from multiple spaces), reverse the list of words, and join with single spaces.
 
 ## Key Insights
 
-[TODO: Add key insights]
+1. split() without arguments splits on any whitespace and removes empty strings
+2. Reversing a list of words is O(number of words)
+3. Two-pointer approach can be used for in-place reversal in languages with mutable strings
+4. Python strings are immutable, so O(n) space is unavoidable
 
 ## Common Mistakes
 
-[TODO: Add common mistakes]
+- Not handling multiple spaces between words
+- Not trimming leading/trailing spaces
+- Using split(' ') instead of split() (split(' ') keeps empty strings)
 
 ## Related Problems
 
-[TODO: Add related problems]
+- Reverse String (LeetCode #344)
+- Reverse Words in a String II (LeetCode #186)

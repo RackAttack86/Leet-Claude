@@ -49,11 +49,24 @@ class Solution:
     - Sum all positive price differences
     """
 
-    def solve(self):
+    def maxProfit(self, prices: List[int]) -> int:
         """
-        [TODO: Implement solution]
+        Find maximum profit with unlimited buy/sell transactions.
+
+        Args:
+            prices: Array of stock prices for each day
+
+        Returns:
+            Maximum profit achievable
         """
-        pass
+        profit = 0
+
+        # Capture every upward movement
+        for i in range(1, len(prices)):
+            if prices[i] > prices[i - 1]:
+                profit += prices[i] - prices[i - 1]
+
+        return profit
 
 
 # Metadata for tracking

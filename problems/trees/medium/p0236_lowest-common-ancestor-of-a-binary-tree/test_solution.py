@@ -3,9 +3,8 @@ Tests for LeetCode Problem #236: Lowest Common Ancestor of a Binary Tree
 """
 
 import pytest
-from .solution import Solution, PROBLEM_METADATA
-from .solution import TreeNode
-from .solution import Node
+from solution import Solution, PROBLEM_METADATA
+from solution import TreeNode
 
 
 def array_to_tree(arr):
@@ -31,28 +30,16 @@ def array_to_tree(arr):
     return root
 
 
-def tree_to_array(root):
-    """Convert binary tree to level-order array"""
+def find_node(root, val):
+    """Find a node with the given value in the tree"""
     if not root:
-        return []
-
-    result = []
-    queue = [root]
-
-    while queue:
-        node = queue.pop(0)
-        if node:
-            result.append(node.val)
-            queue.append(node.left)
-            queue.append(node.right)
-        else:
-            result.append(None)
-
-    # Remove trailing Nones
-    while result and result[-1] is None:
-        result.pop()
-
-    return result
+        return None
+    if root.val == val:
+        return root
+    left = find_node(root.left, val)
+    if left:
+        return left
+    return find_node(root.right, val)
 
 
 class TestLowestCommonAncestorOfABinaryTree:
@@ -66,38 +53,38 @@ class TestLowestCommonAncestorOfABinaryTree:
 
     def test_example_1(self, solution):
         """Example 1 from problem description"""
-        root = [3,5,1,6,2,0,8,None,None,7,4]
-        p = 5
-        q = 1
-        expected = 3
+        root = array_to_tree([3,5,1,6,2,0,8,None,None,7,4])
+        p = find_node(root, 5)
+        q = find_node(root, 1)
         result = solution.lowestCommonAncestor(root, p, q)
-        assert result == expected
+        assert result.val == 3
 
 
     def test_example_2(self, solution):
         """Example 2 from problem description"""
-        root = [3,5,1,6,2,0,8,None,None,7,4]
-        p = 5
-        q = 4
-        expected = 5
+        root = array_to_tree([3,5,1,6,2,0,8,None,None,7,4])
+        p = find_node(root, 5)
+        q = find_node(root, 4)
         result = solution.lowestCommonAncestor(root, p, q)
-        assert result == expected
+        assert result.val == 5
 
 
     def test_example_3(self, solution):
         """Example 3 from problem description"""
-        root = [1,2]
-        p = 1
-        q = 2
-        expected = 1
+        root = array_to_tree([1,2])
+        p = find_node(root, 1)
+        q = find_node(root, 2)
         result = solution.lowestCommonAncestor(root, p, q)
-        assert result == expected
+        assert result.val == 1
 
 
-    def test_edge_case_empty(self, solution):
-        """Test with empty/minimal input"""
-        # TODO: Implement edge case test
-        pass
+    def test_edge_case_deep_nodes(self, solution):
+        """Test with nodes deep in the tree"""
+        root = array_to_tree([3,5,1,6,2,0,8,None,None,7,4])
+        p = find_node(root, 7)
+        q = find_node(root, 4)
+        result = solution.lowestCommonAncestor(root, p, q)
+        assert result.val == 2
 
 
     # Metadata validation

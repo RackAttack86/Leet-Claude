@@ -73,6 +73,50 @@ class TestFindKPairsWithSmallestSums:
         sums = sorted([sum(pair) for pair in result])
         assert sums == [-5, -3, -3]
 
+    def test_k_larger_than_all_pairs(self, solution):
+        """k is larger than total possible pairs (n1 * n2)"""
+        nums1 = [1, 2]
+        nums2 = [3, 4]
+        k = 10  # Only 4 pairs possible
+        result = solution.kSmallestPairs(nums1, nums2, k)
+        assert len(result) == 4  # Returns all possible pairs
+
+    def test_k_equals_one(self, solution):
+        """k equals 1 - only smallest pair"""
+        nums1 = [1, 7, 11]
+        nums2 = [2, 4, 6]
+        k = 1
+        result = solution.kSmallestPairs(nums1, nums2, k)
+        assert len(result) == 1
+        assert sum(result[0]) == 3  # 1 + 2
+
+    def test_k_equals_all_pairs(self, solution):
+        """k equals total pairs"""
+        nums1 = [1, 2]
+        nums2 = [3]
+        k = 2
+        result = solution.kSmallestPairs(nums1, nums2, k)
+        assert len(result) == 2
+
+    def test_large_k_small_arrays(self, solution):
+        """Very large k with small arrays"""
+        nums1 = [1]
+        nums2 = [1]
+        k = 1000
+        result = solution.kSmallestPairs(nums1, nums2, k)
+        assert len(result) == 1
+        assert result[0] == [1, 1]
+
+    def test_all_zeros(self, solution):
+        """Arrays with all zeros"""
+        nums1 = [0, 0, 0]
+        nums2 = [0, 0]
+        k = 4
+        result = solution.kSmallestPairs(nums1, nums2, k)
+        assert len(result) == 4
+        for pair in result:
+            assert sum(pair) == 0
+
     # Metadata validation
     def test_metadata_exists(self):
         """Verify problem metadata is complete"""

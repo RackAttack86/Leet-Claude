@@ -56,19 +56,49 @@ class Solution:
     """
     Solution to LeetCode Problem #205: Isomorphic Strings
 
-    Approach: [TODO: Describe approach]
-    Time Complexity: O(?)
-    Space Complexity: O(?)
+    Approach: Two Hash Maps for Bidirectional Mapping
+    Time Complexity: O(n) where n is the length of the strings
+    Space Complexity: O(k) where k is the size of the character set
 
     Key Insights:
-    [TODO: Add key insights]
+    - Need bidirectional mapping: s->t AND t->s must be consistent
+    - Use two hash maps to track both directions
+    - If a character in s maps to different chars in t, or vice versa, return False
     """
 
     def isIsomorphic(self, s: str, t: str) -> bool:
         """
-        [TODO: Implement]
+        Determine if two strings are isomorphic.
+
+        Args:
+            s: First string
+            t: Second string
+
+        Returns:
+            True if s and t are isomorphic
         """
-        pass
+        if len(s) != len(t):
+            return False
+
+        s_to_t = {}
+        t_to_s = {}
+
+        for c1, c2 in zip(s, t):
+            # Check s -> t mapping
+            if c1 in s_to_t:
+                if s_to_t[c1] != c2:
+                    return False
+            else:
+                s_to_t[c1] = c2
+
+            # Check t -> s mapping
+            if c2 in t_to_s:
+                if t_to_s[c2] != c1:
+                    return False
+            else:
+                t_to_s[c2] = c1
+
+        return True
 
 
 # Metadata for tracking
@@ -79,7 +109,7 @@ PROBLEM_METADATA = {
     "pattern": "Two Pointers",
     "topics": ['Hash Table', 'String'],
     "url": "https://leetcode.com/problems/isomorphic-strings/",
-    "companies": [],
-    "time_complexity": "O(?)",
-    "space_complexity": "O(?)",
+    "companies": ['Amazon', 'Google', 'Microsoft', 'LinkedIn'],
+    "time_complexity": "O(n)",
+    "space_complexity": "O(k)",
 }

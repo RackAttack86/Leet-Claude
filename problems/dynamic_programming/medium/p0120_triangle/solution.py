@@ -49,19 +49,47 @@ class Solution:
     """
     Solution to LeetCode Problem #120: Triangle
 
-    Approach: [TODO: Describe approach]
-    Time Complexity: O(?)
-    Space Complexity: O(?)
+    Approach: Bottom-up Dynamic Programming
+    - Start from the bottom row and work upward.
+    - For each cell, compute the minimum path sum by adding the current value
+      to the minimum of the two adjacent cells in the row below.
+    - dp[j] = triangle[i][j] + min(dp[j], dp[j+1])
+    - The answer will be in dp[0] after processing all rows.
+
+    Time Complexity: O(n^2) where n is the number of rows
+    Space Complexity: O(n) - using the bottom row as our dp array
 
     Key Insights:
-    [TODO: Add key insights]
+    1. Bottom-up approach is cleaner than top-down for this problem.
+    2. From any position (i, j), we can only reach (i+1, j) or (i+1, j+1).
+    3. Working bottom-up, we process each row and update in place.
+    4. We can use O(n) space by reusing a single array.
     """
 
     def minimumTotal(self, triangle: List[List[int]]) -> int:
         """
-        [TODO: Implement]
+        Find the minimum path sum from top to bottom of the triangle.
+
+        Args:
+            triangle: List of lists representing the triangle
+
+        Returns:
+            Minimum path sum from top to bottom
         """
-        pass
+        n = len(triangle)
+
+        # Start with the bottom row as our dp array
+        dp = triangle[-1][:]
+
+        # Process from second-to-last row up to the top
+        for i in range(n - 2, -1, -1):
+            for j in range(len(triangle[i])):
+                # Minimum path from current position is current value
+                # plus minimum of the two possible next positions
+                dp[j] = triangle[i][j] + min(dp[j], dp[j + 1])
+
+        # The answer is the minimum path sum starting from the top
+        return dp[0]
 
 
 # Metadata for tracking
@@ -72,7 +100,7 @@ PROBLEM_METADATA = {
     "pattern": "Dynamic Programming",
     "topics": ['Array', 'Dynamic Programming'],
     "url": "https://leetcode.com/problems/triangle/",
-    "companies": [],
-    "time_complexity": "O(?)",
-    "space_complexity": "O(?)",
+    "companies": ["Amazon", "Google", "Microsoft", "Apple", "Bloomberg", "Facebook"],
+    "time_complexity": "O(n^2)",
+    "space_complexity": "O(n)",
 }

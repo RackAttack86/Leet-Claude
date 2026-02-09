@@ -50,11 +50,30 @@ class Solution:
     - Track maximum window size
     """
 
-    def solve(self):
+    def lengthOfLongestSubstring(self, s: str) -> int:
         """
-        [TODO: Implement solution]
+        Find the length of the longest substring without repeating characters.
+
+        Uses sliding window with a hash map to track the last seen index of each character.
+        When a duplicate is found, move the left pointer past the previous occurrence.
         """
-        pass
+        char_index = {}  # Maps character to its last seen index
+        max_length = 0
+        left = 0
+
+        for right, char in enumerate(s):
+            # If character was seen and is within current window
+            if char in char_index and char_index[char] >= left:
+                # Move left pointer past the duplicate
+                left = char_index[char] + 1
+
+            # Update the last seen index of current character
+            char_index[char] = right
+
+            # Update maximum length
+            max_length = max(max_length, right - left + 1)
+
+        return max_length
 
 
 # Metadata for tracking

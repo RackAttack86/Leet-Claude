@@ -3,9 +3,9 @@ Tests for LeetCode Problem #2: Add Two Numbers
 """
 
 import pytest
-from .solution import Solution, PROBLEM_METADATA
-from .solution import ListNode
-from .solution import Node
+from solution import Solution, PROBLEM_METADATA
+from solution import ListNode
+from solution import Node
 
 
 def list_to_linked(arr):
@@ -40,35 +40,73 @@ class TestAddTwoNumbers:
 
     def test_example_1(self, solution):
         """Example 1 from problem description"""
-        l1 = [2,4,3]
-        l2 = [5,6,4]
+        l1 = list_to_linked([2,4,3])
+        l2 = list_to_linked([5,6,4])
         expected = [7,0,8]
         result = solution.addTwoNumbers(l1, l2)
-        assert result == expected
+        assert linked_to_list(result) == expected
 
 
     def test_example_2(self, solution):
         """Example 2 from problem description"""
-        l1 = [0]
-        l2 = [0]
+        l1 = list_to_linked([0])
+        l2 = list_to_linked([0])
         expected = [0]
         result = solution.addTwoNumbers(l1, l2)
-        assert result == expected
+        assert linked_to_list(result) == expected
 
 
     def test_example_3(self, solution):
         """Example 3 from problem description"""
-        l1 = [9,9,9,9,9,9,9]
-        l2 = [9,9,9,9]
+        l1 = list_to_linked([9,9,9,9,9,9,9])
+        l2 = list_to_linked([9,9,9,9])
         expected = [8,9,9,9,0,0,0,1]
         result = solution.addTwoNumbers(l1, l2)
-        assert result == expected
+        assert linked_to_list(result) == expected
 
 
-    def test_edge_case_empty(self, solution):
-        """Test with empty/minimal input"""
-        # TODO: Implement edge case test
-        pass
+    def test_carry_propagation(self, solution):
+        """Test carry propagation through multiple digits"""
+        # 99 + 1 = 100
+        l1 = list_to_linked([9, 9])
+        l2 = list_to_linked([1])
+        expected = [0, 0, 1]
+        result = solution.addTwoNumbers(l1, l2)
+        assert linked_to_list(result) == expected
+
+    def test_different_lengths(self, solution):
+        """Test lists with different lengths"""
+        # 123 + 4567 = 4690
+        l1 = list_to_linked([3, 2, 1])
+        l2 = list_to_linked([7, 6, 5, 4])
+        expected = [0, 9, 6, 4]
+        result = solution.addTwoNumbers(l1, l2)
+        assert linked_to_list(result) == expected
+
+    def test_result_longer_than_inputs(self, solution):
+        """Test where result has more digits than either input"""
+        # 999 + 999 = 1998
+        l1 = list_to_linked([9, 9, 9])
+        l2 = list_to_linked([9, 9, 9])
+        expected = [8, 9, 9, 1]
+        result = solution.addTwoNumbers(l1, l2)
+        assert linked_to_list(result) == expected
+
+    def test_single_digit_no_carry(self, solution):
+        """Test single digit addition without carry"""
+        l1 = list_to_linked([3])
+        l2 = list_to_linked([4])
+        expected = [7]
+        result = solution.addTwoNumbers(l1, l2)
+        assert linked_to_list(result) == expected
+
+    def test_single_digit_with_carry(self, solution):
+        """Test single digit addition with carry"""
+        l1 = list_to_linked([7])
+        l2 = list_to_linked([8])
+        expected = [5, 1]
+        result = solution.addTwoNumbers(l1, l2)
+        assert linked_to_list(result) == expected
 
 
     # Metadata validation

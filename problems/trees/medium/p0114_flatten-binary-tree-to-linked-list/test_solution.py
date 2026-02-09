@@ -3,9 +3,9 @@ Tests for LeetCode Problem #114: Flatten Binary Tree to Linked List
 """
 
 import pytest
-from .solution import Solution, PROBLEM_METADATA
-from .solution import TreeNode
-from .solution import Node
+from solution import Solution, PROBLEM_METADATA
+from solution import TreeNode
+from solution import Node
 
 
 def array_to_tree(arr):
@@ -55,6 +55,18 @@ def tree_to_array(root):
     return result
 
 
+def flattened_tree_to_list(root):
+    """Convert flattened tree (linked list via right pointers) to list"""
+    result = []
+    current = root
+    while current:
+        result.append(current.val)
+        # After flattening, left should be None and right points to next
+        assert current.left is None, "Left child should be None after flattening"
+        current = current.right
+    return result
+
+
 class TestFlattenBinaryTreeToLinkedList:
     """Test cases for Flatten Binary Tree to Linked List problem"""
 
@@ -66,33 +78,91 @@ class TestFlattenBinaryTreeToLinkedList:
 
     def test_example_1(self, solution):
         """Example 1 from problem description"""
-        root = [1,2,5,3,4,None,6]
-        expected = [1,null,2,null,3,null,4,null,5,null,6]
-        result = solution.flatten(root)
+        root = array_to_tree([1,2,5,3,4,None,6])
+        # Expected flattened order (preorder): 1, 2, 3, 4, 5, 6
+        expected = [1, 2, 3, 4, 5, 6]
+        solution.flatten(root)
+        result = flattened_tree_to_list(root)
         assert result == expected
 
 
     def test_example_2(self, solution):
         """Example 2 from problem description"""
-        root = []
+        root = array_to_tree([])
         expected = []
-        result = solution.flatten(root)
+        solution.flatten(root)
+        result = flattened_tree_to_list(root)
         assert result == expected
 
 
     def test_example_3(self, solution):
         """Example 3 from problem description"""
-        root = [0]
+        root = array_to_tree([0])
         expected = [0]
-        result = solution.flatten(root)
+        solution.flatten(root)
+        result = flattened_tree_to_list(root)
         assert result == expected
 
 
     def test_edge_case_empty(self, solution):
         """Test with empty/minimal input"""
-        # TODO: Implement edge case test
-        pass
+        root = None
+        solution.flatten(root)
+        assert root is None
 
+    def test_single_node(self, solution):
+        """Test with single node"""
+        root = TreeNode(1)
+        solution.flatten(root)
+        result = flattened_tree_to_list(root)
+        assert result == [1]
+
+    def test_only_right_children(self, solution):
+        """Test with tree already having only right children"""
+        root = TreeNode(1)
+        root.right = TreeNode(2)
+        root.right.right = TreeNode(3)
+        expected = [1, 2, 3]
+        solution.flatten(root)
+        result = flattened_tree_to_list(root)
+        assert result == expected
+
+    def test_only_left_children(self, solution):
+        """Test with tree having only left children"""
+        root = TreeNode(1)
+        root.left = TreeNode(2)
+        root.left.left = TreeNode(3)
+        expected = [1, 2, 3]  # Preorder: 1, 2, 3
+        solution.flatten(root)
+        result = flattened_tree_to_list(root)
+        assert result == expected
+
+    def test_two_nodes_left(self, solution):
+        """Test with two nodes, left child"""
+        root = TreeNode(1)
+        root.left = TreeNode(2)
+        expected = [1, 2]
+        solution.flatten(root)
+        result = flattened_tree_to_list(root)
+        assert result == expected
+
+    def test_two_nodes_right(self, solution):
+        """Test with two nodes, right child"""
+        root = TreeNode(1)
+        root.right = TreeNode(2)
+        expected = [1, 2]
+        solution.flatten(root)
+        result = flattened_tree_to_list(root)
+        assert result == expected
+
+    def test_complete_tree(self, solution):
+        """Test with complete binary tree"""
+        root = array_to_tree([1, 2, 3, 4, 5, 6, 7])
+        # Preorder: 1, 2, 4, 5, 3, 6, 7
+        expected = [1, 2, 4, 5, 3, 6, 7]
+        solution.flatten(root)
+        result = flattened_tree_to_list(root)
+        assert result == expected
 
     # Metadata validation
     def test_metadata_exists(self):

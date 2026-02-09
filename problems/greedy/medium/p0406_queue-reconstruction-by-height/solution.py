@@ -51,11 +51,28 @@ class Solution:
     - Greedy insertion works due to sorting
     """
 
-    def solve(self):
+    def reconstructQueue(self, people: List[List[int]]) -> List[List[int]]:
         """
-        [TODO: Implement solution]
+        Reconstruct queue based on height and position.
+
+        Args:
+            people: Array of [height, k] where k is count of taller people in front
+
+        Returns:
+            Reconstructed queue
         """
-        pass
+        # Sort by height descending, then by k ascending
+        # This ensures taller people are placed first
+        people.sort(key=lambda x: (-x[0], x[1]))
+
+        result = []
+
+        # Insert each person at position k
+        # Since taller people are already placed, inserting at k works
+        for person in people:
+            result.insert(person[1], person)
+
+        return result
 
 
 # Metadata for tracking

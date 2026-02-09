@@ -13,7 +13,7 @@ Return the root of the Quad-Tree representing `grid`.
 A Quad-Tree is a tree data structure in which each internal node has exactly four children. Besides, each node has two attributes:
 
 - `val`: True if the node represents a grid of 1's or False if the node represents a grid of 0's. Notice that you can assign the `val` to True or False when `isLeaf` is False, and both are accepted in the answer.
-	
+
 - `isLeaf`: True if the node is a leaf node on the tree or False if the node has four children.
 
 ```
@@ -31,9 +31,9 @@ class Node {
 We can construct a Quad-Tree from a two-dimensional area using the following steps:
 
 - If the current grid has the same value (i.e all `1's` or all `0's`) set `isLeaf` True and set `val` to the value of the grid and set the four children to Null and stop.
-	
+
 - If the current grid has different values, set `isLeaf` to False and set `val` to any value and divide the current grid into four sub-grids as shown in the photo.
-	
+
 - Recurse for each of the children with the proper sub-grid.
 
 If you want to know more about the Quad-Tree, you can refer to the wiki.
@@ -79,34 +79,67 @@ Explanation is shown in the photo below:
 from typing import List, Optional
 
 class Node:
-    def __init__(self, val=0, neighbors=None):
+    def __init__(self, val: bool, isLeaf: bool, topLeft: 'Node' = None, topRight: 'Node' = None,
+                 bottomLeft: 'Node' = None, bottomRight: 'Node' = None):
         self.val = val
-        self.neighbors = neighbors if neighbors is not None else []
+        self.isLeaf = isLeaf
+        self.topLeft = topLeft
+        self.topRight = topRight
+        self.bottomLeft = bottomLeft
+        self.bottomRight = bottomRight
 
 
 class Solution:
     """
     Solution to LeetCode Problem #427: Construct Quad Tree
 
-    Approach: [TODO: Describe approach]
-    Time Complexity: O(?)
-    Space Complexity: O(?)
+    Approach: Divide and Conquer (Recursive)
+    - Check if current subgrid has uniform values
+    - If uniform: create leaf node with that value
+    - If not uniform: divide into 4 quadrants and recurse
+    - Build tree from bottom-up by combining quadrant results
+
+    Time Complexity: O(n^2 * log n) - each level processes all n^2 cells
+    Space Complexity: O(log n) - recursion depth for n x n grid
 
     Key Insights:
-    [TODO: Add key insights]
+    - Grid size is always 2^x, so it divides evenly
+    - Check uniformity first before recursing
+    - Quadrants: topLeft, topRight, bottomLeft, bottomRight
+    - Leaf node: all values same; Internal node: has 4 children
     """
 
-    def __init__(self, val: Any, isLeaf: Any, topLeft: Any, topRight: Any, bottomLeft: Any, bottomRight: Any):
-        """
-        [TODO: Implement]
-        """
-        pass
-
     def construct(self, grid: List[List[int]]) -> 'Node':
-        """
-        [TODO: Implement]
-        """
-        pass
+        def is_uniform(row: int, col: int, size: int) -> tuple:
+            """Check if subgrid is uniform and return (is_uniform, value)."""
+            val = grid[row][col]
+            for i in range(row, row + size):
+                for j in range(col, col + size):
+                    if grid[i][j] != val:
+                        return False, val
+            return True, val
+
+        def build(row: int, col: int, size: int) -> 'Node':
+            # Check if this subgrid is uniform
+            uniform, val = is_uniform(row, col, size)
+
+            if uniform:
+                # Create leaf node
+                return Node(val == 1, True)
+
+            # Not uniform - divide into 4 quadrants
+            half = size // 2
+
+            topLeft = build(row, col, half)
+            topRight = build(row, col + half, half)
+            bottomLeft = build(row + half, col, half)
+            bottomRight = build(row + half, col + half, half)
+
+            # Create internal node (val can be anything, using True)
+            return Node(True, False, topLeft, topRight, bottomLeft, bottomRight)
+
+        n = len(grid)
+        return build(0, 0, n)
 
 
 # Metadata for tracking
@@ -117,7 +150,7 @@ PROBLEM_METADATA = {
     "pattern": "Trees",
     "topics": ['Array', 'Divide and Conquer', 'Tree', 'Matrix'],
     "url": "https://leetcode.com/problems/construct-quad-tree/",
-    "companies": [],
-    "time_complexity": "O(?)",
-    "space_complexity": "O(?)",
+    "companies": ["Google", "Uber", "Amazon"],
+    "time_complexity": "O(n^2 log n)",
+    "space_complexity": "O(log n)",
 }

@@ -14,68 +14,83 @@ For example, if there are two nodes `X` and `Y` in the original list, where `X.r
 
 Return the head of the copied linked list.
 
-The linked list is represented in the input/output as a list of `n` nodes. Each node is represented as a pair of `[val, random_index]` where:
-
-- `val`: an integer representing `Node.val`
-	
-- `random_index`: the index of the node (range from `0` to `n-1`) that the `random` pointer points to, or `null` if it does not point to any node.
-
-Your code will only be given the `head` of the original linked list.
-
 ## Constraints
 
-- `0
-- 10^4
-- Node.random` is `null` or is pointing to some node in the linked list.
+- `0 <= n <= 1000`
+- `-10^4 <= Node.val <= 10^4`
+- `Node.random` is `null` or is pointing to some node in the linked list.
 
 ## Examples
 
 Example 1:
 ```
-
 Input: head = [[7,null],[13,0],[11,4],[10,2],[1,0]]
 Output: [[7,null],[13,0],[11,4],[10,2],[1,0]]
-
 ```
 
 Example 2:
 ```
-
 Input: head = [[1,1],[2,1]]
 Output: [[1,1],[2,1]]
-
 ```
 
 Example 3:
 ```
-
 Input: head = [[3,null],[3,0],[3,null]]
 Output: [[3,null],[3,0],[3,null]]
-
 ```
 
 ## Approaches
 
-### 1. [Approach Name]
+### 1. Hash Map Approach
 
-**Time Complexity:** O(?)
-**Space Complexity:** O(?)
+**Time Complexity:** O(n)
+**Space Complexity:** O(n)
 
 ```python
-# TODO: Add code snippet
+def copyRandomList(self, head: 'Optional[Node]') -> 'Optional[Node]':
+    if not head:
+        return None
+
+    # Dictionary to map original nodes to their copies
+    old_to_new = {}
+
+    # First pass: Create all new nodes
+    current = head
+    while current:
+        old_to_new[current] = Node(current.val)
+        current = current.next
+
+    # Second pass: Set next and random pointers
+    current = head
+    while current:
+        copy = old_to_new[current]
+        copy.next = old_to_new.get(current.next)
+        copy.random = old_to_new.get(current.random)
+        current = current.next
+
+    return old_to_new[head]
 ```
 
 **Why this works:**
-[TODO: Explain approach]
+- First pass: Create all new nodes and store mapping from original to copy
+- Second pass: Set next and random pointers using the mapping
+- This handles the challenge that random pointers can point to any node, including nodes not yet created
 
 ## Key Insights
 
-[TODO: Add key insights]
+- The challenge is that random pointers can point to any node, including nodes not yet created
+- Using a hash map allows us to create all nodes first, then link them
+- The interweaving approach avoids extra space by temporarily modifying the structure
+- We must handle null random pointers carefully
 
 ## Common Mistakes
 
-[TODO: Add common mistakes]
+- Trying to set random pointers before all nodes are created
+- Not handling null random pointers
+- Creating a shallow copy instead of a deep copy
 
 ## Related Problems
 
-[TODO: Add related problems]
+- Clone Graph
+- Copy List with Random Pointer II

@@ -49,19 +49,40 @@ class Solution:
     """
     Solution to LeetCode Problem #9: Palindrome Number
 
-    Approach: [TODO: Describe approach]
-    Time Complexity: O(?)
-    Space Complexity: O(?)
+    Approach: Reverse half of the number and compare with the first half.
+    Instead of reversing the entire number (which could overflow), we only
+    reverse the second half and compare it with the first half. We stop
+    when the reversed number becomes >= the remaining original number.
+
+    Time Complexity: O(log10(n)) - We process half the digits
+    Space Complexity: O(1) - Only using a few integer variables
 
     Key Insights:
-    [TODO: Add key insights]
+    1. Negative numbers are never palindromes (the minus sign)
+    2. Numbers ending in 0 (except 0 itself) cannot be palindromes
+    3. We only need to reverse half the number to check palindrome property
+    4. For odd-length numbers, we can ignore the middle digit (reversed // 10)
+    5. Avoids string conversion for O(1) space solution
     """
 
     def isPalindrome(self, x: int) -> bool:
         """
-        [TODO: Implement]
+        Check if integer is a palindrome by reversing half the number.
         """
-        pass
+        # Negative numbers are not palindromes
+        # Numbers ending in 0 (except 0 itself) are not palindromes
+        if x < 0 or (x % 10 == 0 and x != 0):
+            return False
+
+        reversed_half = 0
+        while x > reversed_half:
+            # Build reversed number from the right half
+            reversed_half = reversed_half * 10 + x % 10
+            x //= 10
+
+        # For even length: x == reversed_half
+        # For odd length: x == reversed_half // 10 (ignore middle digit)
+        return x == reversed_half or x == reversed_half // 10
 
 
 # Metadata for tracking
@@ -72,7 +93,7 @@ PROBLEM_METADATA = {
     "pattern": "Bit Manipulation",
     "topics": ['Math'],
     "url": "https://leetcode.com/problems/palindrome-number/",
-    "companies": [],
-    "time_complexity": "O(?)",
-    "space_complexity": "O(?)",
+    "companies": ["Amazon", "Microsoft", "Google", "Apple", "Facebook", "Bloomberg", "Adobe", "Yahoo"],
+    "time_complexity": "O(log10(n))",
+    "space_complexity": "O(1)",
 }

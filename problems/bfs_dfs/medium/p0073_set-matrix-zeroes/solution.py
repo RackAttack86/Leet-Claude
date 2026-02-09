@@ -43,19 +43,48 @@ class Solution:
     """
     Solution to LeetCode Problem #73: Set Matrix Zeroes
 
-    Approach: [TODO: Describe approach]
-    Time Complexity: O(?)
-    Space Complexity: O(?)
+    Approach: Use the first row and first column as markers to track which rows/columns
+              need to be zeroed. Use separate flags for whether the first row and first
+              column themselves should be zeroed. This achieves O(1) space complexity.
+    Time Complexity: O(m*n) - Two passes through the matrix
+    Space Complexity: O(1) - Use matrix itself as storage for markers
 
     Key Insights:
-    [TODO: Add key insights]
+    - First row and first column can serve as "marker arrays" instead of extra space
+    - Need separate flags for first row/column since they're used as markers
+    - Process: 1) Mark, 2) Zero inner cells, 3) Zero first row/column if needed
+    - Process inner matrix first (1 to m-1, 1 to n-1), then handle first row/column
     """
 
     def setZeroes(self, matrix: List[List[int]]) -> None:
-        """
-        [TODO: Implement]
-        """
-        pass
+        m, n = len(matrix), len(matrix[0])
+
+        # Check if first row or first column should be zeroed
+        first_row_zero = any(matrix[0][j] == 0 for j in range(n))
+        first_col_zero = any(matrix[i][0] == 0 for i in range(m))
+
+        # Use first row and column as markers
+        for i in range(1, m):
+            for j in range(1, n):
+                if matrix[i][j] == 0:
+                    matrix[i][0] = 0  # Mark the row
+                    matrix[0][j] = 0  # Mark the column
+
+        # Zero out cells based on markers (process inner matrix)
+        for i in range(1, m):
+            for j in range(1, n):
+                if matrix[i][0] == 0 or matrix[0][j] == 0:
+                    matrix[i][j] = 0
+
+        # Zero out first row if needed
+        if first_row_zero:
+            for j in range(n):
+                matrix[0][j] = 0
+
+        # Zero out first column if needed
+        if first_col_zero:
+            for i in range(m):
+                matrix[i][0] = 0
 
 
 # Metadata for tracking
@@ -66,7 +95,7 @@ PROBLEM_METADATA = {
     "pattern": "Bfs Dfs",
     "topics": ['Array', 'Hash Table', 'Matrix'],
     "url": "https://leetcode.com/problems/set-matrix-zeroes/",
-    "companies": [],
-    "time_complexity": "O(?)",
-    "space_complexity": "O(?)",
+    "companies": ["Amazon", "Google", "Microsoft", "Facebook", "Apple", "Bloomberg", "Oracle"],
+    "time_complexity": "O(m*n)",
+    "space_complexity": "O(1)",
 }

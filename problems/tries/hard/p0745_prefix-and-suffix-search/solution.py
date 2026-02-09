@@ -36,26 +36,45 @@ wordFilter.f("a", "e"); // return 0, because the word at index 0 has prefix = "a
 from typing import List, Optional
 
 
-class Solution:
+class WordFilter:
     """
     Solution to LeetCode Problem #745: Prefix and Suffix Search
 
-    Approach: Trie with combined keys or two Tries
+    Approach: Trie with combined keys (suffix#word)
     Time Complexity: O(n * m^2) for constructor, O(p + s) for query
     Space Complexity: O(n * m^2)
-
-    Key Insights:
-    - Store suffix#prefix combinations in Trie
-    - For word 'apple', store 'e#apple', 'le#apple', etc.
-    - Or use two Tries and intersect results
-    - Trade space for query speed
     """
 
-    def solve(self):
-        """
-        [TODO: Implement solution]
-        """
-        pass
+    def __init__(self, words: List[str]):
+        self.trie = {}
+
+        for idx, word in enumerate(words):
+            # For each word, insert all suffix#word combinations
+            for i in range(len(word) + 1):
+                suffix = word[i:]
+                key = suffix + '#' + word
+                node = self.trie
+                for char in key:
+                    if char not in node:
+                        node[char] = {}
+                    node = node[char]
+                    node['idx'] = idx  # Store index at every node
+
+    def f(self, pref: str, suff: str) -> int:
+        key = suff + '#' + pref
+        node = self.trie
+
+        for char in key:
+            if char not in node:
+                return -1
+            node = node[char]
+
+        return node.get('idx', -1)
+
+
+class Solution:
+    """Wrapper for LeetCode compatibility."""
+    pass
 
 
 # Metadata for tracking

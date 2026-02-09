@@ -50,19 +50,54 @@ class Solution:
     """
     Solution to LeetCode Problem #34: Find First and Last Position of Element in Sorted Array
 
-    Approach: [TODO: Describe approach]
-    Time Complexity: O(?)
-    Space Complexity: O(?)
+    Approach: Two Binary Searches - Find Left and Right Boundaries
+    We perform two separate binary searches:
+    1. First search finds the leftmost (first) occurrence of target
+    2. Second search finds the rightmost (last) occurrence of target
+
+    For finding the first position, when we find target, we continue searching left.
+    For finding the last position, when we find target, we continue searching right.
+
+    Time Complexity: O(log n) - Two binary searches, each O(log n)
+    Space Complexity: O(1) - Only using constant extra space
 
     Key Insights:
-    [TODO: Add key insights]
+    1. Use binary search twice with slight modifications for left/right boundary
+    2. When finding left boundary: if nums[mid] >= target, search left half
+    3. When finding right boundary: if nums[mid] <= target, search right half
+    4. Handle edge cases: empty array, target not found
     """
 
     def searchRange(self, nums: List[int], target: int) -> List[int]:
-        """
-        [TODO: Implement]
-        """
-        pass
+        def findFirst(nums: List[int], target: int) -> int:
+            left, right = 0, len(nums) - 1
+            result = -1
+            while left <= right:
+                mid = left + (right - left) // 2
+                if nums[mid] == target:
+                    result = mid
+                    right = mid - 1  # Continue searching left for first occurrence
+                elif nums[mid] < target:
+                    left = mid + 1
+                else:
+                    right = mid - 1
+            return result
+
+        def findLast(nums: List[int], target: int) -> int:
+            left, right = 0, len(nums) - 1
+            result = -1
+            while left <= right:
+                mid = left + (right - left) // 2
+                if nums[mid] == target:
+                    result = mid
+                    left = mid + 1  # Continue searching right for last occurrence
+                elif nums[mid] < target:
+                    left = mid + 1
+                else:
+                    right = mid - 1
+            return result
+
+        return [findFirst(nums, target), findLast(nums, target)]
 
 
 # Metadata for tracking
@@ -73,7 +108,7 @@ PROBLEM_METADATA = {
     "pattern": "Binary Search",
     "topics": ['Array', 'Binary Search'],
     "url": "https://leetcode.com/problems/find-first-and-last-position-of-element-in-sorted-array/",
-    "companies": [],
-    "time_complexity": "O(?)",
-    "space_complexity": "O(?)",
+    "companies": ["Google", "Facebook", "Amazon", "Microsoft", "Bloomberg", "Apple", "LinkedIn", "Uber"],
+    "time_complexity": "O(log n)",
+    "space_complexity": "O(1)",
 }

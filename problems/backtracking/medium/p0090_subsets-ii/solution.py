@@ -41,11 +41,23 @@ class Solution:
     - Include each subset once
     """
 
-    def solve(self):
-        """
-        [TODO: Implement solution]
-        """
-        pass
+    def subsetsWithDup(self, nums: List[int]) -> List[List[int]]:
+        result = []
+        nums.sort()
+
+        def backtrack(start: int, current: List[int]):
+            result.append(current[:])
+
+            for i in range(start, len(nums)):
+                # Skip duplicates at same level
+                if i > start and nums[i] == nums[i - 1]:
+                    continue
+                current.append(nums[i])
+                backtrack(i + 1, current)
+                current.pop()
+
+        backtrack(0, [])
+        return result
 
 
 # Metadata for tracking

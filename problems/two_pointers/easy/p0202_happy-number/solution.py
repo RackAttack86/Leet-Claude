@@ -54,19 +54,43 @@ class Solution:
     """
     Solution to LeetCode Problem #202: Happy Number
 
-    Approach: [TODO: Describe approach]
-    Time Complexity: O(?)
-    Space Complexity: O(?)
+    Approach: Floyd's Cycle Detection (Slow and Fast Pointers)
+    Time Complexity: O(log n) - number of digits decreases
+    Space Complexity: O(1) - no extra space for cycle detection
 
     Key Insights:
-    [TODO: Add key insights]
+    - The sequence will either end in 1 or enter a cycle
+    - Use slow and fast pointers to detect cycles (like linked list cycle)
+    - If fast pointer reaches 1, it's happy; if slow == fast, it's a cycle
+    - Alternative: use a hash set to track seen numbers (O(log n) space)
     """
 
     def isHappy(self, n: int) -> bool:
         """
-        [TODO: Implement]
+        Determine if a number is a happy number.
+
+        Args:
+            n: Positive integer to check
+
+        Returns:
+            True if n is a happy number, False otherwise
         """
-        pass
+        def get_next(num: int) -> int:
+            total = 0
+            while num > 0:
+                digit = num % 10
+                total += digit * digit
+                num //= 10
+            return total
+
+        slow = n
+        fast = get_next(n)
+
+        while fast != 1 and slow != fast:
+            slow = get_next(slow)
+            fast = get_next(get_next(fast))
+
+        return fast == 1
 
 
 # Metadata for tracking
@@ -77,7 +101,7 @@ PROBLEM_METADATA = {
     "pattern": "Two Pointers",
     "topics": ['Hash Table', 'Math', 'Two Pointers'],
     "url": "https://leetcode.com/problems/happy-number/",
-    "companies": [],
-    "time_complexity": "O(?)",
-    "space_complexity": "O(?)",
+    "companies": ['Amazon', 'Google', 'Apple', 'Microsoft'],
+    "time_complexity": "O(log n)",
+    "space_complexity": "O(1)",
 }

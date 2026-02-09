@@ -3,7 +3,7 @@ Tests for LeetCode Problem #202: Happy Number
 """
 
 import pytest
-from .solution import Solution, PROBLEM_METADATA
+from solution import Solution, PROBLEM_METADATA
 
 
 
@@ -20,7 +20,7 @@ class TestHappyNumber:
     def test_example_1(self, solution):
         """Example 1 from problem description"""
         n = 19
-        expected = true
+        expected = True
         result = solution.isHappy(n)
         assert result == expected
 
@@ -28,15 +28,17 @@ class TestHappyNumber:
     def test_example_2(self, solution):
         """Example 2 from problem description"""
         n = 2
-        expected = false
+        expected = False
         result = solution.isHappy(n)
         assert result == expected
 
 
-    def test_edge_case_empty(self, solution):
-        """Test with empty/minimal input"""
-        # TODO: Implement edge case test
-        pass
+    def test_edge_case_one(self, solution):
+        """Test with n = 1 (already happy)"""
+        n = 1
+        expected = True
+        result = solution.isHappy(n)
+        assert result == expected
 
 
     # Metadata validation

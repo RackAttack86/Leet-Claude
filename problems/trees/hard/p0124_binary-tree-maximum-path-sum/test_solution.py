@@ -3,9 +3,9 @@ Tests for LeetCode Problem #124: Binary Tree Maximum Path Sum
 """
 
 import pytest
-from .solution import Solution, PROBLEM_METADATA
-from .solution import TreeNode
-from .solution import Node
+from solution import Solution, PROBLEM_METADATA
+from solution import TreeNode
+from solution import Node
 
 
 def array_to_tree(arr):
@@ -66,7 +66,7 @@ class TestBinaryTreeMaximumPathSum:
 
     def test_example_1(self, solution):
         """Example 1 from problem description"""
-        root = [1,2,3]
+        root = array_to_tree([1,2,3])
         expected = 6
         result = solution.maxPathSum(root)
         assert result == expected
@@ -74,16 +74,25 @@ class TestBinaryTreeMaximumPathSum:
 
     def test_example_2(self, solution):
         """Example 2 from problem description"""
-        root = [-10,9,20,None,None,15,7]
+        root = array_to_tree([-10,9,20,None,None,15,7])
         expected = 42
         result = solution.maxPathSum(root)
         assert result == expected
 
 
-    def test_edge_case_empty(self, solution):
-        """Test with empty/minimal input"""
-        # TODO: Implement edge case test
-        pass
+    def test_edge_case_single_node(self, solution):
+        """Test with single node tree"""
+        root = array_to_tree([5])
+        expected = 5
+        result = solution.maxPathSum(root)
+        assert result == expected
+
+    def test_edge_case_all_negative(self, solution):
+        """Test with all negative values"""
+        root = array_to_tree([-3])
+        expected = -3
+        result = solution.maxPathSum(root)
+        assert result == expected
 
 
     # Metadata validation

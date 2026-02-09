@@ -45,11 +45,20 @@ class Solution:
     - Minimum is at rotation point
     """
 
-    def solve(self):
-        """
-        [TODO: Implement solution]
-        """
-        pass
+    def findMin(self, nums: List[int]) -> int:
+        left, right = 0, len(nums) - 1
+
+        while left < right:
+            mid = (left + right) // 2
+
+            if nums[mid] > nums[right]:
+                # Minimum is in right half
+                left = mid + 1
+            else:
+                # Minimum is in left half or at mid
+                right = mid
+
+        return nums[left]
 
 
 # Metadata for tracking

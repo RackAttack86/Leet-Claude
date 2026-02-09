@@ -45,11 +45,8 @@ class Solution:
     - Must also check n > 0
     """
 
-    def solve(self):
-        """
-        [TODO: Implement solution]
-        """
-        pass
+    def isPowerOfTwo(self, n: int) -> bool:
+        return n > 0 and (n & (n - 1)) == 0
 
 
 # Metadata for tracking

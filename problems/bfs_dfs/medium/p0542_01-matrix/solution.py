@@ -29,6 +29,7 @@ Output: [[0,0,0],[0,1,0],[1,2,1]]
 """
 
 from typing import List, Optional
+from collections import deque
 
 
 class Solution:
@@ -46,11 +47,33 @@ class Solution:
     - BFS guarantees shortest distance
     """
 
-    def solve(self):
-        """
-        [TODO: Implement solution]
-        """
-        pass
+    def updateMatrix(self, mat: List[List[int]]) -> List[List[int]]:
+        if not mat or not mat[0]:
+            return mat
+
+        rows, cols = len(mat), len(mat[0])
+        queue = deque()
+        result = [[float('inf')] * cols for _ in range(rows)]
+
+        # Add all 0s to queue
+        for r in range(rows):
+            for c in range(cols):
+                if mat[r][c] == 0:
+                    result[r][c] = 0
+                    queue.append((r, c))
+
+        # BFS from all 0s
+        directions = [(0, 1), (0, -1), (1, 0), (-1, 0)]
+        while queue:
+            r, c = queue.popleft()
+            for dr, dc in directions:
+                nr, nc = r + dr, c + dc
+                if 0 <= nr < rows and 0 <= nc < cols:
+                    if result[nr][nc] > result[r][c] + 1:
+                        result[nr][nc] = result[r][c] + 1
+                        queue.append((nr, nc))
+
+        return result
 
 
 # Metadata for tracking

@@ -39,19 +39,39 @@ class Solution:
     """
     Solution to LeetCode Problem #392: Is Subsequence
 
-    Approach: [TODO: Describe approach]
-    Time Complexity: O(?)
-    Space Complexity: O(?)
+    Approach: Two Pointers
+    Time Complexity: O(n) where n is the length of t
+    Space Complexity: O(1)
 
     Key Insights:
-    [TODO: Add key insights]
+    - Use two pointers, one for each string
+    - Move through t, advancing s pointer only when characters match
+    - If s pointer reaches end of s, all characters were found in order
     """
 
     def isSubsequence(self, s: str, t: str) -> bool:
         """
-        [TODO: Implement]
+        Check if s is a subsequence of t.
+
+        Args:
+            s: Potential subsequence
+            t: Original string
+
+        Returns:
+            True if s is a subsequence of t
         """
-        pass
+        if not s:
+            return True
+
+        s_ptr = 0
+
+        for char in t:
+            if char == s[s_ptr]:
+                s_ptr += 1
+                if s_ptr == len(s):
+                    return True
+
+        return False
 
 
 # Metadata for tracking
@@ -62,7 +82,7 @@ PROBLEM_METADATA = {
     "pattern": "Two Pointers",
     "topics": ['Two Pointers', 'String', 'Dynamic Programming'],
     "url": "https://leetcode.com/problems/is-subsequence/",
-    "companies": [],
-    "time_complexity": "O(?)",
-    "space_complexity": "O(?)",
+    "companies": ['Amazon', 'Google', 'Microsoft', 'Apple'],
+    "time_complexity": "O(n)",
+    "space_complexity": "O(1)",
 }

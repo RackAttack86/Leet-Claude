@@ -25,6 +25,7 @@ Output: 4
 """
 
 from typing import List, Optional
+import bisect
 
 
 class Solution:
@@ -42,11 +43,18 @@ class Solution:
     - Patience sorting algorithm for O(n log n)
     """
 
-    def solve(self):
-        """
-        [TODO: Implement solution]
-        """
-        pass
+    def lengthOfLIS(self, nums: List[int]) -> int:
+        # O(n log n) solution using binary search
+        tails = []
+
+        for num in nums:
+            pos = bisect.bisect_left(tails, num)
+            if pos == len(tails):
+                tails.append(num)
+            else:
+                tails[pos] = num
+
+        return len(tails)
 
 
 # Metadata for tracking

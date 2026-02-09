@@ -43,6 +43,36 @@ class TestKthLargestElementInAnArray:
         """Array with negative numbers"""
         assert solution.findKthLargest([-1, -2, -3, -4], 2) == -2
 
+    def test_k_equals_one_largest(self, solution):
+        """k=1 returns the largest element"""
+        assert solution.findKthLargest([3, 2, 1, 5, 6, 4], 1) == 6
+
+    def test_k_equals_n_smallest(self, solution):
+        """k=n returns the smallest element"""
+        assert solution.findKthLargest([3, 2, 1, 5, 6, 4], 6) == 1
+
+    def test_all_same_elements(self, solution):
+        """Array with all identical elements"""
+        assert solution.findKthLargest([7, 7, 7, 7, 7], 1) == 7
+        assert solution.findKthLargest([7, 7, 7, 7, 7], 3) == 7
+        assert solution.findKthLargest([7, 7, 7, 7, 7], 5) == 7
+
+    def test_two_elements(self, solution):
+        """Array with exactly two elements"""
+        assert solution.findKthLargest([1, 2], 1) == 2
+        assert solution.findKthLargest([1, 2], 2) == 1
+
+    def test_mixed_positive_negative(self, solution):
+        """Array with mixed positive and negative numbers"""
+        assert solution.findKthLargest([-5, 0, 5, -10, 10], 1) == 10
+        assert solution.findKthLargest([-5, 0, 5, -10, 10], 5) == -10
+
+    def test_large_k(self, solution):
+        """k close to array length"""
+        nums = list(range(1, 101))  # 1 to 100
+        assert solution.findKthLargest(nums, 100) == 1
+        assert solution.findKthLargest(nums, 1) == 100
+
     # Metadata validation
     def test_metadata_exists(self):
         """Verify problem metadata is complete"""

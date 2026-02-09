@@ -3,7 +3,7 @@ Tests for LeetCode Problem #12: Integer to Roman
 """
 
 import pytest
-from .solution import Solution, PROBLEM_METADATA
+from solution import Solution, PROBLEM_METADATA
 
 
 
@@ -41,10 +41,19 @@ class TestIntegerToRoman:
         assert result == expected
 
 
-    def test_edge_case_empty(self, solution):
-        """Test with empty/minimal input"""
-        # TODO: Implement edge case test
-        pass
+    def test_edge_case_minimum(self, solution):
+        """Test with minimum input value (1)"""
+        num = 1
+        expected = "I"
+        result = solution.intToRoman(num)
+        assert result == expected
+
+    def test_edge_case_maximum(self, solution):
+        """Test with maximum input value (3999)"""
+        num = 3999
+        expected = "MMMCMXCIX"
+        result = solution.intToRoman(num)
+        assert result == expected
 
 
     # Metadata validation

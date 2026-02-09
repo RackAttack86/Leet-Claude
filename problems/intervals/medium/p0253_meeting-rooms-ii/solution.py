@@ -23,6 +23,7 @@ Output: 1
 """
 
 from typing import List, Optional
+import heapq
 
 
 class Solution:
@@ -40,11 +41,36 @@ class Solution:
     - Or use start/end time arrays
     """
 
-    def solve(self):
+    def minMeetingRooms(self, intervals: List[List[int]]) -> int:
         """
-        [TODO: Implement solution]
+        Find minimum number of conference rooms required.
+
+        Use a min-heap to track end times of meetings.
+        For each meeting, if it starts after the earliest ending meeting,
+        we can reuse that room (pop from heap). Otherwise, we need a new room.
         """
-        pass
+        if not intervals:
+            return 0
+
+        # Sort meetings by start time
+        intervals.sort(key=lambda x: x[0])
+
+        # Min-heap to track end times of ongoing meetings
+        heap = []
+
+        for interval in intervals:
+            start, end = interval
+
+            # If current meeting starts after the earliest ending meeting
+            if heap and start >= heap[0]:
+                # Reuse that room (remove its end time and add new one)
+                heapq.heappop(heap)
+
+            # Add current meeting's end time
+            heapq.heappush(heap, end)
+
+        # The size of heap is the number of rooms needed
+        return len(heap)
 
 
 # Metadata for tracking

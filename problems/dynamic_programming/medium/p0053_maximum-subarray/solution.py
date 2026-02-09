@@ -50,19 +50,44 @@ class Solution:
     """
     Solution to LeetCode Problem #53: Maximum Subarray
 
-    Approach: [TODO: Describe approach]
-    Time Complexity: O(?)
-    Space Complexity: O(?)
+    Approach: Kadane's Algorithm (Dynamic Programming)
+    - Use a single pass to track the maximum sum ending at each position.
+    - At each position, decide whether to extend the previous subarray or start fresh.
+    - dp[i] = max(nums[i], dp[i-1] + nums[i])
+    - The answer is the maximum value among all dp[i].
+
+    Time Complexity: O(n)
+    Space Complexity: O(1) - optimized to use only variables instead of array
 
     Key Insights:
-    [TODO: Add key insights]
+    1. If the running sum becomes negative, it's better to start fresh from current element.
+    2. At each position, we either extend the previous subarray or start a new one.
+    3. We only need to track the current sum and the global maximum, not the entire dp array.
+    4. This is Kadane's algorithm - a classic DP optimization.
     """
 
     def maxSubArray(self, nums: List[int]) -> int:
         """
-        [TODO: Implement]
+        Find the contiguous subarray with the largest sum using Kadane's algorithm.
+
+        Args:
+            nums: List of integers
+
+        Returns:
+            Maximum sum of any contiguous subarray
         """
-        pass
+        # Initialize with the first element
+        current_sum = nums[0]
+        max_sum = nums[0]
+
+        # Iterate through the rest of the array
+        for i in range(1, len(nums)):
+            # Either extend the previous subarray or start fresh
+            current_sum = max(nums[i], current_sum + nums[i])
+            # Update the global maximum
+            max_sum = max(max_sum, current_sum)
+
+        return max_sum
 
 
 # Metadata for tracking
@@ -73,7 +98,7 @@ PROBLEM_METADATA = {
     "pattern": "Dynamic Programming",
     "topics": ['Array', 'Divide and Conquer', 'Dynamic Programming'],
     "url": "https://leetcode.com/problems/maximum-subarray/",
-    "companies": [],
-    "time_complexity": "O(?)",
-    "space_complexity": "O(?)",
+    "companies": ["Amazon", "Microsoft", "Google", "Apple", "Facebook", "LinkedIn", "Bloomberg", "Adobe", "Uber", "ByteDance"],
+    "time_complexity": "O(n)",
+    "space_complexity": "O(1)",
 }

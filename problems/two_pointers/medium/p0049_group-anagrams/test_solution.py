@@ -3,9 +3,7 @@ Tests for LeetCode Problem #49: Group Anagrams
 """
 
 import pytest
-from .solution import Solution, PROBLEM_METADATA
-
-
+from solution import Solution, PROBLEM_METADATA
 
 
 class TestGroupAnagrams:
@@ -16,14 +14,14 @@ class TestGroupAnagrams:
         """Create a Solution instance for each test"""
         return Solution()
 
-
     def test_example_1(self, solution):
         """Example 1 from problem description"""
         strs = ["eat","tea","tan","ate","nat","bat"]
-        expected = [["bat"],["nat","tan"],["ate","eat","tea"]]
         result = solution.groupAnagrams(strs)
-        assert result == expected
-
+        # Sort each group and sort list of groups for comparison (order doesn't matter)
+        result_sorted = sorted([sorted(group) for group in result])
+        expected_sorted = sorted([sorted(["bat"]), sorted(["nat","tan"]), sorted(["ate","eat","tea"])])
+        assert result_sorted == expected_sorted
 
     def test_example_2(self, solution):
         """Example 2 from problem description"""
@@ -32,7 +30,6 @@ class TestGroupAnagrams:
         result = solution.groupAnagrams(strs)
         assert result == expected
 
-
     def test_example_3(self, solution):
         """Example 3 from problem description"""
         strs = ["a"]
@@ -40,12 +37,12 @@ class TestGroupAnagrams:
         result = solution.groupAnagrams(strs)
         assert result == expected
 
-
-    def test_edge_case_empty(self, solution):
-        """Test with empty/minimal input"""
-        # TODO: Implement edge case test
-        pass
-
+    def test_all_same(self, solution):
+        """Test with all same strings"""
+        strs = ["abc", "abc", "abc"]
+        result = solution.groupAnagrams(strs)
+        assert len(result) == 1
+        assert sorted(result[0]) == ["abc", "abc", "abc"]
 
     # Metadata validation
     def test_metadata_exists(self):

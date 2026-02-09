@@ -36,6 +36,13 @@ Output: "a a b c"
 from typing import List, Optional
 
 
+class TrieNode:
+    """Node in the Trie data structure."""
+    def __init__(self):
+        self.children = {}
+        self.is_end = False
+
+
 class Solution:
     """
     Solution to LeetCode Problem #648: Replace Words
@@ -51,11 +58,45 @@ class Solution:
     - Trie enables efficient prefix matching
     """
 
-    def solve(self):
+    def replaceWords(self, dictionary: List[str], sentence: str) -> str:
         """
-        [TODO: Implement solution]
+        Replace all derivatives in the sentence with the shortest root.
+
+        Args:
+            dictionary: List of root words
+            sentence: The sentence to process
+
+        Returns:
+            The sentence with derivatives replaced by roots
         """
-        pass
+        # Build Trie from dictionary
+        root = TrieNode()
+        for word in dictionary:
+            node = root
+            for char in word:
+                if char not in node.children:
+                    node.children[char] = TrieNode()
+                node = node.children[char]
+            node.is_end = True
+
+        def find_root(word: str) -> str:
+            """Find the shortest root for a word, or return the word itself."""
+            node = root
+            for i, char in enumerate(word):
+                if char not in node.children:
+                    # No matching root found
+                    return word
+                node = node.children[char]
+                if node.is_end:
+                    # Found a root - return it (shortest due to order of traversal)
+                    return word[:i + 1]
+            # Word itself might be a root or no root found
+            return word
+
+        # Process each word in the sentence
+        words = sentence.split()
+        result = [find_root(word) for word in words]
+        return ' '.join(result)
 
 
 # Metadata for tracking

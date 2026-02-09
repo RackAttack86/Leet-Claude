@@ -45,11 +45,36 @@ class Solution:
     - Fill gaps with other tasks
     """
 
-    def solve(self):
+    def leastInterval(self, tasks: List[str], n: int) -> int:
         """
-        [TODO: Implement solution]
+        Find minimum intervals to complete all tasks with cooling time.
+
+        Args:
+            tasks: Array of task characters
+            n: Cooling time between identical tasks
+
+        Returns:
+            Minimum number of intervals needed
         """
-        pass
+        from collections import Counter
+
+        # Count frequency of each task
+        freq = Counter(tasks)
+
+        # Find maximum frequency
+        max_freq = max(freq.values())
+
+        # Count how many tasks have the maximum frequency
+        max_count = sum(1 for f in freq.values() if f == max_freq)
+
+        # Formula: (max_freq - 1) * (n + 1) + max_count
+        # Creates (max_freq - 1) full cycles of (n + 1) slots
+        # Plus the final row with max_count tasks
+        result = (max_freq - 1) * (n + 1) + max_count
+
+        # Result can't be less than total number of tasks
+        # (when n is small and many different tasks fill all gaps)
+        return max(result, len(tasks))
 
 
 # Metadata for tracking

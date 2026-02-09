@@ -3,7 +3,7 @@ Tests for LeetCode Problem #380: Insert Delete GetRandom O(1)
 """
 
 import pytest
-from .solution import Solution, PROBLEM_METADATA
+from solution import Solution, PROBLEM_METADATA
 
 
 
@@ -19,14 +19,35 @@ class TestInsertDeleteGetrandomO1:
 
     def test_example_1(self, solution):
         """Example 1 from problem description"""
-        # TODO: Parse and implement test for this example
-        pass
+        # RandomizedSet randomizedSet = new RandomizedSet();
+        # randomizedSet.insert(1); // Returns true
+        assert solution.insert(1) == True
+        # randomizedSet.remove(2); // Returns false (2 does not exist)
+        assert solution.remove(2) == False
+        # randomizedSet.insert(2); // Returns true, set now contains [1,2]
+        assert solution.insert(2) == True
+        # randomizedSet.getRandom(); // Should return either 1 or 2
+        result = solution.getRandom()
+        assert result in [1, 2]
+        # randomizedSet.remove(1); // Returns true, set now contains [2]
+        assert solution.remove(1) == True
+        # randomizedSet.insert(2); // Returns false (2 already in set)
+        assert solution.insert(2) == False
+        # randomizedSet.getRandom(); // Always returns 2 (only element)
+        assert solution.getRandom() == 2
 
+    def test_example_2(self, solution):
+        """Test insert and remove operations"""
+        assert solution.insert(1) == True
+        assert solution.insert(1) == False  # Duplicate insert
+        assert solution.remove(1) == True
+        assert solution.remove(1) == False  # Already removed
 
-    def test_edge_case_empty(self, solution):
-        """Test with empty/minimal input"""
-        # TODO: Implement edge case test
-        pass
+    def test_edge_case_single_element(self, solution):
+        """Test with single element"""
+        assert solution.insert(42) == True
+        assert solution.getRandom() == 42
+        assert solution.remove(42) == True
 
 
     # Metadata validation

@@ -32,9 +32,10 @@ myStack.empty(); // return False
 """
 
 from typing import List, Optional
+from collections import deque
 
 
-class Solution:
+class MyStack:
     """
     Solution to LeetCode Problem #225: Implement Stack using Queues
 
@@ -49,11 +50,27 @@ class Solution:
     - Queue as underlying structure
     """
 
-    def solve(self):
-        """
-        [TODO: Implement solution]
-        """
-        pass
+    def __init__(self):
+        self.queue = deque()
+
+    def push(self, x: int) -> None:
+        self.queue.append(x)
+        # Rotate all elements except the one just added
+        for _ in range(len(self.queue) - 1):
+            self.queue.append(self.queue.popleft())
+
+    def pop(self) -> int:
+        return self.queue.popleft()
+
+    def top(self) -> int:
+        return self.queue[0]
+
+    def empty(self) -> bool:
+        return len(self.queue) == 0
+
+
+# Alias for compatibility
+Solution = MyStack
 
 
 # Metadata for tracking

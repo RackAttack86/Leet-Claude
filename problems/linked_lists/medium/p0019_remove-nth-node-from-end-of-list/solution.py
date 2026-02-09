@@ -27,6 +27,12 @@ Output: []
 from typing import List, Optional
 
 
+class ListNode:
+    def __init__(self, val=0, next=None):
+        self.val = val
+        self.next = next
+
+
 class Solution:
     """
     Solution to LeetCode Problem #19: Remove Nth Node From End of List
@@ -42,11 +48,31 @@ class Solution:
     - Use dummy node to handle edge cases
     """
 
-    def solve(self):
+    def removeNthFromEnd(self, head: Optional[ListNode], n: int) -> Optional[ListNode]:
         """
-        [TODO: Implement solution]
+        Remove the nth node from the end of the list.
+
+        Uses two pointers with a gap of n nodes between them.
+        When fast pointer reaches the end, slow pointer is at the node before the target.
         """
-        pass
+        # Create dummy node to handle edge case of removing head
+        dummy = ListNode(0, head)
+        slow = dummy
+        fast = dummy
+
+        # Move fast pointer n+1 steps ahead
+        for _ in range(n + 1):
+            fast = fast.next
+
+        # Move both pointers until fast reaches end
+        while fast:
+            slow = slow.next
+            fast = fast.next
+
+        # Remove the nth node from end
+        slow.next = slow.next.next
+
+        return dummy.next
 
 
 # Metadata for tracking

@@ -3,7 +3,7 @@ Tests for LeetCode Problem #344: Reverse String
 """
 
 import pytest
-from .solution import Solution, PROBLEM_METADATA
+from solution import Solution, PROBLEM_METADATA
 
 
 class TestReverseString:
@@ -16,19 +16,24 @@ class TestReverseString:
 
     def test_example_1(self, solution):
         """Example 1 from problem description"""
-        # TODO: Implement test
-        pass
+        s = ["h", "e", "l", "l", "o"]
+        expected = ["o", "l", "l", "e", "h"]
+        solution.reverseString(s)
+        assert s == expected
 
     def test_example_2(self, solution):
         """Example 2 from problem description"""
-        # TODO: Implement test
-        pass
+        s = ["H", "a", "n", "n", "a", "h"]
+        expected = ["h", "a", "n", "n", "a", "H"]
+        solution.reverseString(s)
+        assert s == expected
 
-    # Edge cases
-    def test_edge_case_1(self, solution):
-        """TODO: Describe edge case"""
-        # TODO: Implement test
-        pass
+    def test_edge_case_single_char(self, solution):
+        """Test with single character array"""
+        s = ["a"]
+        expected = ["a"]
+        solution.reverseString(s)
+        assert s == expected
 
     # Metadata validation
     def test_metadata_exists(self):

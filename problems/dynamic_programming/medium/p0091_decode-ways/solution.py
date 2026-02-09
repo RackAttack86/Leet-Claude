@@ -56,11 +56,29 @@ class Solution:
     - Two-digit valid if 10 <= num <= 26
     """
 
-    def solve(self):
-        """
-        [TODO: Implement solution]
-        """
-        pass
+    def numDecodings(self, s: str) -> int:
+        if not s or s[0] == '0':
+            return 0
+
+        n = len(s)
+        # prev2 = dp[i-2], prev1 = dp[i-1]
+        prev2, prev1 = 1, 1
+
+        for i in range(1, n):
+            current = 0
+
+            # Single digit
+            if s[i] != '0':
+                current += prev1
+
+            # Two digits
+            two_digit = int(s[i-1:i+1])
+            if 10 <= two_digit <= 26:
+                current += prev2
+
+            prev2, prev1 = prev1, current
+
+        return prev1
 
 
 # Metadata for tracking

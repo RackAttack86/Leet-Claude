@@ -3,7 +3,7 @@ Tests for LeetCode Problem #208: Implement Trie (Prefix Tree)
 """
 
 import pytest
-from .solution import Solution, PROBLEM_METADATA
+from solution import Solution, PROBLEM_METADATA
 
 
 
@@ -19,14 +19,17 @@ class TestImplementTriePrefixTree:
 
     def test_example_1(self, solution):
         """Example 1 from problem description"""
-        # TODO: Parse and implement test for this example
-        pass
-
+        solution.insert("apple")
+        assert solution.search("apple") == True
+        assert solution.search("app") == False
+        assert solution.startsWith("app") == True
+        solution.insert("app")
+        assert solution.search("app") == True
 
     def test_edge_case_empty(self, solution):
-        """Test with empty/minimal input"""
-        # TODO: Implement edge case test
-        pass
+        """Test searching before inserting any words"""
+        assert solution.search("a") == False
+        assert solution.startsWith("a") == False
 
 
     # Metadata validation

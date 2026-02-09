@@ -29,6 +29,7 @@ Explanation: The cell (2, 2) is as far as possible from all the land with distan
 """
 
 from typing import List, Optional
+from collections import deque
 
 
 class Solution:
@@ -46,11 +47,35 @@ class Solution:
     - Return -1 if all land or all water
     """
 
-    def solve(self):
-        """
-        [TODO: Implement solution]
-        """
-        pass
+    def maxDistance(self, grid: List[List[int]]) -> int:
+        n = len(grid)
+        queue = deque()
+
+        # Add all land cells to queue
+        for r in range(n):
+            for c in range(n):
+                if grid[r][c] == 1:
+                    queue.append((r, c))
+
+        # If all land or all water
+        if len(queue) == 0 or len(queue) == n * n:
+            return -1
+
+        directions = [(0, 1), (0, -1), (1, 0), (-1, 0)]
+        distance = -1
+
+        while queue:
+            size = len(queue)
+            distance += 1
+            for _ in range(size):
+                r, c = queue.popleft()
+                for dr, dc in directions:
+                    nr, nc = r + dr, c + dc
+                    if 0 <= nr < n and 0 <= nc < n and grid[nr][nc] == 0:
+                        grid[nr][nc] = 1  # Mark as visited
+                        queue.append((nr, nc))
+
+        return distance
 
 
 # Metadata for tracking

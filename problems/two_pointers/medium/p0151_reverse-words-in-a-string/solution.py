@@ -56,19 +56,24 @@ class Solution:
     """
     Solution to LeetCode Problem #151: Reverse Words in a String
 
-    Approach: [TODO: Describe approach]
-    Time Complexity: O(?)
-    Space Complexity: O(?)
+    Approach: Split the string by whitespace to get words, filter out empty
+    strings (from multiple spaces), reverse the list of words, and join
+    with single spaces.
+
+    Time Complexity: O(n) where n is the length of the string
+    Space Complexity: O(n) for storing the words
 
     Key Insights:
-    [TODO: Add key insights]
+    1. split() without arguments splits on any whitespace and removes empty strings
+    2. Reversing a list of words is O(number of words)
+    3. Two-pointer approach can be used for in-place reversal in languages with mutable strings
+    4. Python strings are immutable, so O(n) space is unavoidable
     """
 
     def reverseWords(self, s: str) -> str:
-        """
-        [TODO: Implement]
-        """
-        pass
+        # Split by whitespace, reverse, and join with single space
+        words = s.split()
+        return ' '.join(reversed(words))
 
 
 # Metadata for tracking
@@ -79,7 +84,7 @@ PROBLEM_METADATA = {
     "pattern": "Two Pointers",
     "topics": ['Two Pointers', 'String'],
     "url": "https://leetcode.com/problems/reverse-words-in-a-string/",
-    "companies": [],
-    "time_complexity": "O(?)",
-    "space_complexity": "O(?)",
+    "companies": ["Microsoft", "Amazon", "Apple", "Google", "Facebook", "Bloomberg"],
+    "time_complexity": "O(n)",
+    "space_complexity": "O(n)",
 }

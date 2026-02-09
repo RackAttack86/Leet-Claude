@@ -30,6 +30,13 @@ Output: 1
 from typing import List, Optional
 
 
+class TreeNode:
+    def __init__(self, val=0, left=None, right=None):
+        self.val = val
+        self.left = left
+        self.right = right
+
+
 class Solution:
     """
     Solution to LeetCode Problem #543: Diameter of Binary Tree
@@ -45,11 +52,22 @@ class Solution:
     - Path doesn't need to go through root
     """
 
-    def solve(self):
-        """
-        [TODO: Implement solution]
-        """
-        pass
+    def diameterOfBinaryTree(self, root: Optional[TreeNode]) -> int:
+        self.diameter = 0
+
+        def height(node):
+            if not node:
+                return 0
+
+            left_h = height(node.left)
+            right_h = height(node.right)
+
+            self.diameter = max(self.diameter, left_h + right_h)
+
+            return max(left_h, right_h) + 1
+
+        height(root)
+        return self.diameter
 
 
 # Metadata for tracking

@@ -42,19 +42,40 @@ class Solution:
     """
     Solution to LeetCode Problem #274: H-Index
 
-    Approach: [TODO: Describe approach]
-    Time Complexity: O(?)
-    Space Complexity: O(?)
+    Approach: Counting sort approach. Create a bucket array where bucket[i]
+    counts papers with exactly i citations (capped at n). Then traverse
+    from highest to lowest to find h-index.
+
+    Time Complexity: O(n) - Single pass to count, single pass to find h-index
+    Space Complexity: O(n) - For the counting bucket array
 
     Key Insights:
-    [TODO: Add key insights]
+    1. H-index can be at most n (number of papers)
+    2. Papers with citations >= n can be grouped together (count as n)
+    3. Traverse buckets from high to low, accumulating paper count
+    4. When accumulated count >= current index, we found h-index
     """
 
     def hIndex(self, citations: List[int]) -> int:
-        """
-        [TODO: Implement]
-        """
-        pass
+        n = len(citations)
+        # Bucket[i] = number of papers with i citations (citations >= n go in bucket n)
+        buckets = [0] * (n + 1)
+
+        for c in citations:
+            if c >= n:
+                buckets[n] += 1
+            else:
+                buckets[c] += 1
+
+        # Count papers from highest citations to lowest
+        total = 0
+        for h in range(n, -1, -1):
+            total += buckets[h]
+            # If we have at least h papers with >= h citations
+            if total >= h:
+                return h
+
+        return 0
 
 
 # Metadata for tracking
@@ -65,7 +86,7 @@ PROBLEM_METADATA = {
     "pattern": "Two Pointers",
     "topics": ['Array', 'Sorting', 'Counting Sort'],
     "url": "https://leetcode.com/problems/h-index/",
-    "companies": [],
-    "time_complexity": "O(?)",
-    "space_complexity": "O(?)",
+    "companies": ["Google", "Amazon", "Facebook", "Microsoft", "Bloomberg"],
+    "time_complexity": "O(n)",
+    "space_complexity": "O(n)",
 }

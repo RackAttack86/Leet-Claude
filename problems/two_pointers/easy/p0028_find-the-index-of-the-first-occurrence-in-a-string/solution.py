@@ -42,19 +42,37 @@ class Solution:
     """
     Solution to LeetCode Problem #28: Find the Index of the First Occurrence in a String
 
-    Approach: [TODO: Describe approach]
-    Time Complexity: O(?)
-    Space Complexity: O(?)
+    Approach: Sliding Window
+    Time Complexity: O(n * m) where n is haystack length, m is needle length
+    Space Complexity: O(1)
 
     Key Insights:
-    [TODO: Add key insights]
+    - Slide a window of size len(needle) across haystack
+    - At each position, check if the substring matches needle
+    - Can also use built-in find() or KMP for O(n + m) time
     """
 
     def strStr(self, haystack: str, needle: str) -> int:
         """
-        [TODO: Implement]
+        Find the first occurrence of needle in haystack.
+
+        Args:
+            haystack: The string to search in
+            needle: The string to search for
+
+        Returns:
+            Index of first occurrence, or -1 if not found
         """
-        pass
+        if not needle:
+            return 0
+
+        n, m = len(haystack), len(needle)
+
+        for i in range(n - m + 1):
+            if haystack[i:i + m] == needle:
+                return i
+
+        return -1
 
 
 # Metadata for tracking
@@ -65,7 +83,7 @@ PROBLEM_METADATA = {
     "pattern": "Two Pointers",
     "topics": ['Two Pointers', 'String', 'String Matching'],
     "url": "https://leetcode.com/problems/find-the-index-of-the-first-occurrence-in-a-string/",
-    "companies": [],
-    "time_complexity": "O(?)",
-    "space_complexity": "O(?)",
+    "companies": ['Amazon', 'Microsoft', 'Facebook', 'Apple'],
+    "time_complexity": "O(n * m)",
+    "space_complexity": "O(1)",
 }

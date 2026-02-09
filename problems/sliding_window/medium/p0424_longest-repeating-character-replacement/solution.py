@@ -49,11 +49,35 @@ class Solution:
     - Max frequency character determines replacements needed
     """
 
-    def solve(self):
+    def characterReplacement(self, s: str, k: int) -> int:
         """
-        [TODO: Implement solution]
+        Find the length of the longest substring with same letter after at most k replacements.
+
+        Uses sliding window. Window is valid when (window_size - max_char_freq) <= k.
+        The max_char_freq tells us how many characters don't need replacement.
         """
-        pass
+        char_count = {}
+        max_freq = 0
+        max_length = 0
+        left = 0
+
+        for right in range(len(s)):
+            # Add character to window
+            char = s[right]
+            char_count[char] = char_count.get(char, 0) + 1
+            max_freq = max(max_freq, char_count[char])
+
+            # Window size - max frequency = characters that need replacement
+            # If this exceeds k, shrink window
+            window_size = right - left + 1
+            if window_size - max_freq > k:
+                char_count[s[left]] -= 1
+                left += 1
+
+            # Update max length (window_size after possible shrink)
+            max_length = max(max_length, right - left + 1)
+
+        return max_length
 
 
 # Metadata for tracking

@@ -3,7 +3,7 @@ Tests for LeetCode Problem #135: Candy
 """
 
 import pytest
-from .solution import Solution, PROBLEM_METADATA
+from solution import Solution, PROBLEM_METADATA
 
 
 
@@ -33,10 +33,12 @@ class TestCandy:
         assert result == expected
 
 
-    def test_edge_case_empty(self, solution):
-        """Test with empty/minimal input"""
-        # TODO: Implement edge case test
-        pass
+    def test_edge_case_single_child(self, solution):
+        """Test with single child (minimal input)"""
+        ratings = [5]
+        expected = 1  # Single child gets 1 candy
+        result = solution.candy(ratings)
+        assert result == expected
 
 
     # Metadata validation

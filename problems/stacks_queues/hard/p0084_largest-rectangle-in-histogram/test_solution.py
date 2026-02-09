@@ -3,7 +3,7 @@ Tests for LeetCode Problem #84: Largest Rectangle in Histogram
 """
 
 import pytest
-from .solution import Solution, PROBLEM_METADATA
+from solution import Solution, PROBLEM_METADATA
 
 
 class TestLargestRectangleInHistogram:
@@ -16,19 +16,22 @@ class TestLargestRectangleInHistogram:
 
     def test_example_1(self, solution):
         """Example 1 from problem description"""
-        # TODO: Implement test
-        pass
+        heights = [2, 1, 5, 6, 2, 3]
+        expected = 10
+        assert solution.largestRectangleArea(heights) == expected
 
     def test_example_2(self, solution):
         """Example 2 from problem description"""
-        # TODO: Implement test
-        pass
+        heights = [2, 4]
+        expected = 4
+        assert solution.largestRectangleArea(heights) == expected
 
     # Edge cases
-    def test_edge_case_1(self, solution):
-        """TODO: Describe edge case"""
-        # TODO: Implement test
-        pass
+    def test_edge_case_single_bar(self, solution):
+        """Single bar in histogram"""
+        heights = [5]
+        expected = 5
+        assert solution.largestRectangleArea(heights) == expected
 
     # Metadata validation
     def test_metadata_exists(self):

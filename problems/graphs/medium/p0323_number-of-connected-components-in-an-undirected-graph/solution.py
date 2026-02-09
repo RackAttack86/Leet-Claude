@@ -46,11 +46,52 @@ class Solution:
     - Classic Union Find application
     """
 
-    def solve(self):
+    def countComponents(self, n: int, edges: List[List[int]]) -> int:
         """
-        [TODO: Implement solution]
+        Count the number of connected components in the graph.
+
+        Args:
+            n: Number of nodes
+            edges: List of edges [a, b]
+
+        Returns:
+            Number of connected components
+
+        Approach:
+        1. Use Union Find
+        2. Start with n components (each node is its own component)
+        3. For each edge, union the two nodes
+        4. Count remaining distinct roots
         """
-        pass
+        # Union Find implementation
+        parent = list(range(n))
+        rank = [0] * n
+        components = n
+
+        def find(x: int) -> int:
+            if parent[x] != x:
+                parent[x] = find(parent[x])  # Path compression
+            return parent[x]
+
+        def union(x: int, y: int) -> bool:
+            """Returns True if union was performed (nodes were in different components)."""
+            px, py = find(x), find(y)
+            if px == py:
+                return False  # Already in same component
+            # Union by rank
+            if rank[px] < rank[py]:
+                px, py = py, px
+            parent[py] = px
+            if rank[px] == rank[py]:
+                rank[px] += 1
+            return True
+
+        # Process all edges
+        for a, b in edges:
+            if union(a, b):
+                components -= 1
+
+        return components
 
 
 # Metadata for tracking

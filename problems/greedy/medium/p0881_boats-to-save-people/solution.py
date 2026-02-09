@@ -48,11 +48,34 @@ class Solution:
     - Greedy pairing minimizes boats
     """
 
-    def solve(self):
+    def numRescueBoats(self, people: List[int], limit: int) -> int:
         """
-        [TODO: Implement solution]
+        Find minimum boats needed (max 2 people per boat).
+
+        Args:
+            people: Array of weights
+            limit: Maximum weight per boat
+
+        Returns:
+            Minimum number of boats needed
         """
-        pass
+        people.sort()
+
+        boats = 0
+        left = 0
+        right = len(people) - 1
+
+        while left <= right:
+            # Always take the heaviest person
+            boats += 1
+
+            # Try to pair with the lightest person
+            if people[left] + people[right] <= limit:
+                left += 1
+
+            right -= 1
+
+        return boats
 
 
 # Metadata for tracking

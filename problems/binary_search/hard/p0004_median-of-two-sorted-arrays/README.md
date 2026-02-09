@@ -38,26 +38,79 @@ Explanation: merged array = [1,2,3,4] and median is (2 + 3) / 2 = 2.5.
 
 ## Approaches
 
-### 1. [Approach Name]
+### 1. Binary Search on Partition
 
-**Time Complexity:** O(?)
-**Space Complexity:** O(?)
+**Time Complexity:** O(log(min(m,n))) - Binary search on smaller array
+**Space Complexity:** O(1) - Only using constant extra space
 
 ```python
-# TODO: Add code snippet
+def findMedianSortedArrays(self, nums1: List[int], nums2: List[int]) -> float:
+    # Ensure nums1 is the smaller array for efficiency
+    if len(nums1) > len(nums2):
+        nums1, nums2 = nums2, nums1
+
+    m, n = len(nums1), len(nums2)
+
+    # Binary search on nums1
+    left, right = 0, m
+
+    while left <= right:
+        # Partition indices
+        partition1 = (left + right) // 2
+        partition2 = (m + n + 1) // 2 - partition1
+
+        # Get the four boundary elements
+        # Use -infinity and +infinity for out of bounds
+        maxLeft1 = float('-inf') if partition1 == 0 else nums1[partition1 - 1]
+        minRight1 = float('inf') if partition1 == m else nums1[partition1]
+
+        maxLeft2 = float('-inf') if partition2 == 0 else nums2[partition2 - 1]
+        minRight2 = float('inf') if partition2 == n else nums2[partition2]
+
+        # Check if we found the correct partition
+        if maxLeft1 <= minRight2 and maxLeft2 <= minRight1:
+            # Found the correct partition
+            if (m + n) % 2 == 1:
+                # Odd total length: median is max of left partition
+                return float(max(maxLeft1, maxLeft2))
+            else:
+                # Even total length: median is average of max(left) and min(right)
+                return (max(maxLeft1, maxLeft2) + min(minRight1, minRight2)) / 2.0
+        elif maxLeft1 > minRight2:
+            # Too far right in nums1, move left
+            right = partition1 - 1
+        else:
+            # Too far left in nums1, move right
+            left = partition1 + 1
+
+    # Should never reach here if input is valid
+    return 0.0
 ```
 
 **Why this works:**
-[TODO: Explain approach]
+We need to find a partition in both arrays such that:
+1. Left half contains (m+n+1)//2 elements total
+2. All elements in left half <= all elements in right half
+
+We binary search on the smaller array to find the correct partition. For partition i in nums1 and j in nums2: j = (m+n+1)//2 - i. A valid partition satisfies: nums1[i-1] <= nums2[j] and nums2[j-1] <= nums1[i].
 
 ## Key Insights
 
-[TODO: Add key insights]
+- Binary search on the smaller array for efficiency
+- Partition divides combined arrays into two halves
+- Left partition elements must all be <= right partition elements
+- Use infinity for out-of-bounds comparisons
+- Median is calculated from the elements around the partition
+- Handle odd/even total length differently for median calculation
 
 ## Common Mistakes
 
-[TODO: Add common mistakes]
+- Not swapping to ensure binary search on smaller array
+- Off-by-one errors in partition index calculations
+- Not handling edge cases (empty partitions)
+- Integer overflow in partition calculations
 
 ## Related Problems
 
-[TODO: Add related problems]
+- Merge Sorted Array (#88)
+- Find K-th Smallest Pair Distance (#719)

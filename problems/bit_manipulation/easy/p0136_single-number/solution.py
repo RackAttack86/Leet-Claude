@@ -42,11 +42,11 @@ class Solution:
     - XOR all elements to find single one
     """
 
-    def solve(self):
-        """
-        [TODO: Implement solution]
-        """
-        pass
+    def singleNumber(self, nums: List[int]) -> int:
+        result = 0
+        for num in nums:
+            result ^= num
+        return result
 
 
 # Metadata for tracking

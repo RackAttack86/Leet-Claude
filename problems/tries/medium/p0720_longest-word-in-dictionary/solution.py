@@ -36,7 +36,7 @@ class Solution:
     """
     Solution to LeetCode Problem #720: Longest Word in Dictionary
 
-    Approach: Trie or Set
+    Approach: Sorting and Set
     Time Complexity: O(n * m) where n is words count, m is average length
     Space Complexity: O(n * m)
 
@@ -44,14 +44,36 @@ class Solution:
     - Sort words by length and lexicographically
     - Check if all prefixes exist
     - Use set for O(1) lookup
-    - Or build Trie and DFS
+    - A word is valid if its prefix (word minus last char) exists in the set
     """
 
-    def solve(self):
+    def longestWord(self, words: List[str]) -> str:
         """
-        [TODO: Implement solution]
+        Find the longest word that can be built one character at a time.
+
+        Args:
+            words: List of words
+
+        Returns:
+            The longest word that can be built character by character
         """
-        pass
+        # Sort by length first, then lexicographically for ties
+        words.sort(key=lambda x: (len(x), x))
+
+        # Set to track valid words (words that can be built)
+        valid = set([''])  # Empty string is the base case
+        result = ''
+
+        for word in words:
+            # Check if the prefix (word without last char) is valid
+            prefix = word[:-1]
+            if prefix in valid:
+                valid.add(word)
+                # Update result if this word is longer, or same length but lexicographically smaller
+                if len(word) > len(result):
+                    result = word
+
+        return result
 
 
 # Metadata for tracking

@@ -46,11 +46,34 @@ class Solution:
     - Classic interval merge pattern
     """
 
-    def solve(self):
+    def merge(self, intervals: List[List[int]]) -> List[List[int]]:
         """
-        [TODO: Implement solution]
+        Merge overlapping intervals.
+
+        Sort by start time, then iterate through and merge overlapping intervals.
+        Two intervals overlap if current.start <= previous.end.
         """
-        pass
+        if not intervals:
+            return []
+
+        # Sort intervals by start time
+        intervals.sort(key=lambda x: x[0])
+
+        result = [intervals[0]]
+
+        for i in range(1, len(intervals)):
+            current = intervals[i]
+            last = result[-1]
+
+            # If current interval overlaps with last merged interval
+            if current[0] <= last[1]:
+                # Merge by extending the end time
+                last[1] = max(last[1], current[1])
+            else:
+                # No overlap, add current interval
+                result.append(current)
+
+        return result
 
 
 # Metadata for tracking

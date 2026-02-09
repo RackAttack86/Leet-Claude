@@ -3,7 +3,7 @@ Tests for LeetCode Problem #70: Climbing Stairs
 """
 
 import pytest
-from .solution import Solution, PROBLEM_METADATA
+from solution import Solution, PROBLEM_METADATA
 
 
 class TestClimbingStairs:
@@ -15,20 +15,28 @@ class TestClimbingStairs:
         return Solution()
 
     def test_example_1(self, solution):
-        """Example 1 from problem description"""
-        # TODO: Implement test
-        pass
+        """n=2: Two ways (1+1 or 2)"""
+        assert solution.climbStairs(2) == 2
 
     def test_example_2(self, solution):
-        """Example 2 from problem description"""
-        # TODO: Implement test
-        pass
+        """n=3: Three ways (1+1+1, 1+2, 2+1)"""
+        assert solution.climbStairs(3) == 3
 
-    # Edge cases
-    def test_edge_case_1(self, solution):
-        """TODO: Describe edge case"""
-        # TODO: Implement test
-        pass
+    def test_one_step(self, solution):
+        """n=1: Only one way"""
+        assert solution.climbStairs(1) == 1
+
+    def test_four_steps(self, solution):
+        """n=4: Five ways"""
+        assert solution.climbStairs(4) == 5
+
+    def test_five_steps(self, solution):
+        """n=5: Eight ways (Fibonacci pattern)"""
+        assert solution.climbStairs(5) == 8
+
+    def test_larger_input(self, solution):
+        """n=10: Verify Fibonacci sequence holds"""
+        assert solution.climbStairs(10) == 89
 
     # Metadata validation
     def test_metadata_exists(self):

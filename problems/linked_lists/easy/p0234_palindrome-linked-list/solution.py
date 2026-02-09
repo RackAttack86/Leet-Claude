@@ -25,6 +25,12 @@ Output: false
 from typing import List, Optional
 
 
+class ListNode:
+    def __init__(self, val=0, next=None):
+        self.val = val
+        self.next = next
+
+
 class Solution:
     """
     Solution to LeetCode Problem #234: Palindrome Linked List
@@ -40,11 +46,35 @@ class Solution:
     - Can restore list after checking
     """
 
-    def solve(self):
-        """
-        [TODO: Implement solution]
-        """
-        pass
+    def isPalindrome(self, head: Optional[ListNode]) -> bool:
+        if not head or not head.next:
+            return True
+
+        # Find middle using slow/fast pointers
+        slow = fast = head
+        while fast.next and fast.next.next:
+            slow = slow.next
+            fast = fast.next.next
+
+        # Reverse second half
+        second_half = slow.next
+        prev = None
+        while second_half:
+            next_node = second_half.next
+            second_half.next = prev
+            prev = second_half
+            second_half = next_node
+
+        # Compare first and reversed second half
+        first_half = head
+        second_half = prev
+        while second_half:
+            if first_half.val != second_half.val:
+                return False
+            first_half = first_half.next
+            second_half = second_half.next
+
+        return True
 
 
 # Metadata for tracking

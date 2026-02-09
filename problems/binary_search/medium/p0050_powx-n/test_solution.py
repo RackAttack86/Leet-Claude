@@ -3,7 +3,7 @@ Tests for LeetCode Problem #50: Pow(x, n)
 """
 
 import pytest
-from .solution import Solution, PROBLEM_METADATA
+from solution import Solution, PROBLEM_METADATA
 
 
 
@@ -28,11 +28,11 @@ class TestPowxN:
 
     def test_example_2(self, solution):
         """Example 2 from problem description"""
-        x = 2
+        x = 2.1
         n = 3
-        expected = 9.26100
+        expected = 9.261
         result = solution.myPow(x, n)
-        assert result == expected
+        assert abs(result - expected) < 1e-5
 
 
     def test_example_3(self, solution):
@@ -44,10 +44,21 @@ class TestPowxN:
         assert result == expected
 
 
-    def test_edge_case_empty(self, solution):
-        """Test with empty/minimal input"""
-        # TODO: Implement edge case test
-        pass
+    def test_edge_case_zero_exponent(self, solution):
+        """Test with n = 0, should return 1"""
+        x = 5.0
+        n = 0
+        expected = 1.0
+        result = solution.myPow(x, n)
+        assert result == expected
+
+    def test_edge_case_one_exponent(self, solution):
+        """Test with n = 1, should return x"""
+        x = 3.5
+        n = 1
+        expected = 3.5
+        result = solution.myPow(x, n)
+        assert abs(result - expected) < 1e-5
 
 
     # Metadata validation

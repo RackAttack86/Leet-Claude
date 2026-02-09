@@ -3,7 +3,7 @@ Tests for LeetCode Problem #424: Longest Repeating Character Replacement
 """
 
 import pytest
-from .solution import Solution, PROBLEM_METADATA
+from solution import Solution, PROBLEM_METADATA
 
 
 class TestLongestRepeatingCharacterReplacement:
@@ -16,19 +16,22 @@ class TestLongestRepeatingCharacterReplacement:
 
     def test_example_1(self, solution):
         """Example 1 from problem description"""
-        # TODO: Implement test
-        pass
+        s = "ABAB"
+        k = 2
+        assert solution.characterReplacement(s, k) == 4
 
     def test_example_2(self, solution):
         """Example 2 from problem description"""
-        # TODO: Implement test
-        pass
+        s = "AABABBA"
+        k = 1
+        assert solution.characterReplacement(s, k) == 4
 
     # Edge cases
     def test_edge_case_1(self, solution):
-        """TODO: Describe edge case"""
-        # TODO: Implement test
-        pass
+        """Test with single character string"""
+        s = "A"
+        k = 0
+        assert solution.characterReplacement(s, k) == 1
 
     # Metadata validation
     def test_metadata_exists(self):

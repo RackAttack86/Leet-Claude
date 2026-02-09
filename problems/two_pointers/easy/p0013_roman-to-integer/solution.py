@@ -76,19 +76,41 @@ class Solution:
     """
     Solution to LeetCode Problem #13: Roman to Integer
 
-    Approach: [TODO: Describe approach]
-    Time Complexity: O(?)
-    Space Complexity: O(?)
+    Approach: Left-to-Right Scan with Subtraction Rule
+    Time Complexity: O(n) where n is the length of the string
+    Space Complexity: O(1) - fixed size hash map
 
     Key Insights:
-    [TODO: Add key insights]
+    - Map each Roman numeral to its integer value
+    - If current value < next value, subtract it (e.g., IV = -1 + 5 = 4)
+    - Otherwise, add the current value
+    - This handles all subtraction cases (IV, IX, XL, XC, CD, CM)
     """
 
     def romanToInt(self, s: str) -> int:
         """
-        [TODO: Implement]
+        Convert a Roman numeral string to an integer.
+
+        Args:
+            s: Roman numeral string
+
+        Returns:
+            Integer value of the Roman numeral
         """
-        pass
+        roman_values = {
+            'I': 1, 'V': 5, 'X': 10, 'L': 50,
+            'C': 100, 'D': 500, 'M': 1000
+        }
+
+        result = 0
+        for i in range(len(s)):
+            # If current value is less than next value, subtract it
+            if i < len(s) - 1 and roman_values[s[i]] < roman_values[s[i + 1]]:
+                result -= roman_values[s[i]]
+            else:
+                result += roman_values[s[i]]
+
+        return result
 
 
 # Metadata for tracking
@@ -99,7 +121,7 @@ PROBLEM_METADATA = {
     "pattern": "Two Pointers",
     "topics": ['Hash Table', 'Math', 'String'],
     "url": "https://leetcode.com/problems/roman-to-integer/",
-    "companies": [],
-    "time_complexity": "O(?)",
-    "space_complexity": "O(?)",
+    "companies": ['Amazon', 'Microsoft', 'Apple', 'Google', 'Facebook'],
+    "time_complexity": "O(n)",
+    "space_complexity": "O(1)",
 }

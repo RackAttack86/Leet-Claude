@@ -10,12 +10,12 @@ Given an integer array `nums`, return an array `answer` such that `answer[i]` is
 
 The product of any prefix or suffix of `nums` is guaranteed to fit in a 32-bit integer.
 
-You must write an algorithm that runs in `O(n)` time and without using the division operation.
+You must write an algorithm that runs in `O(n)` time and without using the division operation.
 
 ## Constraints
 
-- `2
-- 30
+- `2 <= nums.length <= 10^5`
+- `-30 <= nums[i] <= 30`
 - The input is generated such that `answer[i]` is guaranteed to fit in a 32-bit integer.
 
 ## Examples
@@ -36,26 +36,50 @@ Output: [0,0,9,0,0]
 
 ## Approaches
 
-### 1. [Approach Name]
+### 1. Prefix and Suffix Products
 
-**Time Complexity:** O(?)
-**Space Complexity:** O(?)
+**Time Complexity:** O(n) - Two passes through the array
+**Space Complexity:** O(1) - Output array doesn't count as extra space per problem
 
 ```python
-# TODO: Add code snippet
+def productExceptSelf(self, nums: List[int]) -> List[int]:
+    n = len(nums)
+    answer = [1] * n
+
+    # First pass: Calculate prefix products
+    # answer[i] contains product of all elements to the left of i
+    prefix = 1
+    for i in range(n):
+        answer[i] = prefix
+        prefix *= nums[i]
+
+    # Second pass: Multiply by suffix products
+    # suffix contains product of all elements to the right of i
+    suffix = 1
+    for i in range(n - 1, -1, -1):
+        answer[i] *= suffix
+        suffix *= nums[i]
+
+    return answer
 ```
 
 **Why this works:**
-[TODO: Explain approach]
+Two-pass approach using prefix and suffix products. First pass computes prefix products (product of all elements to the left). Second pass computes suffix products on-the-fly and multiplies with prefix.
 
 ## Key Insights
 
-[TODO: Add key insights]
+1. answer[i] = product of all elements left of i * product of all elements right of i
+2. First pass: Build prefix products in the result array
+3. Second pass: Multiply by suffix products (computed on-the-fly with running product)
+4. No division used, handles zeros naturally
 
 ## Common Mistakes
 
-[TODO: Add common mistakes]
+- Using division (fails when array contains zeros)
+- Not handling the O(1) space requirement properly
+- Creating separate prefix and suffix arrays (O(n) extra space)
 
 ## Related Problems
 
-[TODO: Add related problems]
+- Trapping Rain Water (LeetCode #42)
+- Maximum Product Subarray (LeetCode #152)

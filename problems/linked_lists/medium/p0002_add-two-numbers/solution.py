@@ -6,7 +6,7 @@ Link: https://leetcode.com/problems/add-two-numbers/
 
 Problem:
 --------
-You are given two non-empty linked lists representing two non-negative integers. The digits are stored in reverse order, and each of their nodes contains a single digit. Add the two numbers and return the sum as a linked list.
+You are given two non-empty linked lists representing two non-negative integers. The digits are stored in reverse order, and each of their nodes contains a single digit. Add the two numbers and return the sum as a linked list.
 
 You may assume the two numbers do not contain any leading zero, except the number 0 itself.
 
@@ -61,25 +61,48 @@ class Solution:
     """
     Solution to LeetCode Problem #2: Add Two Numbers
 
-    Approach: [TODO: Describe approach]
-    Time Complexity: O(?)
-    Space Complexity: O(?)
+    Approach: Elementary Math with Carry
+    - Traverse both lists simultaneously, adding corresponding digits along with any carry
+    - Use a dummy head node to simplify result list construction
+    - Handle lists of different lengths by treating missing nodes as 0
+    - Don't forget to handle the final carry if it exists
+
+    Time Complexity: O(max(m, n)) where m and n are the lengths of the two lists
+    Space Complexity: O(max(m, n)) for the result list (O(1) auxiliary space)
 
     Key Insights:
-    [TODO: Add key insights]
+    - Digits are stored in reverse order, which naturally aligns with addition from least significant digit
+    - Using a dummy head simplifies edge cases and eliminates special handling for the first node
+    - The carry can only be 0 or 1 since max sum is 9 + 9 + 1 = 19
     """
-
-    def __init__(self, val=0: Any, next=None: Any):
-        """
-        [TODO: Implement]
-        """
-        pass
 
     def addTwoNumbers(self, l1: Optional[ListNode], l2: Optional[ListNode]) -> Optional[ListNode]:
         """
-        [TODO: Implement]
+        Add two numbers represented as linked lists with digits in reverse order.
         """
-        pass
+        dummy = ListNode(0)
+        current = dummy
+        carry = 0
+
+        while l1 or l2 or carry:
+            # Get values from current nodes, or 0 if the list is exhausted
+            val1 = l1.val if l1 else 0
+            val2 = l2.val if l2 else 0
+
+            # Calculate sum and carry
+            total = val1 + val2 + carry
+            carry = total // 10
+            digit = total % 10
+
+            # Create new node with the digit
+            current.next = ListNode(digit)
+            current = current.next
+
+            # Move to next nodes if they exist
+            l1 = l1.next if l1 else None
+            l2 = l2.next if l2 else None
+
+        return dummy.next
 
 
 # Metadata for tracking
@@ -90,7 +113,7 @@ PROBLEM_METADATA = {
     "pattern": "Linked Lists",
     "topics": ['Linked List', 'Math', 'Recursion'],
     "url": "https://leetcode.com/problems/add-two-numbers/",
-    "companies": [],
-    "time_complexity": "O(?)",
-    "space_complexity": "O(?)",
+    "companies": ["Amazon", "Microsoft", "Google", "Facebook", "Apple", "Bloomberg", "Adobe", "Uber"],
+    "time_complexity": "O(max(m, n))",
+    "space_complexity": "O(max(m, n))",
 }

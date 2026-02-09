@@ -32,6 +32,13 @@ Explanation: The root node's value is 5 but its right child's value is 4.
 from typing import List, Optional
 
 
+class TreeNode:
+    def __init__(self, val=0, left=None, right=None):
+        self.val = val
+        self.left = left
+        self.right = right
+
+
 class Solution:
     """
     Solution to LeetCode Problem #98: Validate Binary Search Tree
@@ -47,11 +54,28 @@ class Solution:
     - Inorder traversal of BST is sorted
     """
 
-    def solve(self):
+    def isValidBST(self, root: Optional[TreeNode]) -> bool:
         """
-        [TODO: Implement solution]
+        Validate if a binary tree is a valid BST using range validation.
+
+        For each node, we track the valid range (min_val, max_val) that its value
+        must fall within. Left children must be less than parent, right children
+        must be greater than parent.
         """
-        pass
+        def validate(node: Optional[TreeNode], min_val: float, max_val: float) -> bool:
+            if not node:
+                return True
+
+            # Check if current node's value is within valid range
+            if node.val <= min_val or node.val >= max_val:
+                return False
+
+            # Left subtree: values must be less than current node
+            # Right subtree: values must be greater than current node
+            return (validate(node.left, min_val, node.val) and
+                    validate(node.right, node.val, max_val))
+
+        return validate(root, float('-inf'), float('inf'))
 
 
 # Metadata for tracking

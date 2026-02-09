@@ -28,8 +28,8 @@ string convert(string s, int numRows);
 
 ## Constraints
 
-- `1
-- s` consists of English letters (lower-case and upper-case), `','` and `'.'`.
+- `1 <= s.length <= 1000`
+- `s` consists of English letters (lower-case and upper-case), `','` and `'.'`.
 
 ## Examples
 
@@ -64,26 +64,48 @@ Output: "A"
 
 ## Approaches
 
-### 1. [Approach Name]
+### 1. Row Simulation
 
-**Time Complexity:** O(?)
-**Space Complexity:** O(?)
+**Time Complexity:** O(n) where n is the length of the string
+**Space Complexity:** O(n) for storing the result
 
 ```python
-# TODO: Add code snippet
+def convert(self, s: str, numRows: int) -> str:
+    if numRows == 1 or numRows >= len(s):
+        return s
+
+    # Create a list of strings for each row
+    rows = [''] * numRows
+    current_row = 0
+    going_down = False
+
+    for char in s:
+        rows[current_row] += char
+        # Change direction at the first or last row
+        if current_row == 0 or current_row == numRows - 1:
+            going_down = not going_down
+        current_row += 1 if going_down else -1
+
+    return ''.join(rows)
 ```
 
 **Why this works:**
-[TODO: Explain approach]
+Simulate the zigzag pattern by maintaining separate strings for each row. Traverse the input string character by character, appending each character to the appropriate row. Use a direction variable to track whether we're moving down or up in the zigzag pattern.
 
 ## Key Insights
 
-[TODO: Add key insights]
+1. We don't need to build a 2D grid - just maintain n rows as strings
+2. The pattern goes: row 0, 1, 2, ..., numRows-1, numRows-2, ..., 1, 0, 1, ...
+3. Change direction when we hit row 0 or row numRows-1
+4. Edge case: if numRows == 1, return original string (no zigzag)
 
 ## Common Mistakes
 
-[TODO: Add common mistakes]
+- Not handling the edge case when numRows is 1 or greater than string length
+- Incorrectly implementing the direction change logic
+- Off-by-one errors when tracking the current row
 
 ## Related Problems
 
-[TODO: Add related problems]
+- String manipulation problems
+- Pattern simulation problems

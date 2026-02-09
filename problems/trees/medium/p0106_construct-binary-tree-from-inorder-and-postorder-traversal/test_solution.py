@@ -3,9 +3,9 @@ Tests for LeetCode Problem #106: Construct Binary Tree from Inorder and Postorde
 """
 
 import pytest
-from .solution import Solution, PROBLEM_METADATA
-from .solution import TreeNode
-from .solution import Node
+from solution import Solution, PROBLEM_METADATA
+from solution import TreeNode
+from solution import Node
 
 
 def array_to_tree(arr):
@@ -68,9 +68,9 @@ class TestConstructBinaryTreeFromInorderAndPostorderTraversal:
         """Example 1 from problem description"""
         inorder = [9,3,15,20,7]
         postorder = [9,15,7,20,3]
-        expected = [3,9,20,null,null,15,7]
+        expected = [3,9,20,None,None,15,7]
         result = solution.buildTree(inorder, postorder)
-        assert result == expected
+        assert tree_to_array(result) == expected
 
 
     def test_example_2(self, solution):
@@ -79,14 +79,58 @@ class TestConstructBinaryTreeFromInorderAndPostorderTraversal:
         postorder = [-1]
         expected = [-1]
         result = solution.buildTree(inorder, postorder)
-        assert result == expected
+        assert tree_to_array(result) == expected
 
 
-    def test_edge_case_empty(self, solution):
-        """Test with empty/minimal input"""
-        # TODO: Implement edge case test
-        pass
+    def test_single_node(self, solution):
+        """Test with single node"""
+        inorder = [5]
+        postorder = [5]
+        expected = [5]
+        result = solution.buildTree(inorder, postorder)
+        assert tree_to_array(result) == expected
 
+    def test_all_right_children(self, solution):
+        """Test with tree having all right children"""
+        # Tree: 1 -> 2 -> 3 (all right)
+        inorder = [1, 2, 3]
+        postorder = [3, 2, 1]
+        result = solution.buildTree(inorder, postorder)
+        arr = tree_to_array(result)
+        assert arr == [1, None, 2, None, 3]
+
+    def test_all_left_children(self, solution):
+        """Test with tree having all left children"""
+        # Tree: 3 -> 2 -> 1 (all left)
+        inorder = [1, 2, 3]
+        postorder = [1, 2, 3]
+        result = solution.buildTree(inorder, postorder)
+        arr = tree_to_array(result)
+        assert arr == [3, 2, None, 1]
+
+    def test_two_nodes_left(self, solution):
+        """Test with two nodes, left child"""
+        inorder = [1, 2]
+        postorder = [1, 2]
+        result = solution.buildTree(inorder, postorder)
+        arr = tree_to_array(result)
+        assert arr == [2, 1]
+
+    def test_two_nodes_right(self, solution):
+        """Test with two nodes, right child"""
+        inorder = [1, 2]
+        postorder = [2, 1]
+        result = solution.buildTree(inorder, postorder)
+        arr = tree_to_array(result)
+        assert arr == [1, None, 2]
+
+    def test_complete_tree(self, solution):
+        """Test with complete binary tree"""
+        inorder = [4, 2, 5, 1, 6, 3, 7]
+        postorder = [4, 5, 2, 6, 7, 3, 1]
+        result = solution.buildTree(inorder, postorder)
+        arr = tree_to_array(result)
+        assert arr == [1, 2, 3, 4, 5, 6, 7]
 
     # Metadata validation
     def test_metadata_exists(self):

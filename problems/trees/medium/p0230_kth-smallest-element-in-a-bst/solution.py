@@ -50,25 +50,46 @@ class Solution:
     """
     Solution to LeetCode Problem #230: Kth Smallest Element in a BST
 
-    Approach: [TODO: Describe approach]
-    Time Complexity: O(?)
-    Space Complexity: O(?)
+    Approach: Iterative In-order Traversal with Early Exit
+    - In-order traversal of BST visits nodes in ascending order
+    - Use stack for iterative traversal
+    - Count nodes visited and return when k-th node is reached
+    - Early exit avoids traversing entire tree
+
+    Time Complexity: O(H + k) - go to leftmost (H), then visit k nodes
+    Space Complexity: O(H) - stack stores at most H nodes (tree height)
 
     Key Insights:
-    [TODO: Add key insights]
+    - BST in-order traversal = sorted ascending order
+    - Stop as soon as k-th element is found (no need to complete traversal)
+    - Iterative approach allows early termination
+    - For frequent queries: augment tree with subtree sizes
     """
 
-    def __init__(self, val=0: Any, left=None: Any, right=None: Any):
-        """
-        [TODO: Implement]
-        """
-        pass
-
     def kthSmallest(self, root: Optional[TreeNode], k: int) -> int:
-        """
-        [TODO: Implement]
-        """
-        pass
+        stack = []
+        current = root
+        count = 0
+
+        while stack or current:
+            # Go to the leftmost node
+            while current:
+                stack.append(current)
+                current = current.left
+
+            # Process current node
+            current = stack.pop()
+            count += 1
+
+            # If this is the k-th smallest, return it
+            if count == k:
+                return current.val
+
+            # Move to right subtree
+            current = current.right
+
+        # Should not reach here if k is valid
+        return -1
 
 
 # Metadata for tracking
@@ -79,7 +100,7 @@ PROBLEM_METADATA = {
     "pattern": "Trees",
     "topics": ['Tree', 'Depth-First Search', 'Binary Search Tree', 'Binary Tree'],
     "url": "https://leetcode.com/problems/kth-smallest-element-in-a-bst/",
-    "companies": [],
-    "time_complexity": "O(?)",
-    "space_complexity": "O(?)",
+    "companies": ["Amazon", "Facebook", "Microsoft", "Google", "Bloomberg", "Apple", "Uber", "LinkedIn"],
+    "time_complexity": "O(H + k)",
+    "space_complexity": "O(H)",
 }

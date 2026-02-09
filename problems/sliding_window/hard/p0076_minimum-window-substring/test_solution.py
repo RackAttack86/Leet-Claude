@@ -3,7 +3,7 @@ Tests for LeetCode Problem #76: Minimum Window Substring
 """
 
 import pytest
-from .solution import Solution, PROBLEM_METADATA
+from solution import Solution, PROBLEM_METADATA
 
 
 
@@ -45,9 +45,10 @@ class TestMinimumWindowSubstring:
 
 
     def test_edge_case_empty(self, solution):
-        """Test with empty/minimal input"""
-        # TODO: Implement edge case test
-        pass
+        """Test with empty string"""
+        s = ""
+        t = "a"
+        assert solution.minWindow(s, t) == ""
 
 
     # Metadata validation

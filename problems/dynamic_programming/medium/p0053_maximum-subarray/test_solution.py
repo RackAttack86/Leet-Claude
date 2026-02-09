@@ -3,7 +3,7 @@ Tests for LeetCode Problem #53: Maximum Subarray
 """
 
 import pytest
-from .solution import Solution, PROBLEM_METADATA
+from solution import Solution, PROBLEM_METADATA
 
 
 
@@ -41,10 +41,66 @@ class TestMaximumSubarray:
         assert result == expected
 
 
-    def test_edge_case_empty(self, solution):
-        """Test with empty/minimal input"""
-        # TODO: Implement edge case test
-        pass
+    # Edge cases
+    def test_single_element_positive(self, solution):
+        """Single positive element"""
+        assert solution.maxSubArray([5]) == 5
+
+    def test_single_element_negative(self, solution):
+        """Single negative element"""
+        assert solution.maxSubArray([-5]) == -5
+
+    def test_single_element_zero(self, solution):
+        """Single zero element"""
+        assert solution.maxSubArray([0]) == 0
+
+    def test_all_negative(self, solution):
+        """All negative numbers - pick least negative"""
+        assert solution.maxSubArray([-3, -1, -4, -2]) == -1
+
+    def test_all_positive(self, solution):
+        """All positive numbers - sum all"""
+        assert solution.maxSubArray([1, 2, 3, 4, 5]) == 15
+
+    def test_all_zeros(self, solution):
+        """All zeros"""
+        assert solution.maxSubArray([0, 0, 0, 0]) == 0
+
+    def test_alternating_positive_negative(self, solution):
+        """Alternating positive and negative"""
+        assert solution.maxSubArray([1, -1, 1, -1, 1]) == 1
+
+    def test_large_negative_then_positive(self, solution):
+        """Large negative followed by small positive"""
+        assert solution.maxSubArray([-100, 1, 2, 3]) == 6
+
+    def test_positive_then_large_negative(self, solution):
+        """Positive followed by large negative"""
+        assert solution.maxSubArray([1, 2, 3, -100]) == 6
+
+    def test_two_elements_positive(self, solution):
+        """Two positive elements"""
+        assert solution.maxSubArray([1, 2]) == 3
+
+    def test_two_elements_negative(self, solution):
+        """Two negative elements"""
+        assert solution.maxSubArray([-1, -2]) == -1
+
+    def test_max_subarray_in_middle(self, solution):
+        """Maximum subarray is in the middle"""
+        assert solution.maxSubArray([-1, 5, 6, -1]) == 11
+
+    def test_max_subarray_at_end(self, solution):
+        """Maximum subarray is at the end"""
+        assert solution.maxSubArray([-5, -4, 3, 4, 5]) == 12
+
+    def test_max_subarray_at_start(self, solution):
+        """Maximum subarray is at the start"""
+        assert solution.maxSubArray([3, 4, 5, -100, 1]) == 12
+
+    def test_large_values(self, solution):
+        """Large positive and negative values"""
+        assert solution.maxSubArray([10000, -9999, 10000]) == 10001
 
 
     # Metadata validation

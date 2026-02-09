@@ -34,19 +34,31 @@ class Solution:
     """
     Solution to LeetCode Problem #242: Valid Anagram
 
-    Approach: [TODO: Describe approach]
-    Time Complexity: O(?)
-    Space Complexity: O(?)
+    Approach: Character Frequency Count
+    Time Complexity: O(n) where n is the length of the strings
+    Space Complexity: O(1) - at most 26 lowercase letters
 
     Key Insights:
-    [TODO: Add key insights]
+    - Anagrams have the same character frequencies
+    - Use Counter or a frequency array to count characters
+    - Compare the counts - if equal, they're anagrams
     """
 
     def isAnagram(self, s: str, t: str) -> bool:
         """
-        [TODO: Implement]
+        Check if t is an anagram of s.
+
+        Args:
+            s: First string
+            t: Second string
+
+        Returns:
+            True if t is an anagram of s
         """
-        pass
+        if len(s) != len(t):
+            return False
+
+        return Counter(s) == Counter(t)
 
 
 # Metadata for tracking
@@ -57,7 +69,7 @@ PROBLEM_METADATA = {
     "pattern": "Two Pointers",
     "topics": ['Hash Table', 'String', 'Sorting'],
     "url": "https://leetcode.com/problems/valid-anagram/",
-    "companies": [],
-    "time_complexity": "O(?)",
-    "space_complexity": "O(?)",
+    "companies": ['Amazon', 'Google', 'Microsoft', 'Apple', 'Facebook'],
+    "time_complexity": "O(n)",
+    "space_complexity": "O(1)",
 }

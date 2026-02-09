@@ -90,6 +90,43 @@ class TestReorganizeString:
         result = solution.reorganizeString(s)
         assert result == ""
 
+    def test_one_char_more_than_half(self, solution):
+        """Impossible - one char appears more than (n+1)/2 times"""
+        s = "aaaaabc"  # 'a' appears 5 times, n=7, max allowed = 4
+        result = solution.reorganizeString(s)
+        assert result == ""
+
+    def test_already_valid(self, solution):
+        """String is already valid (no adjacent duplicates)"""
+        s = "abab"
+        result = solution.reorganizeString(s)
+        assert is_valid_reorganization(s, result)
+
+    def test_barely_possible(self, solution):
+        """Barely possible - max char count equals (n+1)/2"""
+        s = "aab"  # 'a' appears 2 times, n=3, max allowed = 2
+        result = solution.reorganizeString(s)
+        assert is_valid_reorganization(s, result)
+        assert result != ""
+
+    def test_long_string_possible(self, solution):
+        """Long string that is possible to reorganize"""
+        s = "aaabbbccc"
+        result = solution.reorganizeString(s)
+        assert is_valid_reorganization(s, result)
+
+    def test_long_string_impossible(self, solution):
+        """Long string that is impossible to reorganize"""
+        s = "aaaaaaabbc"  # 'a' appears 7 times, n=10, max allowed = 5
+        result = solution.reorganizeString(s)
+        assert result == ""
+
+    def test_exactly_half(self, solution):
+        """Character appears exactly half the time (even length)"""
+        s = "aabb"  # Each appears 2 times, n=4, max allowed = 2
+        result = solution.reorganizeString(s)
+        assert is_valid_reorganization(s, result)
+
     # Metadata validation
     def test_metadata_exists(self):
         """Verify problem metadata is complete"""

@@ -48,19 +48,46 @@ class Solution:
     """
     Solution to LeetCode Problem #74: Search a 2D Matrix
 
-    Approach: [TODO: Describe approach]
-    Time Complexity: O(?)
-    Space Complexity: O(?)
+    Approach: Treat 2D Matrix as 1D Sorted Array
+    Since each row is sorted and the first element of each row is greater than
+    the last element of the previous row, the entire matrix can be treated as
+    a single sorted array of length m*n.
+
+    We perform standard binary search where:
+    - Virtual index i maps to matrix[i // n][i % n]
+    - Search space is 0 to m*n - 1
+
+    Time Complexity: O(log(m*n)) - Single binary search over m*n elements
+    Space Complexity: O(1) - Only using constant extra space
 
     Key Insights:
-    [TODO: Add key insights]
+    1. The 2D matrix with given properties is essentially a flattened sorted array
+    2. Convert 1D index to 2D coordinates: row = idx // cols, col = idx % cols
+    3. Single binary search is more efficient than two binary searches
+    4. Handle empty matrix edge case
     """
 
     def searchMatrix(self, matrix: List[List[int]], target: int) -> bool:
-        """
-        [TODO: Implement]
-        """
-        pass
+        if not matrix or not matrix[0]:
+            return False
+
+        m, n = len(matrix), len(matrix[0])
+        left, right = 0, m * n - 1
+
+        while left <= right:
+            mid = left + (right - left) // 2
+            # Convert 1D index to 2D coordinates
+            row, col = mid // n, mid % n
+            mid_val = matrix[row][col]
+
+            if mid_val == target:
+                return True
+            elif mid_val < target:
+                left = mid + 1
+            else:
+                right = mid - 1
+
+        return False
 
 
 # Metadata for tracking
@@ -71,7 +98,7 @@ PROBLEM_METADATA = {
     "pattern": "Binary Search",
     "topics": ['Array', 'Binary Search', 'Matrix'],
     "url": "https://leetcode.com/problems/search-a-2d-matrix/",
-    "companies": [],
-    "time_complexity": "O(?)",
-    "space_complexity": "O(?)",
+    "companies": ["Amazon", "Microsoft", "Facebook", "Apple", "Bloomberg", "Google", "Oracle", "Uber"],
+    "time_complexity": "O(log(m*n))",
+    "space_complexity": "O(1)",
 }

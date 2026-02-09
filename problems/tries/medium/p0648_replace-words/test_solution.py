@@ -3,7 +3,7 @@ Tests for LeetCode Problem #648: Replace Words
 """
 
 import pytest
-from .solution import Solution, PROBLEM_METADATA
+from solution import Solution, PROBLEM_METADATA
 
 
 class TestReplaceWords:
@@ -16,19 +16,21 @@ class TestReplaceWords:
 
     def test_example_1(self, solution):
         """Example 1 from problem description"""
-        # TODO: Implement test
-        pass
+        dictionary = ["cat", "bat", "rat"]
+        sentence = "the cattle was rattled by the battery"
+        assert solution.replaceWords(dictionary, sentence) == "the cat was rat by the bat"
 
     def test_example_2(self, solution):
         """Example 2 from problem description"""
-        # TODO: Implement test
-        pass
+        dictionary = ["a", "b", "c"]
+        sentence = "aadsfasf absbs bbab cadsfafs"
+        assert solution.replaceWords(dictionary, sentence) == "a a b c"
 
-    # Edge cases
     def test_edge_case_1(self, solution):
-        """TODO: Describe edge case"""
-        # TODO: Implement test
-        pass
+        """Test with no matching roots"""
+        dictionary = ["xyz"]
+        sentence = "hello world"
+        assert solution.replaceWords(dictionary, sentence) == "hello world"
 
     # Metadata validation
     def test_metadata_exists(self):

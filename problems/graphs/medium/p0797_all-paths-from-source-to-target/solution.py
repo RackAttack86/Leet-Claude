@@ -47,11 +47,38 @@ class Solution:
     - DAG guarantees termination
     """
 
-    def solve(self):
+    def allPathsSourceTarget(self, graph: List[List[int]]) -> List[List[int]]:
         """
-        [TODO: Implement solution]
+        Find all paths from node 0 to node n-1 in a DAG.
+
+        Args:
+            graph: Adjacency list where graph[i] contains nodes reachable from i
+
+        Returns:
+            List of all paths from 0 to n-1
+
+        Approach:
+        1. Use DFS with backtracking
+        2. Start from node 0
+        3. When reaching node n-1, add current path to result
+        4. DAG guarantees no cycles, so no need for visited set
         """
-        pass
+        n = len(graph)
+        target = n - 1
+        result = []
+
+        def dfs(node: int, path: List[int]) -> None:
+            if node == target:
+                result.append(path[:])
+                return
+
+            for neighbor in graph[node]:
+                path.append(neighbor)
+                dfs(neighbor, path)
+                path.pop()  # Backtrack
+
+        dfs(0, [0])
+        return result
 
 
 # Metadata for tracking

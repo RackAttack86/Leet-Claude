@@ -54,19 +54,61 @@ class Solution:
     """
     Solution to LeetCode Problem #123: Best Time to Buy and Sell Stock III
 
-    Approach: [TODO: Describe approach]
-    Time Complexity: O(?)
-    Space Complexity: O(?)
+    Approach: State Machine / DP with four states
+    - Track four states representing the maximum profit at each stage:
+      * buy1: Maximum profit after first buy (most negative cost)
+      * sell1: Maximum profit after first sell
+      * buy2: Maximum profit after second buy
+      * sell2: Maximum profit after second sell
+    - For each price, update all states based on the best action.
+
+    Time Complexity: O(n)
+    Space Complexity: O(1)
 
     Key Insights:
-    [TODO: Add key insights]
+    1. We can model this as a state machine with 4 states (buy1, sell1, buy2, sell2).
+    2. buy1 tracks the minimum cost for first purchase (as negative profit).
+    3. sell1 tracks the maximum profit after first complete transaction.
+    4. buy2 tracks the minimum effective cost for second purchase (considering profit from first).
+    5. sell2 tracks the maximum profit after both transactions.
+    6. The order of updates matters - we update from sell2 backwards to buy1 to avoid using same day's values.
     """
 
     def maxProfit(self, prices: List[int]) -> int:
         """
-        [TODO: Implement]
+        Calculate maximum profit with at most 2 transactions.
+
+        Args:
+            prices: List of daily stock prices
+
+        Returns:
+            Maximum profit achievable with at most 2 transactions
         """
-        pass
+        if not prices:
+            return 0
+
+        # Initialize states
+        # buy1: cost of first purchase (negative represents spending money)
+        buy1 = float('-inf')
+        # sell1: profit after first complete transaction
+        sell1 = 0
+        # buy2: effective cost after second purchase (includes profit from first)
+        buy2 = float('-inf')
+        # sell2: profit after both transactions
+        sell2 = 0
+
+        for price in prices:
+            # Update in reverse order to use previous day's values
+            # Maximum profit after second sell
+            sell2 = max(sell2, buy2 + price)
+            # Maximum "profit" after second buy (includes first transaction's profit)
+            buy2 = max(buy2, sell1 - price)
+            # Maximum profit after first sell
+            sell1 = max(sell1, buy1 + price)
+            # Maximum "profit" after first buy (negative of cost)
+            buy1 = max(buy1, -price)
+
+        return sell2
 
 
 # Metadata for tracking
@@ -77,7 +119,7 @@ PROBLEM_METADATA = {
     "pattern": "Dynamic Programming",
     "topics": ['Array', 'Dynamic Programming'],
     "url": "https://leetcode.com/problems/best-time-to-buy-and-sell-stock-iii/",
-    "companies": [],
-    "time_complexity": "O(?)",
-    "space_complexity": "O(?)",
+    "companies": ["Amazon", "Google", "Microsoft", "Facebook", "Bloomberg", "Apple", "Goldman Sachs", "Uber", "Adobe"],
+    "time_complexity": "O(n)",
+    "space_complexity": "O(1)",
 }

@@ -54,25 +54,42 @@ class Solution:
     """
     Solution to LeetCode Problem #108: Convert Sorted Array to Binary Search Tree
 
-    Approach: [TODO: Describe approach]
-    Time Complexity: O(?)
-    Space Complexity: O(?)
+    Approach: Divide and Conquer (Recursive Binary Search)
+    - Choose the middle element as the root to ensure height balance.
+    - Recursively build left subtree from left half of array.
+    - Recursively build right subtree from right half of array.
+    - This guarantees the tree is height-balanced since we always split evenly.
+
+    Time Complexity: O(n) - visit each element once to create a node
+    Space Complexity: O(log n) - recursion stack depth for balanced tree
 
     Key Insights:
-    [TODO: Add key insights]
+    - Middle element as root ensures balanced tree (equal nodes on both sides)
+    - Sorted array property means left half < root < right half (BST property)
+    - Using indices avoids creating new arrays (space efficient)
     """
-
-    def __init__(self, val=0: Any, left=None: Any, right=None: Any):
-        """
-        [TODO: Implement]
-        """
-        pass
 
     def sortedArrayToBST(self, nums: List[int]) -> Optional[TreeNode]:
         """
-        [TODO: Implement]
+        Convert a sorted array to a height-balanced BST.
         """
-        pass
+        def buildBST(left: int, right: int) -> Optional[TreeNode]:
+            if left > right:
+                return None
+
+            # Choose middle element as root (left middle for even length)
+            mid = (left + right) // 2
+
+            # Create root node with middle element
+            root = TreeNode(nums[mid])
+
+            # Recursively build left and right subtrees
+            root.left = buildBST(left, mid - 1)
+            root.right = buildBST(mid + 1, right)
+
+            return root
+
+        return buildBST(0, len(nums) - 1)
 
 
 # Metadata for tracking
@@ -83,7 +100,7 @@ PROBLEM_METADATA = {
     "pattern": "Trees",
     "topics": ['Array', 'Divide and Conquer', 'Tree', 'Binary Search Tree', 'Binary Tree'],
     "url": "https://leetcode.com/problems/convert-sorted-array-to-binary-search-tree/",
-    "companies": [],
-    "time_complexity": "O(?)",
-    "space_complexity": "O(?)",
+    "companies": ["Amazon", "Microsoft", "Facebook", "Google", "Apple", "VMware", "Airbnb"],
+    "time_complexity": "O(n)",
+    "space_complexity": "O(log n)",
 }

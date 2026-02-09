@@ -42,11 +42,28 @@ class Solution:
     - Each element visited at most twice
     """
 
-    def solve(self):
+    def minSubArrayLen(self, target: int, nums: List[int]) -> int:
         """
-        [TODO: Implement solution]
+        Find the minimal length of a subarray whose sum is >= target.
+
+        Uses sliding window approach. Expand window by moving right pointer,
+        contract when sum >= target to find minimum length.
         """
-        pass
+        min_length = float('inf')
+        current_sum = 0
+        left = 0
+
+        for right in range(len(nums)):
+            # Expand window
+            current_sum += nums[right]
+
+            # Contract window while sum is >= target
+            while current_sum >= target:
+                min_length = min(min_length, right - left + 1)
+                current_sum -= nums[left]
+                left += 1
+
+        return min_length if min_length != float('inf') else 0
 
 
 # Metadata for tracking

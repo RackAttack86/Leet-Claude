@@ -3,7 +3,7 @@ Tests for LeetCode Problem #238: Product of Array Except Self
 """
 
 import pytest
-from .solution import Solution, PROBLEM_METADATA
+from solution import Solution, PROBLEM_METADATA
 
 
 
@@ -33,10 +33,19 @@ class TestProductOfArrayExceptSelf:
         assert result == expected
 
 
-    def test_edge_case_empty(self, solution):
-        """Test with empty/minimal input"""
-        # TODO: Implement edge case test
-        pass
+    def test_edge_case_two_elements(self, solution):
+        """Test with minimal input of two elements"""
+        nums = [1, 2]
+        expected = [2, 1]
+        result = solution.productExceptSelf(nums)
+        assert result == expected
+
+    def test_edge_case_with_ones(self, solution):
+        """Test with array containing all ones"""
+        nums = [1, 1, 1, 1]
+        expected = [1, 1, 1, 1]
+        result = solution.productExceptSelf(nums)
+        assert result == expected
 
 
     # Metadata validation

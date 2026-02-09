@@ -3,7 +3,7 @@ Tests for LeetCode Problem #150: Evaluate Reverse Polish Notation
 """
 
 import pytest
-from .solution import Solution, PROBLEM_METADATA
+from solution import Solution, PROBLEM_METADATA
 
 
 class TestEvaluateReversePolishNotation:
@@ -16,19 +16,22 @@ class TestEvaluateReversePolishNotation:
 
     def test_example_1(self, solution):
         """Example 1 from problem description"""
-        # TODO: Implement test
-        pass
+        tokens = ["2", "1", "+", "3", "*"]
+        expected = 9
+        assert solution.evalRPN(tokens) == expected
 
     def test_example_2(self, solution):
         """Example 2 from problem description"""
-        # TODO: Implement test
-        pass
+        tokens = ["4", "13", "5", "/", "+"]
+        expected = 6
+        assert solution.evalRPN(tokens) == expected
 
     # Edge cases
-    def test_edge_case_1(self, solution):
-        """TODO: Describe edge case"""
-        # TODO: Implement test
-        pass
+    def test_edge_case_single_number(self, solution):
+        """Single number as input"""
+        tokens = ["42"]
+        expected = 42
+        assert solution.evalRPN(tokens) == expected
 
     # Metadata validation
     def test_metadata_exists(self):

@@ -8,74 +8,68 @@
 
 Given an integer array `nums` sorted in non-decreasing order, remove the duplicates in-place such that each unique element appears only once. The relative order of the elements should be kept the same.
 
-Consider the number of unique elements in `nums` to be `k​​​​​​​`​​​​​​​. After removing duplicates, return the number of unique elements `k`.
+Consider the number of unique elements in `nums` to be `k`. After removing duplicates, return the number of unique elements `k`.
 
-The first `k` elements of `nums` should contain the unique numbers in sorted order. The remaining elements beyond index `k - 1` can be ignored.
-
-Custom Judge:
-
-The judge will test your solution with the following code:
-
-```
-
-int[] nums = [...]; // Input array
-int[] expectedNums = [...]; // The expected answer with correct length
-
-int k = removeDuplicates(nums); // Calls your implementation
-
-assert k == expectedNums.length;
-for (int i = 0; i
+The first `k` elements of `nums` should contain the unique numbers in sorted order. The remaining elements beyond index `k - 1` can be ignored.
 
 ## Constraints
 
-- `1
-- 100
-- nums` is sorted in non-decreasing order.
+- 1 <= nums.length <= 3 * 10^4
+- -100 <= nums[i] <= 100
+- `nums` is sorted in non-decreasing order.
 
 ## Examples
 
 Example 1:
 ```
-
 Input: nums = [1,1,2]
 Output: 2, nums = [1,2,_]
 Explanation: Your function should return k = 2, with the first two elements of nums being 1 and 2 respectively.
 It does not matter what you leave beyond the returned k (hence they are underscores).
-
 ```
 
 Example 2:
 ```
-
 Input: nums = [0,0,1,1,1,2,2,3,3,4]
 Output: 5, nums = [0,1,2,3,4,_,_,_,_,_]
 Explanation: Your function should return k = 5, with the first five elements of nums being 0, 1, 2, 3, and 4 respectively.
 It does not matter what you leave beyond the returned k (hence they are underscores).
-
 ```
 
 ## Approaches
 
-### 1. [Approach Name]
+### 1. Two Pointers
 
-**Time Complexity:** O(?)
-**Space Complexity:** O(?)
+**Time Complexity:** O(n) - single pass through array
+**Space Complexity:** O(1) - in-place modification
 
 ```python
-# TODO: Add code snippet
+def removeDuplicates(self, nums: List[int]) -> int:
+    l = r = 1
+    while r < len(nums):
+        if nums[r] != nums[l - 1]:
+            nums[l] = nums[r]
+            l += 1
+        r += 1
+    return l
 ```
 
 **Why this works:**
-[TODO: Explain approach]
+Use two pointers - slow pointer tracks position for next unique element, fast pointer scans through array. When we find a new unique value, copy it to the slow pointer position and advance. Since the array is sorted, duplicates are adjacent.
 
 ## Key Insights
 
-[TODO: Add key insights]
+- Array is sorted, so duplicates are adjacent
+- Compare current element with last unique element (at l-1)
+- Only copy when we find a different value
 
 ## Common Mistakes
 
-[TODO: Add common mistakes]
+- Starting pointers at wrong positions
+- Comparing with wrong element (should compare with last unique, not previous)
+- Forgetting that we need to return the count, not the array
 
 ## Related Problems
 
-[TODO: Add related problems]
+- Remove Element
+- Remove Duplicates from Sorted Array II

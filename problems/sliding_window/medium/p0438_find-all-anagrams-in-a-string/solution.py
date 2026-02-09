@@ -49,11 +49,44 @@ class Solution:
     - Use counter or array for frequencies
     """
 
-    def solve(self):
+    def findAnagrams(self, s: str, p: str) -> List[int]:
         """
-        [TODO: Implement solution]
+        Find all start indices of p's anagrams in s.
+
+        Uses fixed-size sliding window of length len(p).
+        Compare character frequencies to detect anagrams.
         """
-        pass
+        result = []
+        len_p, len_s = len(p), len(s)
+
+        if len_p > len_s:
+            return result
+
+        # Count characters in pattern
+        p_count = [0] * 26
+        s_count = [0] * 26
+
+        for char in p:
+            p_count[ord(char) - ord('a')] += 1
+
+        # Initialize first window
+        for i in range(len_p):
+            s_count[ord(s[i]) - ord('a')] += 1
+
+        if s_count == p_count:
+            result.append(0)
+
+        # Slide window
+        for i in range(len_p, len_s):
+            # Add new character to window
+            s_count[ord(s[i]) - ord('a')] += 1
+            # Remove old character from window
+            s_count[ord(s[i - len_p]) - ord('a')] -= 1
+
+            if s_count == p_count:
+                result.append(i - len_p + 1)
+
+        return result
 
 
 # Metadata for tracking

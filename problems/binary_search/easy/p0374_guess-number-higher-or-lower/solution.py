@@ -40,6 +40,15 @@ Output: 1
 from typing import List, Optional
 
 
+# The guess API is already defined for you.
+# @param num, your guess
+# @return -1 if num is higher than the picked number
+#          1 if num is lower than the picked number
+#          otherwise return 0
+def guess(num: int) -> int:
+    pass  # This is provided by LeetCode
+
+
 class Solution:
     """
     Solution to LeetCode Problem #374: Guess Number Higher or Lower
@@ -54,11 +63,18 @@ class Solution:
     - Similar to finding target in sorted array
     """
 
-    def solve(self):
-        """
-        [TODO: Implement solution]
-        """
-        pass
+    def guessNumber(self, n: int) -> int:
+        left, right = 1, n
+        while left <= right:
+            mid = (left + right) // 2
+            result = guess(mid)
+            if result == 0:
+                return mid
+            elif result == -1:  # Mid is too high
+                right = mid - 1
+            else:  # result == 1, Mid is too low
+                left = mid + 1
+        return left
 
 
 # Metadata for tracking

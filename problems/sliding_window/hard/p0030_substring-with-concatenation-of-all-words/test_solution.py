@@ -3,7 +3,7 @@ Tests for LeetCode Problem #30: Substring with Concatenation of All Words
 """
 
 import pytest
-from .solution import Solution, PROBLEM_METADATA
+from solution import Solution, PROBLEM_METADATA
 
 
 
@@ -45,9 +45,10 @@ class TestSubstringWithConcatenationOfAllWords:
 
 
     def test_edge_case_empty(self, solution):
-        """Test with empty/minimal input"""
-        # TODO: Implement edge case test
-        pass
+        """Test with empty string"""
+        s = ""
+        words = ["foo", "bar"]
+        assert solution.findSubstring(s, words) == []
 
 
     # Metadata validation

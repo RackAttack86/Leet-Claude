@@ -33,6 +33,7 @@ Output: 1
 """
 
 from typing import List, Optional
+import heapq
 
 
 class Solution:
@@ -50,11 +51,29 @@ class Solution:
     - Greedy swapping maximizes count
     """
 
-    def solve(self):
-        """
-        [TODO: Implement solution]
-        """
-        pass
+    def scheduleCourse(self, courses: List[List[int]]) -> int:
+        # Sort by deadline (lastDay)
+        courses.sort(key=lambda x: x[1])
+
+        # Max heap to store durations (use negative for max heap)
+        heap = []
+        total_time = 0
+
+        for duration, lastDay in courses:
+            # Skip courses where duration exceeds deadline
+            if duration > lastDay:
+                continue
+
+            # Add this course
+            heapq.heappush(heap, -duration)
+            total_time += duration
+
+            # If total time exceeds deadline, remove the longest course
+            if total_time > lastDay:
+                longest = -heapq.heappop(heap)
+                total_time -= longest
+
+        return len(heap)
 
 
 # Metadata for tracking

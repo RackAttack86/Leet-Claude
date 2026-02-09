@@ -3,7 +3,7 @@ Tests for LeetCode Problem #3: Longest Substring Without Repeating Characters
 """
 
 import pytest
-from .solution import Solution, PROBLEM_METADATA
+from solution import Solution, PROBLEM_METADATA
 
 
 class TestLongestSubstringWithoutRepeatingCharacters:
@@ -16,19 +16,19 @@ class TestLongestSubstringWithoutRepeatingCharacters:
 
     def test_example_1(self, solution):
         """Example 1 from problem description"""
-        # TODO: Implement test
-        pass
+        s = "abcabcbb"
+        assert solution.lengthOfLongestSubstring(s) == 3
 
     def test_example_2(self, solution):
         """Example 2 from problem description"""
-        # TODO: Implement test
-        pass
+        s = "bbbbb"
+        assert solution.lengthOfLongestSubstring(s) == 1
 
     # Edge cases
     def test_edge_case_1(self, solution):
-        """TODO: Describe edge case"""
-        # TODO: Implement test
-        pass
+        """Test with empty string"""
+        s = ""
+        assert solution.lengthOfLongestSubstring(s) == 0
 
     # Metadata validation
     def test_metadata_exists(self):

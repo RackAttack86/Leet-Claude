@@ -51,41 +51,84 @@ from typing import List, Optional
 from collections import Counter, defaultdict
 
 
+class TrieNode:
+    """A node in the Trie structure."""
+
+    def __init__(self):
+        self.children = {}  # Maps character to TrieNode
+        self.is_end = False  # Marks end of a word
+
+
 class Solution:
     """
     Solution to LeetCode Problem #208: Implement Trie (Prefix Tree)
 
-    Approach: [TODO: Describe approach]
-    Time Complexity: O(?)
-    Space Complexity: O(?)
+    Approach: Tree structure with nodes containing children map and end marker
+    - Each node has a dictionary mapping characters to child nodes
+    - Each node has a boolean flag indicating if it marks end of a word
+    - Insert: traverse/create nodes for each character, mark last as end
+    - Search: traverse nodes, return True only if all chars exist AND is_end
+    - StartsWith: traverse nodes, return True if all prefix chars exist
+
+    Time Complexity: O(m) for all operations, where m is the word/prefix length
+    Space Complexity: O(n * m) where n is number of words, m is average length
 
     Key Insights:
-    [TODO: Add key insights]
+    1. Each node represents a character in the path from root
+    2. Using dictionary for children allows O(1) character lookup
+    3. is_end flag distinguishes between prefix and complete word
+    4. Common prefixes share the same path, saving space
+    5. Search and startsWith differ only in checking is_end flag
     """
 
     def __init__(self):
         """
-        [TODO: Implement]
+        Initialize the Trie with an empty root node.
         """
-        pass
+        self.root = TrieNode()
 
     def insert(self, word: str) -> None:
         """
-        [TODO: Implement]
+        Insert a word into the trie.
+        Time: O(m) where m is word length
         """
-        pass
+        node = self.root
+        for char in word:
+            if char not in node.children:
+                node.children[char] = TrieNode()
+            node = node.children[char]
+        node.is_end = True
 
     def search(self, word: str) -> bool:
         """
-        [TODO: Implement]
+        Returns True if the word is in the trie.
+        Time: O(m) where m is word length
         """
-        pass
+        node = self._find_node(word)
+        return node is not None and node.is_end
 
     def startsWith(self, prefix: str) -> bool:
         """
-        [TODO: Implement]
+        Returns True if there is any word in the trie that starts with the prefix.
+        Time: O(m) where m is prefix length
         """
-        pass
+        return self._find_node(prefix) is not None
+
+    def _find_node(self, prefix: str) -> Optional[TrieNode]:
+        """
+        Helper to traverse the trie and find the node for a prefix.
+        Returns None if prefix path doesn't exist.
+        """
+        node = self.root
+        for char in prefix:
+            if char not in node.children:
+                return None
+            node = node.children[char]
+        return node
+
+
+# Alias for LeetCode compatibility (expects class named Trie)
+Trie = Solution
 
 
 # Metadata for tracking
@@ -96,7 +139,7 @@ PROBLEM_METADATA = {
     "pattern": "Tries",
     "topics": ['Hash Table', 'String', 'Design', 'Trie'],
     "url": "https://leetcode.com/problems/implement-trie-prefix-tree/",
-    "companies": [],
-    "time_complexity": "O(?)",
-    "space_complexity": "O(?)",
+    "companies": ["Google", "Amazon", "Microsoft", "Facebook", "Apple", "Bloomberg", "Uber", "Twitter", "Oracle"],
+    "time_complexity": "O(m)",
+    "space_complexity": "O(n * m)",
 }

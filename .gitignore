@@ -46,5 +46,12 @@ scratch/
 notes/
 *.tmp
 
+# Node.js
+node_modules/
+npm-debug.log*
+
+# Tauri
+app/src-tauri/target/
+
 # Claude
 .claude/settings.local.json

@@ -3,7 +3,7 @@ Tests for LeetCode Problem #58: Length of Last Word
 """
 
 import pytest
-from .solution import Solution, PROBLEM_METADATA
+from solution import Solution, PROBLEM_METADATA
 
 
 
@@ -41,10 +41,12 @@ class TestLengthOfLastWord:
         assert result == expected
 
 
-    def test_edge_case_empty(self, solution):
-        """Test with empty/minimal input"""
-        # TODO: Implement edge case test
-        pass
+    def test_edge_case_single_word(self, solution):
+        """Test with single word"""
+        s = "Hello"
+        expected = 5
+        result = solution.lengthOfLastWord(s)
+        assert result == expected
 
 
     # Metadata validation

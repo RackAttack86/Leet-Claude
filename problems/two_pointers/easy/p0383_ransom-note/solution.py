@@ -47,19 +47,35 @@ class Solution:
     """
     Solution to LeetCode Problem #383: Ransom Note
 
-    Approach: [TODO: Describe approach]
-    Time Complexity: O(?)
-    Space Complexity: O(?)
+    Approach: Character Frequency Count
+    Time Complexity: O(m + n) where m and n are lengths of ransomNote and magazine
+    Space Complexity: O(1) - at most 26 lowercase letters
 
     Key Insights:
-    [TODO: Add key insights]
+    - Count character frequencies in magazine
+    - Check if ransomNote can be constructed from those frequencies
+    - Each magazine letter can only be used once
     """
 
     def canConstruct(self, ransomNote: str, magazine: str) -> bool:
         """
-        [TODO: Implement]
+        Check if ransomNote can be constructed from magazine letters.
+
+        Args:
+            ransomNote: The note to construct
+            magazine: Source of letters
+
+        Returns:
+            True if ransomNote can be constructed
         """
-        pass
+        magazine_count = Counter(magazine)
+
+        for char in ransomNote:
+            if magazine_count[char] <= 0:
+                return False
+            magazine_count[char] -= 1
+
+        return True
 
 
 # Metadata for tracking
@@ -70,7 +86,7 @@ PROBLEM_METADATA = {
     "pattern": "Two Pointers",
     "topics": ['Hash Table', 'String', 'Counting'],
     "url": "https://leetcode.com/problems/ransom-note/",
-    "companies": [],
-    "time_complexity": "O(?)",
-    "space_complexity": "O(?)",
+    "companies": ['Amazon', 'Microsoft', 'Apple'],
+    "time_complexity": "O(m + n)",
+    "space_complexity": "O(1)",
 }

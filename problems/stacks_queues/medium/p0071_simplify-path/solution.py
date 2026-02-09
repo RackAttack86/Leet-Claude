@@ -58,11 +58,32 @@ class Solution:
     - Ignore '.' and empty strings
     """
 
-    def solve(self):
+    def simplifyPath(self, path: str) -> str:
         """
-        [TODO: Implement solution]
+        Simplify Unix-style path using a stack.
+
+        Split path by '/', then process each component:
+        - '..' -> pop from stack (go up one directory)
+        - '.' or '' -> skip (current directory or empty)
+        - other -> push to stack (valid directory name)
+
+        Finally, join stack with '/' and prepend root '/'.
         """
-        pass
+        stack = []
+        components = path.split('/')
+
+        for component in components:
+            if component == '..':
+                if stack:
+                    stack.pop()
+            elif component == '.' or component == '':
+                # Skip current directory reference and empty strings
+                continue
+            else:
+                # Valid directory or file name
+                stack.append(component)
+
+        return '/' + '/'.join(stack)
 
 
 # Metadata for tracking

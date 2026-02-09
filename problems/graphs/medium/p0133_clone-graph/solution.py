@@ -71,7 +71,8 @@ Explanation: This an empty graph, it does not have any nodes.
 """
 
 from typing import List, Optional
-from collections import Counter, defaultdict
+from collections import deque
+
 
 class Node:
     def __init__(self, val=0, neighbors=None):
@@ -83,25 +84,52 @@ class Solution:
     """
     Solution to LeetCode Problem #133: Clone Graph
 
-    Approach: [TODO: Describe approach]
-    Time Complexity: O(?)
-    Space Complexity: O(?)
+    Approach: DFS with Hash Map for Node Mapping
+
+    Use a hash map to store the mapping from original nodes to their clones.
+    For each node:
+    1. If already cloned, return the clone from the map
+    2. Otherwise, create a new clone and add to map
+    3. Recursively clone all neighbors and add them to the clone's neighbor list
+
+    Time Complexity: O(V + E) - visit each node and edge once
+    Space Complexity: O(V) - hash map stores V nodes, recursion stack up to V
 
     Key Insights:
-    [TODO: Add key insights]
+    - Hash map prevents infinite loops in cyclic graphs
+    - Must create clone before processing neighbors (handles self-references)
+    - DFS naturally handles the recursive nature of graph cloning
+    - BFS can also be used with similar time/space complexity
     """
-
-    def __init__(self, val = 0: Any, neighbors = None: Any):
-        """
-        [TODO: Implement]
-        """
-        pass
 
     def cloneGraph(self, node: Optional['Node']) -> Optional['Node']:
         """
-        [TODO: Implement]
+        Create a deep copy of the graph starting from the given node.
         """
-        pass
+        if not node:
+            return None
+
+        # Map from original node to its clone
+        cloned = {}
+
+        def dfs(original: 'Node') -> 'Node':
+            """Recursively clone a node and all its neighbors."""
+            # If already cloned, return the clone
+            if original in cloned:
+                return cloned[original]
+
+            # Create clone and add to map BEFORE processing neighbors
+            # This handles cycles - neighbor might reference this node
+            clone = Node(original.val)
+            cloned[original] = clone
+
+            # Clone all neighbors
+            for neighbor in original.neighbors:
+                clone.neighbors.append(dfs(neighbor))
+
+            return clone
+
+        return dfs(node)
 
 
 # Metadata for tracking
@@ -112,7 +140,7 @@ PROBLEM_METADATA = {
     "pattern": "Graphs",
     "topics": ['Hash Table', 'Depth-First Search', 'Breadth-First Search', 'Graph Theory'],
     "url": "https://leetcode.com/problems/clone-graph/",
-    "companies": [],
-    "time_complexity": "O(?)",
-    "space_complexity": "O(?)",
+    "companies": ["Facebook", "Amazon", "Google", "Microsoft", "Bloomberg", "Uber"],
+    "time_complexity": "O(V + E)",
+    "space_complexity": "O(V)",
 }

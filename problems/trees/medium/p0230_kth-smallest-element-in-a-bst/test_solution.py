@@ -3,9 +3,9 @@ Tests for LeetCode Problem #230: Kth Smallest Element in a BST
 """
 
 import pytest
-from .solution import Solution, PROBLEM_METADATA
-from .solution import TreeNode
-from .solution import Node
+from solution import Solution, PROBLEM_METADATA
+from solution import TreeNode
+from solution import Node
 
 
 def array_to_tree(arr):
@@ -66,7 +66,7 @@ class TestKthSmallestElementInABst:
 
     def test_example_1(self, solution):
         """Example 1 from problem description"""
-        root = [3,1,4,None,2]
+        root = array_to_tree([3,1,4,None,2])
         k = 1
         expected = 1
         result = solution.kthSmallest(root, k)
@@ -75,18 +75,75 @@ class TestKthSmallestElementInABst:
 
     def test_example_2(self, solution):
         """Example 2 from problem description"""
-        root = [5,3,6,2,4,None,None,1]
+        root = array_to_tree([5,3,6,2,4,None,None,1])
         k = 3
         expected = 3
         result = solution.kthSmallest(root, k)
         assert result == expected
 
 
-    def test_edge_case_empty(self, solution):
-        """Test with empty/minimal input"""
-        # TODO: Implement edge case test
-        pass
+    def test_edge_case_single_node(self, solution):
+        """Test with single node"""
+        root = array_to_tree([1])
+        k = 1
+        expected = 1
+        result = solution.kthSmallest(root, k)
+        assert result == expected
 
+    def test_k_equals_1(self, solution):
+        """Test with k=1 (smallest element)"""
+        root = array_to_tree([5, 3, 6, 2, 4, None, None, 1])
+        k = 1
+        expected = 1
+        result = solution.kthSmallest(root, k)
+        assert result == expected
+
+    def test_k_equals_n(self, solution):
+        """Test with k=n (largest element)"""
+        root = array_to_tree([3, 1, 4, None, 2])
+        k = 4  # n = 4 nodes
+        expected = 4
+        result = solution.kthSmallest(root, k)
+        assert result == expected
+
+    def test_left_skewed_tree(self, solution):
+        """Test with left-skewed tree"""
+        root = TreeNode(5)
+        root.left = TreeNode(3)
+        root.left.left = TreeNode(1)
+        # Inorder: 1, 3, 5
+        assert solution.kthSmallest(root, 1) == 1
+        assert solution.kthSmallest(root, 2) == 3
+        assert solution.kthSmallest(root, 3) == 5
+
+    def test_right_skewed_tree(self, solution):
+        """Test with right-skewed tree"""
+        root = TreeNode(1)
+        root.right = TreeNode(3)
+        root.right.right = TreeNode(5)
+        # Inorder: 1, 3, 5
+        assert solution.kthSmallest(root, 1) == 1
+        assert solution.kthSmallest(root, 2) == 3
+        assert solution.kthSmallest(root, 3) == 5
+
+    def test_k_middle(self, solution):
+        """Test with k in the middle"""
+        root = array_to_tree([5, 3, 6, 2, 4, None, None, 1])
+        # Inorder: 1, 2, 3, 4, 5, 6
+        assert solution.kthSmallest(root, 3) == 3
+        assert solution.kthSmallest(root, 4) == 4
+
+    def test_negative_values(self, solution):
+        """Test with negative values"""
+        root = TreeNode(0)
+        root.left = TreeNode(-2)
+        root.right = TreeNode(2)
+        root.left.left = TreeNode(-3)
+        root.left.right = TreeNode(-1)
+        # Inorder: -3, -2, -1, 0, 2
+        assert solution.kthSmallest(root, 1) == -3
+        assert solution.kthSmallest(root, 3) == -1
+        assert solution.kthSmallest(root, 5) == 2
 
     # Metadata validation
     def test_metadata_exists(self):

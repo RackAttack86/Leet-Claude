@@ -35,26 +35,42 @@ Output: [[15,13,2,5],[14,3,4,1],[12,6,8,9],[16,7,10,11]]
 
 ## Approaches
 
-### 1. [Approach Name]
+### 1. Transpose and Reverse
 
-**Time Complexity:** O(?)
-**Space Complexity:** O(?)
+**Time Complexity:** O(n^2) - Visit each element twice (once for transpose, once for reverse)
+**Space Complexity:** O(1) - In-place modification, no extra space used
 
 ```python
-# TODO: Add code snippet
+def rotate(self, matrix: List[List[int]]) -> None:
+    n = len(matrix)
+
+    # Step 1: Transpose the matrix (swap across diagonal)
+    for i in range(n):
+        for j in range(i + 1, n):
+            matrix[i][j], matrix[j][i] = matrix[j][i], matrix[i][j]
+
+    # Step 2: Reverse each row
+    for i in range(n):
+        matrix[i].reverse()
 ```
 
 **Why this works:**
-[TODO: Explain approach]
+Two-step transformation: First transpose the matrix (swap rows and columns), then reverse each row. This achieves 90-degree clockwise rotation in-place.
 
 ## Key Insights
 
-[TODO: Add key insights]
+- 90-degree clockwise rotation = Transpose + Reverse each row
+- 90-degree counter-clockwise rotation = Transpose + Reverse each column
+- Transpose swaps matrix[i][j] with matrix[j][i] for i < j
+- Alternative: 4-way swap rotating elements in groups of 4 (layer by layer)
 
 ## Common Mistakes
 
-[TODO: Add common mistakes]
+- Forgetting to only swap upper triangular elements during transpose (to avoid double swapping)
+- Confusing clockwise vs counter-clockwise rotation steps
+- Not handling the in-place requirement
 
 ## Related Problems
 
-[TODO: Add related problems]
+- Spiral Matrix
+- Spiral Matrix II

@@ -6,34 +6,93 @@
 
 ## Problem Description
 
-[TODO: Add problem description]
+A string s is called good if there are no two different characters in s that have the same frequency.
+
+Given a string s, return the minimum number of characters you need to delete to make s good.
+
+The frequency of a character in a string is the number of times it appears in the string. For example, in the string "aab", the frequency of 'a' is 2, while the frequency of 'b' is 1.
+
+## Constraints
+
+- 1 <= s.length <= 10^5
+- s contains only lowercase English letters
+
+## Examples
+
+Example 1:
+```
+Input: s = "aab"
+Output: 0
+Explanation: s is already good.
+```
+
+Example 2:
+```
+Input: s = "aaabbbcc"
+Output: 2
+Explanation: You can delete two 'b's resulting in the good string "aaabcc".
+Another way it to delete one 'b' and one 'c' resulting in the good string "aaabbc".
+```
+
+Example 3:
+```
+Input: s = "ceabaacb"
+Output: 2
+Explanation: You can delete both 'c's resulting in the good string "eabaab".
+Note that we only care about characters that are still in the string at the end (i.e. frequency of 0 is ignored).
+```
 
 ## Approaches
 
-### 1. [Approach Name]
+### 1. Greedy with Frequency Set
 
-**Time Complexity:** O(?)
-**Space Complexity:** O(?)
+**Time Complexity:** O(n)
+**Space Complexity:** O(1) - only 26 letters
 
 ```python
-# TODO: Add code snippet
+def minDeletions(self, s: str) -> int:
+    from collections import Counter
+
+    # Count character frequencies
+    freq = Counter(s)
+
+    used = set()  # Track used frequencies
+    deletions = 0
+
+    for char, count in freq.items():
+        # Decrease frequency until it's unique or zero
+        while count > 0 and count in used:
+            count -= 1
+            deletions += 1
+
+        # Add the final unique frequency (if not zero)
+        if count > 0:
+            used.add(count)
+
+    return deletions
 ```
 
 **Why this works:**
-[TODO: Explain approach]
+For each character, we greedily reduce its frequency until it becomes unique (not in our used set) or reaches zero. This ensures minimum deletions because we only delete as much as necessary to avoid collisions.
 
 ## Key Insights
 
-[TODO: Add key insights]
+1. Count character frequencies
+2. Use set to track used frequencies
+3. Decrease frequency until unique or zero
+4. Greedy approach finds minimum deletions
 
 ## Common Mistakes
 
-[TODO: Add common mistakes]
+1. Not considering that frequency can be reduced to 0
+2. Trying to find optimal assignment instead of greedy reduction
+3. Forgetting that same frequency for different chars is not allowed
 
 ## Related Problems
 
-[TODO: Add related problems]
+- 1481. Least Number of Unique Integers after K Removals
+- 767. Reorganize String
 
 ## Tags
 
-[TODO: Add tags]
+Hash Table, String, Greedy, Sorting

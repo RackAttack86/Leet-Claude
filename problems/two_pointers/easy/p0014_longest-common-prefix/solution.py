@@ -42,19 +42,39 @@ class Solution:
     """
     Solution to LeetCode Problem #14: Longest Common Prefix
 
-    Approach: [TODO: Describe approach]
-    Time Complexity: O(?)
-    Space Complexity: O(?)
+    Approach: Vertical Scanning
+    Time Complexity: O(S) where S is sum of all characters in all strings
+    Space Complexity: O(1) - only using a few variables
 
     Key Insights:
-    [TODO: Add key insights]
+    - Compare characters at each position across all strings
+    - Stop when we find a mismatch or reach end of any string
+    - Use the first string as reference and compare others against it
     """
 
     def longestCommonPrefix(self, strs: List[str]) -> str:
         """
-        [TODO: Implement]
+        Find the longest common prefix among an array of strings.
+
+        Args:
+            strs: List of strings
+
+        Returns:
+            The longest common prefix string
         """
-        pass
+        if not strs:
+            return ""
+
+        # Use first string as reference
+        for i in range(len(strs[0])):
+            char = strs[0][i]
+            # Check this character against all other strings
+            for s in strs[1:]:
+                # If we've reached end of this string or chars don't match
+                if i >= len(s) or s[i] != char:
+                    return strs[0][:i]
+
+        return strs[0]
 
 
 # Metadata for tracking
@@ -65,7 +85,7 @@ PROBLEM_METADATA = {
     "pattern": "Two Pointers",
     "topics": ['Array', 'String', 'Trie'],
     "url": "https://leetcode.com/problems/longest-common-prefix/",
-    "companies": [],
-    "time_complexity": "O(?)",
-    "space_complexity": "O(?)",
+    "companies": ['Amazon', 'Google', 'Facebook', 'Microsoft', 'Apple'],
+    "time_complexity": "O(S)",
+    "space_complexity": "O(1)",
 }

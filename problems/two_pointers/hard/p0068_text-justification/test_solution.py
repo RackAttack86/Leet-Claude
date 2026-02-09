@@ -3,7 +3,7 @@ Tests for LeetCode Problem #68: Text Justification
 """
 
 import pytest
-from .solution import Solution, PROBLEM_METADATA
+from solution import Solution, PROBLEM_METADATA
 
 
 
@@ -22,6 +22,10 @@ class TestTextJustification:
         words = ["This", "is", "an", "example", "of", "text", "justification."]
         maxWidth = 16
         expected = [
+            "This    is    an",
+            "example  of text",
+            "justification.  "
+        ]
         result = solution.fullJustify(words, maxWidth)
         assert result == expected
 
@@ -31,6 +35,10 @@ class TestTextJustification:
         words = ["What","must","be","acknowledgment","shall","be"]
         maxWidth = 16
         expected = [
+            "What   must   be",
+            "acknowledgment  ",
+            "shall be        "
+        ]
         result = solution.fullJustify(words, maxWidth)
         assert result == expected
 
@@ -40,14 +48,32 @@ class TestTextJustification:
         words = ["Science","is","what","we","understand","well","enough","to","explain","to","a","computer.","Art","is","everything","else","we","do"]
         maxWidth = 20
         expected = [
+            "Science  is  what we",
+            "understand      well",
+            "enough to explain to",
+            "a  computer.  Art is",
+            "everything  else  we",
+            "do                  "
+        ]
         result = solution.fullJustify(words, maxWidth)
         assert result == expected
 
 
-    def test_edge_case_empty(self, solution):
-        """Test with empty/minimal input"""
-        # TODO: Implement edge case test
-        pass
+    def test_edge_case_single_word(self, solution):
+        """Test with single word"""
+        words = ["Hello"]
+        maxWidth = 10
+        expected = ["Hello     "]
+        result = solution.fullJustify(words, maxWidth)
+        assert result == expected
+
+    def test_edge_case_word_equals_maxwidth(self, solution):
+        """Test with word exactly equal to maxWidth"""
+        words = ["Hello"]
+        maxWidth = 5
+        expected = ["Hello"]
+        result = solution.fullJustify(words, maxWidth)
+        assert result == expected
 
 
     # Metadata validation

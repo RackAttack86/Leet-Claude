@@ -45,11 +45,37 @@ class Solution:
     - BFS-like level order traversal
     """
 
-    def solve(self):
+    def jump(self, nums: List[int]) -> int:
         """
-        [TODO: Implement solution]
+        Find minimum number of jumps to reach the last index.
+
+        Args:
+            nums: Array where nums[i] is max jump length from index i
+
+        Returns:
+            Minimum number of jumps to reach nums[n-1]
         """
-        pass
+        n = len(nums)
+        if n <= 1:
+            return 0
+
+        jumps = 0
+        current_end = 0  # End of current jump range
+        farthest = 0     # Farthest we can reach
+
+        for i in range(n - 1):  # Don't need to jump from last index
+            farthest = max(farthest, i + nums[i])
+
+            # When we reach the end of current jump range
+            if i == current_end:
+                jumps += 1
+                current_end = farthest
+
+                # Early termination if we can reach the end
+                if current_end >= n - 1:
+                    break
+
+        return jumps
 
 
 # Metadata for tracking

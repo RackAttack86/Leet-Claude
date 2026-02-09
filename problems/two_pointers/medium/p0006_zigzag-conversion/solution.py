@@ -70,19 +70,38 @@ class Solution:
     """
     Solution to LeetCode Problem #6: Zigzag Conversion
 
-    Approach: [TODO: Describe approach]
-    Time Complexity: O(?)
-    Space Complexity: O(?)
+    Approach: Simulate the zigzag pattern by maintaining separate strings for each row.
+    Traverse the input string character by character, appending each character to
+    the appropriate row. Use a direction variable to track whether we're moving
+    down or up in the zigzag pattern.
+
+    Time Complexity: O(n) where n is the length of the string
+    Space Complexity: O(n) for storing the result
 
     Key Insights:
-    [TODO: Add key insights]
+    1. We don't need to build a 2D grid - just maintain n rows as strings
+    2. The pattern goes: row 0, 1, 2, ..., numRows-1, numRows-2, ..., 1, 0, 1, ...
+    3. Change direction when we hit row 0 or row numRows-1
+    4. Edge case: if numRows == 1, return original string (no zigzag)
     """
 
     def convert(self, s: str, numRows: int) -> str:
-        """
-        [TODO: Implement]
-        """
-        pass
+        if numRows == 1 or numRows >= len(s):
+            return s
+
+        # Create a list of strings for each row
+        rows = [''] * numRows
+        current_row = 0
+        going_down = False
+
+        for char in s:
+            rows[current_row] += char
+            # Change direction at the first or last row
+            if current_row == 0 or current_row == numRows - 1:
+                going_down = not going_down
+            current_row += 1 if going_down else -1
+
+        return ''.join(rows)
 
 
 # Metadata for tracking
@@ -93,7 +112,7 @@ PROBLEM_METADATA = {
     "pattern": "Two Pointers",
     "topics": ['String'],
     "url": "https://leetcode.com/problems/zigzag-conversion/",
-    "companies": [],
-    "time_complexity": "O(?)",
-    "space_complexity": "O(?)",
+    "companies": ["Amazon", "Google", "Apple", "Microsoft", "Bloomberg"],
+    "time_complexity": "O(n)",
+    "space_complexity": "O(n)",
 }

@@ -37,26 +37,61 @@ Explanation: A valid encoding would be s = "t#" and indices = [0].
 from typing import List, Optional
 
 
+class TrieNode:
+    """Node in the Trie data structure."""
+    def __init__(self):
+        self.children = {}
+
+
 class Solution:
     """
     Solution to LeetCode Problem #820: Short Encoding of Words
 
-    Approach: Reverse Trie or suffix checking
+    Approach: Reverse Trie (suffix tree)
     Time Complexity: O(n * m)
     Space Complexity: O(n * m)
 
     Key Insights:
     - Build Trie in reverse (suffix tree)
     - Words that are suffixes share encoding
-    - Only count leaf nodes
-    - Remove words that are suffixes of others
+    - Only count leaf nodes (words that are not suffixes of others)
+    - Each unique word contributes its length + 1 (for '#')
     """
 
-    def solve(self):
+    def minimumLengthEncoding(self, words: List[str]) -> int:
         """
-        [TODO: Implement solution]
+        Return the length of the shortest reference string.
+
+        Args:
+            words: List of words to encode
+
+        Returns:
+            Minimum length of the encoding string
         """
-        pass
+        # Remove duplicates
+        words = list(set(words))
+
+        # Build a reverse Trie (inserting words in reverse)
+        root = TrieNode()
+        # Track the ending node and word for each word
+        ending_nodes = {}
+
+        for word in words:
+            node = root
+            for char in reversed(word):
+                if char not in node.children:
+                    node.children[char] = TrieNode()
+                node = node.children[char]
+            ending_nodes[node] = word
+
+        # Count only leaf nodes (nodes with no children)
+        # These are words that are not suffixes of any other word
+        total = 0
+        for node, word in ending_nodes.items():
+            if not node.children:  # This is a leaf node
+                total += len(word) + 1  # +1 for the '#'
+
+        return total
 
 
 # Metadata for tracking

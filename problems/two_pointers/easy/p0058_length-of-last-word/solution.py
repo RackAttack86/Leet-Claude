@@ -53,19 +53,40 @@ class Solution:
     """
     Solution to LeetCode Problem #58: Length of Last Word
 
-    Approach: [TODO: Describe approach]
-    Time Complexity: O(?)
-    Space Complexity: O(?)
+    Approach: Reverse Traversal
+    Time Complexity: O(n) where n is the length of the string
+    Space Complexity: O(1) - only using pointers
 
     Key Insights:
-    [TODO: Add key insights]
+    - Start from the end and skip trailing spaces
+    - Count characters until we hit a space or reach the beginning
+    - Using strip() and split() works but uses O(n) extra space
     """
 
     def lengthOfLastWord(self, s: str) -> int:
         """
-        [TODO: Implement]
+        Return the length of the last word in the string.
+
+        Args:
+            s: Input string with words and spaces
+
+        Returns:
+            Length of the last word
         """
-        pass
+        # Start from the end
+        i = len(s) - 1
+
+        # Skip trailing spaces
+        while i >= 0 and s[i] == ' ':
+            i -= 1
+
+        # Count the last word
+        length = 0
+        while i >= 0 and s[i] != ' ':
+            length += 1
+            i -= 1
+
+        return length
 
 
 # Metadata for tracking
@@ -76,7 +97,7 @@ PROBLEM_METADATA = {
     "pattern": "Two Pointers",
     "topics": ['String'],
     "url": "https://leetcode.com/problems/length-of-last-word/",
-    "companies": [],
-    "time_complexity": "O(?)",
-    "space_complexity": "O(?)",
+    "companies": ['Amazon', 'Google', 'Microsoft'],
+    "time_complexity": "O(n)",
+    "space_complexity": "O(1)",
 }

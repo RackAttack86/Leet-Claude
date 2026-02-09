@@ -30,6 +30,12 @@ Output: [[5,6],[7,9]]
 from typing import List, Optional
 
 
+class Interval:
+    def __init__(self, start: int = None, end: int = None):
+        self.start = start
+        self.end = end
+
+
 class Solution:
     """
     Solution to LeetCode Problem #759: Employee Free Time
@@ -45,11 +51,27 @@ class Solution:
     - Similar to merge intervals
     """
 
-    def solve(self):
-        """
-        [TODO: Implement solution]
-        """
-        pass
+    def employeeFreeTime(self, schedule: List[List[Interval]]) -> List[Interval]:
+        # Flatten all intervals
+        intervals = []
+        for employee in schedule:
+            for interval in employee:
+                intervals.append((interval.start, interval.end))
+
+        # Sort by start time
+        intervals.sort()
+
+        # Merge intervals and find gaps
+        result = []
+        prev_end = intervals[0][1]
+
+        for start, end in intervals[1:]:
+            if start > prev_end:
+                # Found free time
+                result.append(Interval(prev_end, start))
+            prev_end = max(prev_end, end)
+
+        return result
 
 
 # Metadata for tracking

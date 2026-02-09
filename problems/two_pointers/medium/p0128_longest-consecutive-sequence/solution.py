@@ -51,19 +51,42 @@ class Solution:
     """
     Solution to LeetCode Problem #128: Longest Consecutive Sequence
 
-    Approach: [TODO: Describe approach]
-    Time Complexity: O(?)
-    Space Complexity: O(?)
+    Approach: Use a hash set for O(1) lookups. For each number, only start
+    counting a sequence if the number is the beginning of a sequence
+    (i.e., num-1 is not in the set). This ensures each element is visited
+    at most twice.
+
+    Time Complexity: O(n) - Each element is visited at most twice
+    Space Complexity: O(n) - For storing elements in the set
 
     Key Insights:
-    [TODO: Add key insights]
+    1. Only start counting from sequence beginnings (num-1 not in set)
+    2. This optimization makes the algorithm O(n) despite nested loops
+    3. Converting to set removes duplicates and enables O(1) lookup
+    4. Each number is part of exactly one sequence count operation
     """
 
     def longestConsecutive(self, nums: List[int]) -> int:
-        """
-        [TODO: Implement]
-        """
-        pass
+        if not nums:
+            return 0
+
+        num_set = set(nums)
+        longest = 0
+
+        for num in num_set:
+            # Only start counting if this is the beginning of a sequence
+            if num - 1 not in num_set:
+                current_num = num
+                current_streak = 1
+
+                # Count consecutive numbers
+                while current_num + 1 in num_set:
+                    current_num += 1
+                    current_streak += 1
+
+                longest = max(longest, current_streak)
+
+        return longest
 
 
 # Metadata for tracking
@@ -74,7 +97,7 @@ PROBLEM_METADATA = {
     "pattern": "Two Pointers",
     "topics": ['Array', 'Hash Table', 'Union-Find'],
     "url": "https://leetcode.com/problems/longest-consecutive-sequence/",
-    "companies": [],
-    "time_complexity": "O(?)",
-    "space_complexity": "O(?)",
+    "companies": ["Amazon", "Google", "Microsoft", "Facebook", "Apple", "Bloomberg", "Uber"],
+    "time_complexity": "O(n)",
+    "space_complexity": "O(n)",
 }

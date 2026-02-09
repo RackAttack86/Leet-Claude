@@ -52,11 +52,35 @@ class Solution:
     - Greedy approach finds minimum deletions
     """
 
-    def solve(self):
+    def minDeletions(self, s: str) -> int:
         """
-        [TODO: Implement solution]
+        Find minimum deletions to make character frequencies unique.
+
+        Args:
+            s: Input string of lowercase letters
+
+        Returns:
+            Minimum number of deletions needed
         """
-        pass
+        from collections import Counter
+
+        # Count character frequencies
+        freq = Counter(s)
+
+        used = set()  # Track used frequencies
+        deletions = 0
+
+        for char, count in freq.items():
+            # Decrease frequency until it's unique or zero
+            while count > 0 and count in used:
+                count -= 1
+                deletions += 1
+
+            # Add the final unique frequency (if not zero)
+            if count > 0:
+                used.add(count)
+
+        return deletions
 
 
 # Metadata for tracking

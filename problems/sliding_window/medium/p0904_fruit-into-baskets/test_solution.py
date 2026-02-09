@@ -3,7 +3,7 @@ Tests for LeetCode Problem #904: Fruit Into Baskets
 """
 
 import pytest
-from .solution import Solution, PROBLEM_METADATA
+from solution import Solution, PROBLEM_METADATA
 
 
 class TestFruitIntoBaskets:
@@ -16,19 +16,19 @@ class TestFruitIntoBaskets:
 
     def test_example_1(self, solution):
         """Example 1 from problem description"""
-        # TODO: Implement test
-        pass
+        fruits = [1, 2, 1]
+        assert solution.totalFruit(fruits) == 3
 
     def test_example_2(self, solution):
         """Example 2 from problem description"""
-        # TODO: Implement test
-        pass
+        fruits = [0, 1, 2, 2]
+        assert solution.totalFruit(fruits) == 3
 
     # Edge cases
     def test_edge_case_1(self, solution):
-        """TODO: Describe edge case"""
-        # TODO: Implement test
-        pass
+        """Test with single fruit type"""
+        fruits = [1]
+        assert solution.totalFruit(fruits) == 1
 
     # Metadata validation
     def test_metadata_exists(self):

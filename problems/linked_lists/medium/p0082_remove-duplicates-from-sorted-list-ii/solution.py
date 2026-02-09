@@ -51,25 +51,54 @@ class Solution:
     """
     Solution to LeetCode Problem #82: Remove Duplicates from Sorted List II
 
-    Approach: [TODO: Describe approach]
-    Time Complexity: O(?)
-    Space Complexity: O(?)
+    Approach: Two Pointers with Dummy Node
+    - Use a dummy node to handle edge cases where head needs to be removed
+    - Maintain a 'prev' pointer that points to the last confirmed unique node
+    - When duplicates are detected, skip all nodes with that value
+    - When a unique value is found, link it to prev and move prev forward
+
+    Time Complexity: O(n) where n is the length of the list
+    Space Complexity: O(1) - only using constant extra space
 
     Key Insights:
-    [TODO: Add key insights]
+    - The list is sorted, so all duplicates are consecutive
+    - Using a dummy node handles the case when the first few nodes are duplicates
+    - We need to track the node BEFORE a potential duplicate sequence to properly relink
+    - When we find duplicates, we skip the entire group, not just the duplicates
     """
-
-    def __init__(self, val=0: Any, next=None: Any):
-        """
-        [TODO: Implement]
-        """
-        pass
 
     def deleteDuplicates(self, head: Optional[ListNode]) -> Optional[ListNode]:
         """
-        [TODO: Implement]
+        Remove all nodes that have duplicate numbers, keeping only distinct numbers.
         """
-        pass
+        # Handle edge cases
+        if not head or not head.next:
+            return head
+
+        # Create dummy node to handle edge case where head is a duplicate
+        dummy = ListNode(0)
+        dummy.next = head
+        prev = dummy  # prev points to the last node we're sure is not a duplicate
+
+        current = head
+
+        while current:
+            # Check if current starts a sequence of duplicates
+            if current.next and current.val == current.next.val:
+                # Skip all nodes with the same value
+                while current.next and current.val == current.next.val:
+                    current = current.next
+                # Skip the last duplicate as well
+                # prev.next now points past all the duplicates
+                prev.next = current.next
+            else:
+                # No duplicate, move prev forward
+                prev = prev.next
+
+            # Move to the next node
+            current = current.next
+
+        return dummy.next
 
 
 # Metadata for tracking
@@ -80,7 +109,7 @@ PROBLEM_METADATA = {
     "pattern": "Linked Lists",
     "topics": ['Linked List', 'Two Pointers'],
     "url": "https://leetcode.com/problems/remove-duplicates-from-sorted-list-ii/",
-    "companies": [],
-    "time_complexity": "O(?)",
-    "space_complexity": "O(?)",
+    "companies": ["Amazon", "Microsoft", "Facebook", "Bloomberg", "Google"],
+    "time_complexity": "O(n)",
+    "space_complexity": "O(1)",
 }

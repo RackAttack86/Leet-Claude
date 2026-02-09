@@ -32,6 +32,13 @@ Explanation: The LCA of nodes 2 and 4 is 2, since a node can be a descendant of 
 from typing import List, Optional
 
 
+class TreeNode:
+    def __init__(self, val=0, left=None, right=None):
+        self.val = val
+        self.left = left
+        self.right = right
+
+
 class Solution:
     """
     Solution to LeetCode Problem #235: Lowest Common Ancestor of a Binary Search Tree
@@ -47,11 +54,33 @@ class Solution:
     - Otherwise, root is LCA
     """
 
-    def solve(self):
+    def lowestCommonAncestor(self, root: 'TreeNode', p: 'TreeNode', q: 'TreeNode') -> 'TreeNode':
         """
-        [TODO: Implement solution]
+        Find lowest common ancestor in a BST using BST properties.
+
+        Since it's a BST, we can use the ordering property:
+        - If both p and q are smaller than root, LCA is in left subtree
+        - If both p and q are larger than root, LCA is in right subtree
+        - Otherwise, root is the LCA (split point or one equals root)
+
+        Using iterative approach for O(1) space complexity.
         """
-        pass
+        current = root
+
+        while current:
+            if p.val < current.val and q.val < current.val:
+                # Both nodes are in left subtree
+                current = current.left
+            elif p.val > current.val and q.val > current.val:
+                # Both nodes are in right subtree
+                current = current.right
+            else:
+                # Split point found - current is the LCA
+                # This handles: p < current < q, q < current < p,
+                # or one of p/q equals current
+                return current
+
+        return None
 
 
 # Metadata for tracking

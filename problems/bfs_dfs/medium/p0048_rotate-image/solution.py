@@ -42,19 +42,29 @@ class Solution:
     """
     Solution to LeetCode Problem #48: Rotate Image
 
-    Approach: [TODO: Describe approach]
-    Time Complexity: O(?)
-    Space Complexity: O(?)
+    Approach: Two-step transformation: First transpose the matrix (swap rows and columns),
+              then reverse each row. This achieves 90-degree clockwise rotation in-place.
+    Time Complexity: O(n^2) - Visit each element twice (once for transpose, once for reverse)
+    Space Complexity: O(1) - In-place modification, no extra space used
 
     Key Insights:
-    [TODO: Add key insights]
+    - 90-degree clockwise rotation = Transpose + Reverse each row
+    - 90-degree counter-clockwise rotation = Transpose + Reverse each column
+    - Transpose swaps matrix[i][j] with matrix[j][i] for i < j
+    - Alternative: 4-way swap rotating elements in groups of 4 (layer by layer)
     """
 
     def rotate(self, matrix: List[List[int]]) -> None:
-        """
-        [TODO: Implement]
-        """
-        pass
+        n = len(matrix)
+
+        # Step 1: Transpose the matrix (swap across diagonal)
+        for i in range(n):
+            for j in range(i + 1, n):
+                matrix[i][j], matrix[j][i] = matrix[j][i], matrix[i][j]
+
+        # Step 2: Reverse each row
+        for i in range(n):
+            matrix[i].reverse()
 
 
 # Metadata for tracking
@@ -65,7 +75,7 @@ PROBLEM_METADATA = {
     "pattern": "Bfs Dfs",
     "topics": ['Array', 'Math', 'Matrix'],
     "url": "https://leetcode.com/problems/rotate-image/",
-    "companies": [],
-    "time_complexity": "O(?)",
-    "space_complexity": "O(?)",
+    "companies": ["Amazon", "Google", "Microsoft", "Apple", "Facebook", "Bloomberg", "Adobe"],
+    "time_complexity": "O(n^2)",
+    "space_complexity": "O(1)",
 }

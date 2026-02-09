@@ -68,25 +68,37 @@ class Solution:
     """
     Solution to LeetCode Problem #129: Sum Root to Leaf Numbers
 
-    Approach: [TODO: Describe approach]
-    Time Complexity: O(?)
-    Space Complexity: O(?)
+    Approach: DFS with running number accumulation
+    - Traverse from root to each leaf
+    - Accumulate number by multiplying current value by 10 and adding new digit
+    - When reaching a leaf, add the accumulated number to total sum
+
+    Time Complexity: O(n) - visit each node once
+    Space Complexity: O(h) - recursion stack where h is tree height
 
     Key Insights:
-    [TODO: Add key insights]
+    - Each digit contributes to number as: current_num * 10 + digit
+    - Only add to sum at leaf nodes (no children)
+    - Can use either recursion or iterative with stack
+    - Number building: 1->2->3 becomes 1, then 12, then 123
     """
 
-    def __init__(self, val=0: Any, left=None: Any, right=None: Any):
-        """
-        [TODO: Implement]
-        """
-        pass
-
     def sumNumbers(self, root: Optional[TreeNode]) -> int:
-        """
-        [TODO: Implement]
-        """
-        pass
+        def dfs(node: TreeNode, current_num: int) -> int:
+            if not node:
+                return 0
+
+            # Build the number so far
+            current_num = current_num * 10 + node.val
+
+            # If leaf node, return the number
+            if not node.left and not node.right:
+                return current_num
+
+            # Sum up left and right subtrees
+            return dfs(node.left, current_num) + dfs(node.right, current_num)
+
+        return dfs(root, 0)
 
 
 # Metadata for tracking
@@ -97,7 +109,7 @@ PROBLEM_METADATA = {
     "pattern": "Trees",
     "topics": ['Tree', 'Depth-First Search', 'Binary Tree'],
     "url": "https://leetcode.com/problems/sum-root-to-leaf-numbers/",
-    "companies": [],
-    "time_complexity": "O(?)",
-    "space_complexity": "O(?)",
+    "companies": ["Amazon", "Microsoft", "Facebook", "Google", "Apple", "Bloomberg"],
+    "time_complexity": "O(n)",
+    "space_complexity": "O(h)",
 }

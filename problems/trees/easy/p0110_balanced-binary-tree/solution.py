@@ -27,6 +27,13 @@ Output: false
 from typing import List, Optional
 
 
+class TreeNode:
+    def __init__(self, val=0, left=None, right=None):
+        self.val = val
+        self.left = left
+        self.right = right
+
+
 class Solution:
     """
     Solution to LeetCode Problem #110: Balanced Binary Tree
@@ -42,11 +49,25 @@ class Solution:
     - Bottom-up approach more efficient
     """
 
-    def solve(self):
-        """
-        [TODO: Implement solution]
-        """
-        pass
+    def isBalanced(self, root: Optional[TreeNode]) -> bool:
+        def check_height(node):
+            if not node:
+                return 0
+
+            left_height = check_height(node.left)
+            if left_height == -1:
+                return -1
+
+            right_height = check_height(node.right)
+            if right_height == -1:
+                return -1
+
+            if abs(left_height - right_height) > 1:
+                return -1
+
+            return max(left_height, right_height) + 1
+
+        return check_height(root) != -1
 
 
 # Metadata for tracking

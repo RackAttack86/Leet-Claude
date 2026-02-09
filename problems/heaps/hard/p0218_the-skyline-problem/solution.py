@@ -49,10 +49,37 @@ class Solution:
     """
 
     def getSkyline(self, buildings: List[List[int]]) -> List[List[int]]:
-        """
-        [TODO: Implement solution]
-        """
-        pass
+        # Create events: (x, type, height, end)
+        # type: 0 = start (we use negative height for sorting), 1 = end
+        events = []
+        for left, right, height in buildings:
+            events.append((left, -height, right))  # Start event
+            events.append((right, height, 0))  # End event (height positive, no end needed)
+
+        # Sort events: by x, then by height (negative for start, positive for end)
+        events.sort()
+
+        result = []
+        # Max heap: (-height, end_x) - use negative for max heap simulation
+        heap = [(0, float('inf'))]  # Ground level that never ends
+
+        for x, neg_height, end in events:
+            # Remove buildings that have ended
+            while heap[0][1] <= x:
+                heapq.heappop(heap)
+
+            if neg_height < 0:  # Start of building
+                # Add building to heap
+                heapq.heappush(heap, (neg_height, end))
+
+            # Get current max height
+            max_height = -heap[0][0]
+
+            # If height changed, add key point
+            if not result or result[-1][1] != max_height:
+                result.append([x, max_height])
+
+        return result
 
 
 # Metadata for tracking

@@ -3,7 +3,7 @@ Tests for LeetCode Problem #15: 3Sum
 """
 
 import pytest
-from .solution import Solution, PROBLEM_METADATA
+from solution import Solution, PROBLEM_METADATA
 
 
 class Test3sum:

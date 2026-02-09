@@ -47,19 +47,31 @@ class Solution:
     """
     Solution to LeetCode Problem #49: Group Anagrams
 
-    Approach: [TODO: Describe approach]
-    Time Complexity: O(?)
-    Space Complexity: O(?)
+    Approach: Use a hash map where the key is a canonical representation of
+    each anagram group. Two strings are anagrams if they have the same sorted
+    characters or the same character frequency count.
+
+    Time Complexity: O(n * k * log(k)) where n is number of strings, k is max string length
+                     Using character count as key: O(n * k)
+    Space Complexity: O(n * k) for storing all strings in the hash map
 
     Key Insights:
-    [TODO: Add key insights]
+    1. Anagrams have the same sorted character sequence
+    2. Alternative: Use character count tuple as key (faster for long strings)
+    3. defaultdict simplifies grouping logic
+    4. Tuple of sorted string works as hashable key
     """
 
     def groupAnagrams(self, strs: List[str]) -> List[List[str]]:
-        """
-        [TODO: Implement]
-        """
-        pass
+        # Group anagrams by their sorted character tuple
+        anagram_groups = defaultdict(list)
+
+        for s in strs:
+            # Use sorted tuple as key (anagrams will have same sorted form)
+            key = tuple(sorted(s))
+            anagram_groups[key].append(s)
+
+        return list(anagram_groups.values())
 
 
 # Metadata for tracking
@@ -70,7 +82,7 @@ PROBLEM_METADATA = {
     "pattern": "Two Pointers",
     "topics": ['Array', 'Hash Table', 'String', 'Sorting'],
     "url": "https://leetcode.com/problems/group-anagrams/",
-    "companies": [],
-    "time_complexity": "O(?)",
-    "space_complexity": "O(?)",
+    "companies": ["Amazon", "Google", "Facebook", "Microsoft", "Apple", "Bloomberg", "Uber"],
+    "time_complexity": "O(n * k * log(k))",
+    "space_complexity": "O(n * k)",
 }

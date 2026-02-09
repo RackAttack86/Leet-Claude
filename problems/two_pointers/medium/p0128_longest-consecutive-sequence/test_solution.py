@@ -3,7 +3,7 @@ Tests for LeetCode Problem #128: Longest Consecutive Sequence
 """
 
 import pytest
-from .solution import Solution, PROBLEM_METADATA
+from solution import Solution, PROBLEM_METADATA
 
 
 
@@ -42,9 +42,18 @@ class TestLongestConsecutiveSequence:
 
 
     def test_edge_case_empty(self, solution):
-        """Test with empty/minimal input"""
-        # TODO: Implement edge case test
-        pass
+        """Test with empty input"""
+        nums = []
+        expected = 0
+        result = solution.longestConsecutive(nums)
+        assert result == expected
+
+    def test_edge_case_single_element(self, solution):
+        """Test with single element"""
+        nums = [5]
+        expected = 1
+        result = solution.longestConsecutive(nums)
+        assert result == expected
 
 
     # Metadata validation

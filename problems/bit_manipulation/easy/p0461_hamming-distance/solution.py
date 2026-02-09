@@ -42,11 +42,13 @@ class Solution:
     - Use Brian Kernighan's algorithm
     """
 
-    def solve(self):
-        """
-        [TODO: Implement solution]
-        """
-        pass
+    def hammingDistance(self, x: int, y: int) -> int:
+        xor = x ^ y
+        count = 0
+        while xor:
+            count += 1
+            xor &= (xor - 1)  # Brian Kernighan's algorithm
+        return count
 
 
 # Metadata for tracking

@@ -71,26 +71,64 @@ Explanation: This an empty graph, it does not have any nodes.
 
 ## Approaches
 
-### 1. [Approach Name]
+### 1. DFS with Hash Map for Node Mapping
 
-**Time Complexity:** O(?)
-**Space Complexity:** O(?)
+**Time Complexity:** O(V + E)
+**Space Complexity:** O(V)
 
 ```python
-# TODO: Add code snippet
+def cloneGraph(self, node: Optional['Node']) -> Optional['Node']:
+    """
+    Create a deep copy of the graph starting from the given node.
+    """
+    if not node:
+        return None
+
+    # Map from original node to its clone
+    cloned = {}
+
+    def dfs(original: 'Node') -> 'Node':
+        """Recursively clone a node and all its neighbors."""
+        # If already cloned, return the clone
+        if original in cloned:
+            return cloned[original]
+
+        # Create clone and add to map BEFORE processing neighbors
+        # This handles cycles - neighbor might reference this node
+        clone = Node(original.val)
+        cloned[original] = clone
+
+        # Clone all neighbors
+        for neighbor in original.neighbors:
+            clone.neighbors.append(dfs(neighbor))
+
+        return clone
+
+    return dfs(node)
 ```
 
 **Why this works:**
-[TODO: Explain approach]
+
+Use a hash map to store the mapping from original nodes to their clones.
+For each node:
+1. If already cloned, return the clone from the map
+2. Otherwise, create a new clone and add to map
+3. Recursively clone all neighbors and add them to the clone's neighbor list
 
 ## Key Insights
 
-[TODO: Add key insights]
+- Hash map prevents infinite loops in cyclic graphs
+- Must create clone before processing neighbors (handles self-references)
+- DFS naturally handles the recursive nature of graph cloning
+- BFS can also be used with similar time/space complexity
 
 ## Common Mistakes
 
-[TODO: Add common mistakes]
+- Not handling cycles leading to infinite recursion
+- Creating multiple clones for the same node
+- Forgetting to handle the empty graph case
 
 ## Related Problems
 
-[TODO: Add related problems]
+- Copy List with Random Pointer (138)
+- Clone Binary Tree With Random Pointer (1485)

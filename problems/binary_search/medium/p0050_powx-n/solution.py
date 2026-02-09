@@ -51,19 +51,47 @@ class Solution:
     """
     Solution to LeetCode Problem #50: Pow(x, n)
 
-    Approach: [TODO: Describe approach]
-    Time Complexity: O(?)
-    Space Complexity: O(?)
+    Approach: Binary Exponentiation (Exponentiation by Squaring)
+    Instead of multiplying x by itself n times (O(n)), we use the property:
+    - x^n = (x^2)^(n/2) when n is even
+    - x^n = x * (x^2)^((n-1)/2) when n is odd
+
+    This allows us to halve the problem size at each step.
+    For negative n, we compute 1 / x^(-n).
+
+    Time Complexity: O(log n) - We halve n at each step
+    Space Complexity: O(1) - Iterative approach uses constant space
 
     Key Insights:
-    [TODO: Add key insights]
+    1. Use binary exponentiation to reduce from O(n) to O(log n)
+    2. Handle negative exponent by computing 1/x^|n|
+    3. Handle edge case where n = -2^31 (integer overflow when negating)
+    4. When n is odd, multiply result by current x and reduce n by 1
+    5. When n is even, square x and halve n
     """
 
     def myPow(self, x: float, n: int) -> float:
-        """
-        [TODO: Implement]
-        """
-        pass
+        if n == 0:
+            return 1.0
+
+        # Handle negative exponent
+        if n < 0:
+            x = 1 / x
+            n = -n
+
+        result = 1.0
+        current_product = x
+
+        while n > 0:
+            # If n is odd, multiply result by current_product
+            if n % 2 == 1:
+                result *= current_product
+
+            # Square the base and halve the exponent
+            current_product *= current_product
+            n //= 2
+
+        return result
 
 
 # Metadata for tracking
@@ -74,7 +102,7 @@ PROBLEM_METADATA = {
     "pattern": "Binary Search",
     "topics": ['Math', 'Recursion'],
     "url": "https://leetcode.com/problems/powx-n/",
-    "companies": [],
-    "time_complexity": "O(?)",
-    "space_complexity": "O(?)",
+    "companies": ["Facebook", "Amazon", "Google", "Microsoft", "Apple", "Bloomberg", "LinkedIn"],
+    "time_complexity": "O(log n)",
+    "space_complexity": "O(1)",
 }

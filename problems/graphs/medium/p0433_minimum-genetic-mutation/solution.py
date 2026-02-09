@@ -44,26 +44,69 @@ Output: 2
 """
 
 from typing import List, Optional
-from collections import Counter, defaultdict
+from collections import deque
 
 
 class Solution:
     """
     Solution to LeetCode Problem #433: Minimum Genetic Mutation
 
-    Approach: [TODO: Describe approach]
-    Time Complexity: O(?)
-    Space Complexity: O(?)
+    Approach: BFS for Shortest Path
+
+    This is a shortest path problem in an implicit graph where:
+    - Each valid gene string is a node
+    - Two nodes are connected if they differ by exactly one character
+
+    Use BFS to find minimum mutations (edges) from start to end.
+
+    Time Complexity: O(B * G * 4) = O(B * G) where B = bank size, G = gene length (8)
+                     For each gene, try 4 chars at 8 positions, check if in bank
+    Space Complexity: O(B) - visited set and queue store at most B genes
 
     Key Insights:
-    [TODO: Add key insights]
+    - BFS guarantees shortest path (minimum mutations)
+    - Only genes in the bank are valid intermediate states
+    - Each mutation changes exactly one character
+    - Gene length is fixed at 8, so mutation generation is O(32) = O(1)
     """
 
     def minMutation(self, startGene: str, endGene: str, bank: List[str]) -> int:
         """
-        [TODO: Implement]
+        Find minimum mutations to transform startGene to endGene.
         """
-        pass
+        # Convert bank to set for O(1) lookup
+        bank_set = set(bank)
+
+        # endGene must be in bank to be reachable
+        if endGene not in bank_set:
+            return -1
+
+        # BFS setup
+        queue = deque([(startGene, 0)])  # (current_gene, mutation_count)
+        visited = {startGene}
+        genes = ['A', 'C', 'G', 'T']
+
+        while queue:
+            current, mutations = queue.popleft()
+
+            # Found the target
+            if current == endGene:
+                return mutations
+
+            # Try all possible single-character mutations
+            for i in range(len(current)):
+                for gene in genes:
+                    if gene != current[i]:
+                        # Create mutated gene
+                        mutated = current[:i] + gene + current[i+1:]
+
+                        # Only process if valid (in bank) and not visited
+                        if mutated in bank_set and mutated not in visited:
+                            visited.add(mutated)
+                            queue.append((mutated, mutations + 1))
+
+        # No path found
+        return -1
 
 
 # Metadata for tracking
@@ -74,7 +117,7 @@ PROBLEM_METADATA = {
     "pattern": "Graphs",
     "topics": ['Hash Table', 'String', 'Breadth-First Search'],
     "url": "https://leetcode.com/problems/minimum-genetic-mutation/",
-    "companies": [],
-    "time_complexity": "O(?)",
-    "space_complexity": "O(?)",
+    "companies": ["Google", "Amazon", "Twitter", "Facebook"],
+    "time_complexity": "O(B * G)",
+    "space_complexity": "O(B)",
 }

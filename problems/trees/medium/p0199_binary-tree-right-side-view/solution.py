@@ -41,6 +41,7 @@ Output: []
 """
 
 from typing import List, Optional
+from collections import deque
 
 class TreeNode:
     def __init__(self, val=0, left=None, right=None):
@@ -59,25 +60,45 @@ class Solution:
     """
     Solution to LeetCode Problem #199: Binary Tree Right Side View
 
-    Approach: [TODO: Describe approach]
-    Time Complexity: O(?)
-    Space Complexity: O(?)
+    Approach: BFS Level Order Traversal
+    - Process tree level by level
+    - For each level, the last node seen is the rightmost (visible from right)
+    - Add only the last node of each level to result
+
+    Time Complexity: O(n) - visit each node once
+    Space Complexity: O(w) - queue holds at most one level, where w is max width
 
     Key Insights:
-    [TODO: Add key insights]
+    - Right side view = last node at each level
+    - BFS naturally groups nodes by level
+    - Alternative: DFS with right child first, tracking depth
+    - DFS approach: visit right first, if depth == result.length, add to result
     """
 
-    def __init__(self, val=0: Any, left=None: Any, right=None: Any):
-        """
-        [TODO: Implement]
-        """
-        pass
-
     def rightSideView(self, root: Optional[TreeNode]) -> List[int]:
-        """
-        [TODO: Implement]
-        """
-        pass
+        if not root:
+            return []
+
+        result = []
+        queue = deque([root])
+
+        while queue:
+            level_size = len(queue)
+
+            for i in range(level_size):
+                node = queue.popleft()
+
+                # Last node in this level is visible from right side
+                if i == level_size - 1:
+                    result.append(node.val)
+
+                # Add children for next level
+                if node.left:
+                    queue.append(node.left)
+                if node.right:
+                    queue.append(node.right)
+
+        return result
 
 
 # Metadata for tracking
@@ -88,7 +109,7 @@ PROBLEM_METADATA = {
     "pattern": "Trees",
     "topics": ['Tree', 'Depth-First Search', 'Breadth-First Search', 'Binary Tree'],
     "url": "https://leetcode.com/problems/binary-tree-right-side-view/",
-    "companies": [],
-    "time_complexity": "O(?)",
-    "space_complexity": "O(?)",
+    "companies": ["Facebook", "Amazon", "Microsoft", "Bloomberg", "Google", "Apple", "ByteDance", "Oracle"],
+    "time_complexity": "O(n)",
+    "space_complexity": "O(w)",
 }

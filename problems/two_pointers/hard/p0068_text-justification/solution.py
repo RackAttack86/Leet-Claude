@@ -79,19 +79,69 @@ class Solution:
     """
     Solution to LeetCode Problem #68: Text Justification
 
-    Approach: [TODO: Describe approach]
-    Time Complexity: O(?)
-    Space Complexity: O(?)
+    Approach: Greedy line packing with two-pointer technique. Pack words
+    greedily into each line, then distribute spaces evenly. Handle three
+    cases: middle lines (full justify), last line (left justify), and
+    single-word lines (left justify).
+
+    Time Complexity: O(n) where n is total characters in all words
+    Space Complexity: O(n) for the result
 
     Key Insights:
-    [TODO: Add key insights]
+    1. Greedily pack words until next word would exceed maxWidth
+    2. For middle lines: distribute extra spaces left-to-right
+    3. For last line: left-justify with single spaces
+    4. Single-word lines: left-justify (pad right with spaces)
+    5. Extra spaces = maxWidth - (sum of word lengths) - (min spaces needed)
     """
 
     def fullJustify(self, words: List[str], maxWidth: int) -> List[str]:
-        """
-        [TODO: Implement]
-        """
-        pass
+        result = []
+        i = 0
+        n = len(words)
+
+        while i < n:
+            # Find words that fit on current line
+            line_words = []
+            line_length = 0
+
+            while i < n:
+                # Check if we can add the next word
+                # Need: current length + new word + spaces between words
+                spaces_needed = len(line_words)  # One space between each word
+                if line_length + len(words[i]) + spaces_needed <= maxWidth:
+                    line_words.append(words[i])
+                    line_length += len(words[i])
+                    i += 1
+                else:
+                    break
+
+            # Build the line
+            if i == n:
+                # Last line: left-justify
+                line = ' '.join(line_words)
+                line += ' ' * (maxWidth - len(line))
+            elif len(line_words) == 1:
+                # Single word: left-justify
+                line = line_words[0] + ' ' * (maxWidth - len(line_words[0]))
+            else:
+                # Middle line: full justify
+                total_spaces = maxWidth - line_length
+                gaps = len(line_words) - 1
+                space_per_gap = total_spaces // gaps
+                extra_spaces = total_spaces % gaps
+
+                line = ''
+                for j, word in enumerate(line_words):
+                    line += word
+                    if j < gaps:
+                        # Add spaces (extra spaces go to left gaps first)
+                        spaces = space_per_gap + (1 if j < extra_spaces else 0)
+                        line += ' ' * spaces
+
+            result.append(line)
+
+        return result
 
 
 # Metadata for tracking
@@ -102,7 +152,7 @@ PROBLEM_METADATA = {
     "pattern": "Two Pointers",
     "topics": ['Array', 'String', 'Simulation'],
     "url": "https://leetcode.com/problems/text-justification/",
-    "companies": [],
-    "time_complexity": "O(?)",
-    "space_complexity": "O(?)",
+    "companies": ["Google", "LinkedIn", "Amazon", "Microsoft", "Apple", "Airbnb", "Facebook"],
+    "time_complexity": "O(n)",
+    "space_complexity": "O(n)",
 }

@@ -50,11 +50,61 @@ class Solution:
     - Check if all nodes connected at end
     """
 
-    def solve(self):
+    def minimumCost(self, n: int, connections: List[List[int]]) -> int:
         """
-        [TODO: Implement solution]
+        Find minimum cost to connect all cities.
+
+        Args:
+            n: Number of cities (1-indexed)
+            connections: List of [city1, city2, cost] connections
+
+        Returns:
+            Minimum cost to connect all cities, or -1 if impossible
+
+        Approach (Kruskal's Algorithm):
+        1. Sort edges by cost
+        2. Use Union Find to build MST
+        3. Add edge if it connects two different components
+        4. Stop when all cities are connected (n-1 edges added)
         """
-        pass
+        # Sort connections by cost
+        connections.sort(key=lambda x: x[2])
+
+        # Union Find
+        parent = list(range(n + 1))  # 1-indexed
+        rank = [0] * (n + 1)
+
+        def find(x: int) -> int:
+            if parent[x] != x:
+                parent[x] = find(parent[x])
+            return parent[x]
+
+        def union(x: int, y: int) -> bool:
+            """Returns True if union was performed."""
+            px, py = find(x), find(y)
+            if px == py:
+                return False
+            if rank[px] < rank[py]:
+                px, py = py, px
+            parent[py] = px
+            if rank[px] == rank[py]:
+                rank[px] += 1
+            return True
+
+        total_cost = 0
+        edges_added = 0
+
+        for city1, city2, cost in connections:
+            if union(city1, city2):
+                total_cost += cost
+                edges_added += 1
+
+                # We need n-1 edges to connect n cities
+                if edges_added == n - 1:
+                    return total_cost
+
+        # If we couldn't add n-1 edges, cities are not fully connected
+        return -1
 
 
 # Metadata for tracking

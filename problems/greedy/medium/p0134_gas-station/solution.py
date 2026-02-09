@@ -46,11 +46,33 @@ class Solution:
     - One pass solution
     """
 
-    def solve(self):
+    def canCompleteCircuit(self, gas: List[int], cost: List[int]) -> int:
         """
-        [TODO: Implement solution]
+        Find starting station to complete circular route.
+
+        Args:
+            gas: Amount of gas at each station
+            cost: Cost to travel to next station
+
+        Returns:
+            Starting station index, or -1 if impossible
         """
-        pass
+        total_tank = 0  # Total gas - total cost for entire circuit
+        current_tank = 0  # Current gas in tank
+        start = 0  # Starting station candidate
+
+        for i in range(len(gas)):
+            diff = gas[i] - cost[i]
+            total_tank += diff
+            current_tank += diff
+
+            # If tank becomes negative, can't start from any station before i+1
+            if current_tank < 0:
+                start = i + 1
+                current_tank = 0
+
+        # If total gas < total cost, circuit is impossible
+        return start if total_tank >= 0 else -1
 
 
 # Metadata for tracking

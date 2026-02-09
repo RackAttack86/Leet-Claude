@@ -50,11 +50,33 @@ class Solution:
     - Classic merge pattern
     """
 
-    def solve(self):
+    def intervalIntersection(self, firstList: List[List[int]], secondList: List[List[int]]) -> List[List[int]]:
         """
-        [TODO: Implement solution]
+        Find intersections of two sorted interval lists.
+
+        Two pointers approach:
+        - Find intersection if max(starts) <= min(ends)
+        - Move the pointer with the smaller end time forward
         """
-        pass
+        result = []
+        i, j = 0, 0
+
+        while i < len(firstList) and j < len(secondList):
+            # Find the overlap
+            start = max(firstList[i][0], secondList[j][0])
+            end = min(firstList[i][1], secondList[j][1])
+
+            # If there is an intersection
+            if start <= end:
+                result.append([start, end])
+
+            # Move the pointer with smaller end time
+            if firstList[i][1] < secondList[j][1]:
+                i += 1
+            else:
+                j += 1
+
+        return result
 
 
 # Metadata for tracking

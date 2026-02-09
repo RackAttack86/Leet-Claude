@@ -34,7 +34,7 @@ myQueue.empty(); // return false
 from typing import List, Optional
 
 
-class Solution:
+class MyQueue:
     """
     Solution to LeetCode Problem #232: Implement Queue using Stacks
 
@@ -49,11 +49,32 @@ class Solution:
     - Amortized O(1) time
     """
 
-    def solve(self):
-        """
-        [TODO: Implement solution]
-        """
-        pass
+    def __init__(self):
+        self.input_stack = []
+        self.output_stack = []
+
+    def push(self, x: int) -> None:
+        self.input_stack.append(x)
+
+    def pop(self) -> int:
+        self._transfer()
+        return self.output_stack.pop()
+
+    def peek(self) -> int:
+        self._transfer()
+        return self.output_stack[-1]
+
+    def empty(self) -> bool:
+        return len(self.input_stack) == 0 and len(self.output_stack) == 0
+
+    def _transfer(self) -> None:
+        if not self.output_stack:
+            while self.input_stack:
+                self.output_stack.append(self.input_stack.pop())
+
+
+# Alias for compatibility
+Solution = MyQueue
 
 
 # Metadata for tracking

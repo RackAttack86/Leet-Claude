@@ -43,11 +43,28 @@ class Solution:
     - Classic next greater element variant
     """
 
-    def solve(self):
+    def dailyTemperatures(self, temperatures: List[int]) -> List[int]:
         """
-        [TODO: Implement solution]
+        Find days until warmer temperature for each day.
+
+        Use monotonic decreasing stack storing indices.
+        When we find a warmer temperature, calculate the difference
+        in days for all stack indices with lower temperatures.
         """
-        pass
+        n = len(temperatures)
+        result = [0] * n
+        stack = []  # Stack of indices
+
+        for i in range(n):
+            # While current temp is greater than temp at stack top
+            while stack and temperatures[i] > temperatures[stack[-1]]:
+                prev_idx = stack.pop()
+                result[prev_idx] = i - prev_idx
+
+            stack.append(i)
+
+        # Remaining indices in stack have no warmer day (stay 0)
+        return result
 
 
 # Metadata for tracking

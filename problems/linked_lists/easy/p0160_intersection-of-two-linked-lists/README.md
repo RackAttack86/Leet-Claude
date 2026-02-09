@@ -6,34 +6,76 @@
 
 ## Problem Description
 
-[TODO: Add problem description]
+Given the heads of two singly linked-lists headA and headB, return the node at which the two lists intersect. If the two linked lists have no intersection at all, return null.
+
+## Constraints
+
+- The number of nodes of listA is in the m
+- The number of nodes of listB is in the n
+- 1 <= m, n <= 3 * 10^4
+- 1 <= Node.val <= 10^5
+- 0 <= skipA < m
+- 0 <= skipB < n
+
+## Examples
+
+Example 1:
+```
+Input: intersectVal = 8, listA = [4,1,8,4,5], listB = [5,6,1,8,4,5], skipA = 2, skipB = 3
+Output: Intersected at '8'
+```
+
+Example 2:
+```
+Input: intersectVal = 0, listA = [2,6,4], listB = [1,5], skipA = 3, skipB = 2
+Output: No intersection
+```
 
 ## Approaches
 
-### 1. [Approach Name]
+### 1. Two Pointers with Length Alignment
 
-**Time Complexity:** O(?)
-**Space Complexity:** O(?)
+**Time Complexity:** O(m + n)
+**Space Complexity:** O(1)
 
 ```python
-# TODO: Add code snippet
+def getIntersectionNode(self, headA: ListNode, headB: ListNode) -> Optional[ListNode]:
+    if not headA or not headB:
+        return None
+
+    pA = headA
+    pB = headB
+
+    while pA != pB:
+        pA = pA.next if pA else headB
+        pB = pB.next if pB else headA
+
+    return pA
 ```
 
 **Why this works:**
-[TODO: Explain approach]
+- Two pointers traverse both lists
+- When reaching the end of one list, switch to the head of the other list
+- This eliminates the length difference between the two lists
+- They will meet at the intersection point or both become null
 
 ## Key Insights
 
-[TODO: Add key insights]
+- Two pointers traverse both lists
+- When reaching end, switch to other list
+- They will meet at intersection or null
+- Clever pointer switching eliminates length difference
 
 ## Common Mistakes
 
-[TODO: Add common mistakes]
+- Comparing node values instead of node references
+- Not handling the case when lists don't intersect
 
 ## Related Problems
 
-[TODO: Add related problems]
+- Linked List Cycle
+- Merge Two Sorted Lists
 
 ## Tags
 
-[TODO: Add tags]
+Hash Table, Linked List, Two Pointers

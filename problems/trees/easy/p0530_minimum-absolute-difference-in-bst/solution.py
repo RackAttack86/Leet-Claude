@@ -50,25 +50,46 @@ class Solution:
     """
     Solution to LeetCode Problem #530: Minimum Absolute Difference in BST
 
-    Approach: [TODO: Describe approach]
-    Time Complexity: O(?)
-    Space Complexity: O(?)
+    Approach: In-order traversal to get sorted sequence
+    - BST in-order traversal produces nodes in sorted (ascending) order.
+    - Minimum difference must be between adjacent nodes in sorted order.
+    - Track previous node value and update minimum difference during traversal.
+    - Use instance variables to maintain state across recursive calls.
+
+    Time Complexity: O(n) - visit each node exactly once
+    Space Complexity: O(h) - recursion stack, where h is tree height
 
     Key Insights:
-    [TODO: Add key insights]
+    - In a BST, in-order traversal gives sorted values
+    - Minimum absolute difference is always between consecutive sorted values
+    - No need to store all values; just track previous value during traversal
+    - This is equivalent to problem #783 (Minimum Distance Between BST Nodes)
     """
-
-    def __init__(self, val=0: Any, left=None: Any, right=None: Any):
-        """
-        [TODO: Implement]
-        """
-        pass
 
     def getMinimumDifference(self, root: Optional[TreeNode]) -> int:
         """
-        [TODO: Implement]
+        Find the minimum absolute difference between any two nodes in BST.
         """
-        pass
+        self.min_diff = float('inf')
+        self.prev = None
+
+        def inorder(node: Optional[TreeNode]) -> None:
+            if not node:
+                return
+
+            # Visit left subtree
+            inorder(node.left)
+
+            # Process current node
+            if self.prev is not None:
+                self.min_diff = min(self.min_diff, node.val - self.prev)
+            self.prev = node.val
+
+            # Visit right subtree
+            inorder(node.right)
+
+        inorder(root)
+        return self.min_diff
 
 
 # Metadata for tracking
@@ -79,7 +100,7 @@ PROBLEM_METADATA = {
     "pattern": "Trees",
     "topics": ['Tree', 'Depth-First Search', 'Breadth-First Search', 'Binary Search Tree', 'Binary Tree'],
     "url": "https://leetcode.com/problems/minimum-absolute-difference-in-bst/",
-    "companies": [],
-    "time_complexity": "O(?)",
-    "space_complexity": "O(?)",
+    "companies": ["Amazon", "Microsoft", "Google", "Facebook", "Bloomberg", "Oracle"],
+    "time_complexity": "O(n)",
+    "space_complexity": "O(h)",
 }

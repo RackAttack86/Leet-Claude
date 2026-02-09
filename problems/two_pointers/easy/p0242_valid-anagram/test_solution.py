@@ -3,7 +3,7 @@ Tests for LeetCode Problem #242: Valid Anagram
 """
 
 import pytest
-from .solution import Solution, PROBLEM_METADATA
+from solution import Solution, PROBLEM_METADATA
 
 
 
@@ -21,7 +21,7 @@ class TestValidAnagram:
         """Example 1 from problem description"""
         s = "anagram"
         t = "nagaram"
-        expected = true
+        expected = True
         result = solution.isAnagram(s, t)
         assert result == expected
 
@@ -30,15 +30,18 @@ class TestValidAnagram:
         """Example 2 from problem description"""
         s = "rat"
         t = "car"
-        expected = false
+        expected = False
         result = solution.isAnagram(s, t)
         assert result == expected
 
 
-    def test_edge_case_empty(self, solution):
-        """Test with empty/minimal input"""
-        # TODO: Implement edge case test
-        pass
+    def test_edge_case_single_char(self, solution):
+        """Test with single character strings"""
+        s = "a"
+        t = "a"
+        expected = True
+        result = solution.isAnagram(s, t)
+        assert result == expected
 
 
     # Metadata validation

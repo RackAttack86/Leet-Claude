@@ -48,10 +48,15 @@ class TestMergeSortedArray:
         assert nums1 == expected
 
 
-    def test_edge_case_empty(self, solution):
-        """Test with empty/minimal input"""
-        # TODO: Implement edge case test
-        pass
+    def test_edge_case_both_have_elements(self, solution):
+        """Test with overlapping values"""
+        nums1 = [2, 0]
+        m = 1
+        nums2 = [1]
+        n = 1
+        expected = [1, 2]
+        solution.merge(nums1, m, nums2, n)
+        assert nums1 == expected
 
 
     # Metadata validation

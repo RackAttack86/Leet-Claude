@@ -42,11 +42,21 @@ class Solution:
     - Classic backtracking problem
     """
 
-    def solve(self):
-        """
-        [TODO: Implement solution]
-        """
-        pass
+    def permute(self, nums: List[int]) -> List[List[int]]:
+        result = []
+
+        def backtrack(current: List[int], remaining: List[int]):
+            if not remaining:
+                result.append(current[:])
+                return
+
+            for i in range(len(remaining)):
+                current.append(remaining[i])
+                backtrack(current, remaining[:i] + remaining[i+1:])
+                current.pop()
+
+        backtrack([], nums)
+        return result
 
 
 # Metadata for tracking

@@ -3,7 +3,7 @@ Tests for LeetCode Problem #167: Two Sum II - Input Array Is Sorted
 """
 
 import pytest
-from .solution import Solution, PROBLEM_METADATA
+from solution import Solution, PROBLEM_METADATA
 
 
 
@@ -44,10 +44,21 @@ class TestTwoSumIiInputArrayIsSorted:
         assert result == expected
 
 
-    def test_edge_case_empty(self, solution):
-        """Test with empty/minimal input"""
-        # TODO: Implement edge case test
-        pass
+    def test_edge_case_two_elements(self, solution):
+        """Test with minimal input of two elements"""
+        numbers = [1, 2]
+        target = 3
+        expected = [1, 2]
+        result = solution.twoSum(numbers, target)
+        assert result == expected
+
+    def test_edge_case_same_values(self, solution):
+        """Test with duplicate values"""
+        numbers = [1, 1, 2, 3]
+        target = 2
+        expected = [1, 2]
+        result = solution.twoSum(numbers, target)
+        assert result == expected
 
 
     # Metadata validation

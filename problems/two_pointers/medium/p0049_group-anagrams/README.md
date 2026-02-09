@@ -10,8 +10,9 @@ Given an array of strings `strs`, group the anagrams together. You can return th
 
 ## Constraints
 
-- `1
-- strs[i]` consists of lowercase English letters.
+- `1 <= strs.length <= 10^4`
+- `0 <= strs[i].length <= 100`
+- `strs[i]` consists of lowercase English letters.
 
 ## Examples
 
@@ -23,9 +24,9 @@ Output: [["bat"],["nat","tan"],["ate","eat","tea"]]
 Explanation:
 
 - There is no string in strs that can be rearranged to form `"bat"`.
-	
+
 - The strings `"nat"` and `"tan"` are anagrams as they can be rearranged to form each other.
-	
+
 - The strings `"ate"`, `"eat"`, and `"tea"` are anagrams as they can be rearranged to form each other.
 
 Example 2:
@@ -40,26 +41,41 @@ Output: [["a"]]
 
 ## Approaches
 
-### 1. [Approach Name]
+### 1. Sorted String as Key
 
-**Time Complexity:** O(?)
-**Space Complexity:** O(?)
+**Time Complexity:** O(n * k * log(k)) where n is number of strings, k is max string length. Using character count as key: O(n * k)
+**Space Complexity:** O(n * k) for storing all strings in the hash map
 
 ```python
-# TODO: Add code snippet
+def groupAnagrams(self, strs: List[str]) -> List[List[str]]:
+    # Group anagrams by their sorted character tuple
+    anagram_groups = defaultdict(list)
+
+    for s in strs:
+        # Use sorted tuple as key (anagrams will have same sorted form)
+        key = tuple(sorted(s))
+        anagram_groups[key].append(s)
+
+    return list(anagram_groups.values())
 ```
 
 **Why this works:**
-[TODO: Explain approach]
+Use a hash map where the key is a canonical representation of each anagram group. Two strings are anagrams if they have the same sorted characters or the same character frequency count.
 
 ## Key Insights
 
-[TODO: Add key insights]
+1. Anagrams have the same sorted character sequence
+2. Alternative: Use character count tuple as key (faster for long strings)
+3. defaultdict simplifies grouping logic
+4. Tuple of sorted string works as hashable key
 
 ## Common Mistakes
 
-[TODO: Add common mistakes]
+- Using a list as dictionary key (lists are not hashable)
+- Not handling empty strings correctly
+- Inefficient key generation for long strings
 
 ## Related Problems
 
-[TODO: Add related problems]
+- Valid Anagram (LeetCode #242)
+- Find All Anagrams in a String (LeetCode #438)

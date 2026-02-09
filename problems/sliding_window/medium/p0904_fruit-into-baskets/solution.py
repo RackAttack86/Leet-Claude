@@ -50,11 +50,34 @@ class Solution:
     - Classic sliding window pattern
     """
 
-    def solve(self):
+    def totalFruit(self, fruits: List[int]) -> int:
         """
-        [TODO: Implement solution]
+        Find maximum number of fruits collectible with 2 baskets (at most 2 types).
+
+        Equivalent to finding longest subarray with at most 2 distinct elements.
+        Uses sliding window with hash map to track fruit types.
         """
-        pass
+        fruit_count = {}
+        max_fruits = 0
+        left = 0
+
+        for right in range(len(fruits)):
+            # Add fruit to window
+            fruit = fruits[right]
+            fruit_count[fruit] = fruit_count.get(fruit, 0) + 1
+
+            # Shrink window while we have more than 2 fruit types
+            while len(fruit_count) > 2:
+                left_fruit = fruits[left]
+                fruit_count[left_fruit] -= 1
+                if fruit_count[left_fruit] == 0:
+                    del fruit_count[left_fruit]
+                left += 1
+
+            # Update maximum
+            max_fruits = max(max_fruits, right - left + 1)
+
+        return max_fruits
 
 
 # Metadata for tracking

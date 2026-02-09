@@ -33,6 +33,12 @@ Output: [1,5,2,4,3]
 from typing import List, Optional
 
 
+class ListNode:
+    def __init__(self, val=0, next=None):
+        self.val = val
+        self.next = next
+
+
 class Solution:
     """
     Solution to LeetCode Problem #143: Reorder List
@@ -48,11 +54,51 @@ class Solution:
     - Three-step approach
     """
 
-    def solve(self):
+    def reorderList(self, head: Optional[ListNode]) -> None:
         """
-        [TODO: Implement solution]
+        Reorder list: L0 -> Ln -> L1 -> Ln-1 -> L2 -> Ln-2 -> ...
+
+        Three-step approach:
+        1. Find middle of list using slow/fast pointers
+        2. Reverse second half
+        3. Merge two halves alternately
         """
-        pass
+        if not head or not head.next:
+            return
+
+        # Step 1: Find middle using slow/fast pointers
+        slow = head
+        fast = head
+        while fast.next and fast.next.next:
+            slow = slow.next
+            fast = fast.next.next
+
+        # Step 2: Reverse second half starting from slow.next
+        second = slow.next
+        slow.next = None  # Cut the list in half
+
+        prev = None
+        while second:
+            next_node = second.next
+            second.next = prev
+            prev = second
+            second = next_node
+        second = prev  # prev is now head of reversed second half
+
+        # Step 3: Merge two halves alternately
+        first = head
+        while second:
+            # Save next pointers
+            first_next = first.next
+            second_next = second.next
+
+            # Interleave
+            first.next = second
+            second.next = first_next
+
+            # Move to next pair
+            first = first_next
+            second = second_next
 
 
 # Metadata for tracking

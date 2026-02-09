@@ -45,26 +45,58 @@ Explanation: 2^-2 = 1/2^2 = 1/4 = 0.25
 
 ## Approaches
 
-### 1. [Approach Name]
+### 1. Binary Exponentiation (Exponentiation by Squaring)
 
-**Time Complexity:** O(?)
-**Space Complexity:** O(?)
+**Time Complexity:** O(log n) - We halve n at each step
+**Space Complexity:** O(1) - Iterative approach uses constant space
 
 ```python
-# TODO: Add code snippet
+def myPow(self, x: float, n: int) -> float:
+    if n == 0:
+        return 1.0
+
+    # Handle negative exponent
+    if n < 0:
+        x = 1 / x
+        n = -n
+
+    result = 1.0
+    current_product = x
+
+    while n > 0:
+        # If n is odd, multiply result by current_product
+        if n % 2 == 1:
+            result *= current_product
+
+        # Square the base and halve the exponent
+        current_product *= current_product
+        n //= 2
+
+    return result
 ```
 
 **Why this works:**
-[TODO: Explain approach]
+Instead of multiplying x by itself n times (O(n)), we use the property:
+- x^n = (x^2)^(n/2) when n is even
+- x^n = x * (x^2)^((n-1)/2) when n is odd
+
+This allows us to halve the problem size at each step, reducing time complexity from O(n) to O(log n). For negative n, we compute 1 / x^(-n).
 
 ## Key Insights
 
-[TODO: Add key insights]
+- Use binary exponentiation to reduce from O(n) to O(log n)
+- Handle negative exponent by computing 1/x^|n|
+- Handle edge case where n = -2^31 (integer overflow when negating)
+- When n is odd, multiply result by current x and reduce n by 1
+- When n is even, square x and halve n
 
 ## Common Mistakes
 
-[TODO: Add common mistakes]
+- Integer overflow when negating n = -2^31
+- Forgetting to handle negative exponents
+- Using recursion without tail optimization (can cause stack overflow)
 
 ## Related Problems
 
-[TODO: Add related problems]
+- Sqrt(x) (#69)
+- Super Pow (#372)

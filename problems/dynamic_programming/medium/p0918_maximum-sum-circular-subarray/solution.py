@@ -54,19 +54,59 @@ class Solution:
     """
     Solution to LeetCode Problem #918: Maximum Sum Circular Subarray
 
-    Approach: [TODO: Describe approach]
-    Time Complexity: O(?)
-    Space Complexity: O(?)
+    Approach: Kadane's Algorithm with circular consideration
+    - For a circular array, the maximum subarray is either:
+      1. A normal contiguous subarray (use standard Kadane's)
+      2. A "wrap-around" subarray = total_sum - minimum_subarray
+    - Calculate both max subarray and min subarray in one pass.
+    - Answer is max(max_subarray, total_sum - min_subarray)
+    - Special case: if all elements are negative, return max_subarray.
+
+    Time Complexity: O(n)
+    Space Complexity: O(1)
 
     Key Insights:
-    [TODO: Add key insights]
+    1. A wrap-around maximum is equivalent to removing a contiguous minimum from the middle.
+    2. If we find the minimum subarray, the wrap-around sum = total - min_subarray.
+    3. We need to handle the all-negative case specially (min_subarray would be entire array).
+    4. We can compute max and min subarrays simultaneously using modified Kadane's.
     """
 
     def maxSubarraySumCircular(self, nums: List[int]) -> int:
         """
-        [TODO: Implement]
+        Find maximum sum subarray in a circular array.
+
+        Args:
+            nums: Circular integer array
+
+        Returns:
+            Maximum sum of any non-empty subarray
         """
-        pass
+        total_sum = 0
+        max_sum = nums[0]
+        current_max = 0
+        min_sum = nums[0]
+        current_min = 0
+
+        for num in nums:
+            # Kadane's for maximum subarray
+            current_max = max(num, current_max + num)
+            max_sum = max(max_sum, current_max)
+
+            # Kadane's for minimum subarray
+            current_min = min(num, current_min + num)
+            min_sum = min(min_sum, current_min)
+
+            # Track total sum
+            total_sum += num
+
+        # If all elements are negative, max_sum is the answer
+        # (wrap-around would give 0 which is not valid since subarray must be non-empty)
+        if max_sum < 0:
+            return max_sum
+
+        # Return max of normal max subarray and wrap-around subarray
+        return max(max_sum, total_sum - min_sum)
 
 
 # Metadata for tracking
@@ -77,7 +117,7 @@ PROBLEM_METADATA = {
     "pattern": "Dynamic Programming",
     "topics": ['Array', 'Divide and Conquer', 'Dynamic Programming', 'Queue', 'Monotonic Queue'],
     "url": "https://leetcode.com/problems/maximum-sum-circular-subarray/",
-    "companies": [],
-    "time_complexity": "O(?)",
-    "space_complexity": "O(?)",
+    "companies": ["Amazon", "Google", "Microsoft", "Facebook", "Apple", "Goldman Sachs"],
+    "time_complexity": "O(n)",
+    "space_complexity": "O(1)",
 }

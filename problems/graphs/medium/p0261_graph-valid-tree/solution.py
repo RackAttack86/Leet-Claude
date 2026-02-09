@@ -46,11 +46,56 @@ class Solution:
     - Or DFS to check connectivity and cycles
     """
 
-    def solve(self):
+    def validTree(self, n: int, edges: List[List[int]]) -> bool:
         """
-        [TODO: Implement solution]
+        Determine if the graph is a valid tree.
+
+        Args:
+            n: Number of nodes
+            edges: List of edges [a, b]
+
+        Returns:
+            True if graph is a valid tree, False otherwise
+
+        Approach:
+        1. A valid tree has exactly n-1 edges
+        2. Must be connected (all nodes reachable)
+        3. Must be acyclic
+        4. Use Union Find to detect cycles and check connectivity
         """
-        pass
+        # A tree with n nodes must have exactly n-1 edges
+        if len(edges) != n - 1:
+            return False
+
+        # Union Find implementation
+        parent = list(range(n))
+        rank = [0] * n
+
+        def find(x: int) -> int:
+            if parent[x] != x:
+                parent[x] = find(parent[x])  # Path compression
+            return parent[x]
+
+        def union(x: int, y: int) -> bool:
+            """Returns False if x and y are already connected (cycle detected)."""
+            px, py = find(x), find(y)
+            if px == py:
+                return False  # Cycle detected
+            # Union by rank
+            if rank[px] < rank[py]:
+                px, py = py, px
+            parent[py] = px
+            if rank[px] == rank[py]:
+                rank[px] += 1
+            return True
+
+        # Process all edges
+        for a, b in edges:
+            if not union(a, b):
+                return False  # Cycle detected
+
+        # If we have n-1 edges and no cycles, it's a valid tree
+        return True
 
 
 # Metadata for tracking

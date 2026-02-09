@@ -45,11 +45,12 @@ class Solution:
     - Or use expected sum - actual sum
     """
 
-    def solve(self):
-        """
-        [TODO: Implement solution]
-        """
-        pass
+    def missingNumber(self, nums: List[int]) -> int:
+        n = len(nums)
+        result = n
+        for i, num in enumerate(nums):
+            result ^= i ^ num
+        return result
 
 
 # Metadata for tracking

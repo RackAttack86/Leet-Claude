@@ -60,19 +60,57 @@ class Solution:
     """
     Solution to LeetCode Problem #228: Summary Ranges
 
-    Approach: [TODO: Describe approach]
-    Time Complexity: O(?)
-    Space Complexity: O(?)
+    Approach: Two-pointer linear scan
+    - Use a start pointer to track the beginning of each range
+    - Iterate through the array, checking if the next element is consecutive
+    - When a break in consecutiveness is found (or at end), format the range and add to result
+    - Continue with the next range starting from the current position
+
+    Time Complexity: O(n)
+    - We iterate through the array once, visiting each element exactly once
+
+    Space Complexity: O(1)
+    - Only using a constant amount of extra space (excluding output)
+    - The output list is O(n) in the worst case but typically not counted
 
     Key Insights:
-    [TODO: Add key insights]
+    - Since the array is sorted and unique, consecutive elements differ by exactly 1
+    - A range ends when nums[i+1] != nums[i] + 1 or when we reach the end
+    - Two formatting cases: single element "a" vs range "a->b"
+    - Empty input returns empty output
     """
 
     def summaryRanges(self, nums: List[int]) -> List[str]:
         """
-        [TODO: Implement]
+        Find the smallest sorted list of ranges that cover all numbers.
+
+        Args:
+            nums: Sorted unique integer array
+
+        Returns:
+            List of formatted range strings
         """
-        pass
+        if not nums:
+            return []
+
+        result = []
+        n = len(nums)
+        start = 0  # Start index of current range
+
+        for i in range(n):
+            # Check if current range ends (next element is not consecutive or at end)
+            if i == n - 1 or nums[i + 1] != nums[i] + 1:
+                # Format the range
+                if start == i:
+                    # Single element range
+                    result.append(str(nums[start]))
+                else:
+                    # Multi-element range
+                    result.append(f"{nums[start]}->{nums[i]}")
+                # Start new range from next element
+                start = i + 1
+
+        return result
 
 
 # Metadata for tracking
@@ -81,9 +119,9 @@ PROBLEM_METADATA = {
     "name": "Summary Ranges",
     "difficulty": "Easy",
     "pattern": "Intervals",
-    "topics": ['Array'],
+    "topics": ['Array', 'Two Pointers'],
     "url": "https://leetcode.com/problems/summary-ranges/",
-    "companies": [],
-    "time_complexity": "O(?)",
-    "space_complexity": "O(?)",
+    "companies": ["Google", "Facebook", "Amazon", "Microsoft", "Bloomberg", "Yandex"],
+    "time_complexity": "O(n)",
+    "space_complexity": "O(1)",
 }

@@ -44,11 +44,20 @@ class Solution:
     - Reduces to House Robber I problem
     """
 
-    def solve(self):
-        """
-        [TODO: Implement solution]
-        """
-        pass
+    def rob(self, nums: List[int]) -> int:
+        if len(nums) == 1:
+            return nums[0]
+
+        def rob_linear(houses: List[int]) -> int:
+            prev2, prev1 = 0, 0
+            for num in houses:
+                current = max(prev1, prev2 + num)
+                prev2 = prev1
+                prev1 = current
+            return prev1
+
+        # Either exclude first house or exclude last house
+        return max(rob_linear(nums[:-1]), rob_linear(nums[1:]))
 
 
 # Metadata for tracking

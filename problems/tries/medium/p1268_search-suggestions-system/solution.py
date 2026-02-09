@@ -38,22 +38,51 @@ class Solution:
     """
     Solution to LeetCode Problem #1268: Search Suggestions System
 
-    Approach: Trie or sorting with binary search
-    Time Complexity: O(n * m + k) for Trie where k is searchWord length
-    Space Complexity: O(n * m)
+    Approach: Sorting with binary search
+    Time Complexity: O(n log n + m * n) where n is products count, m is searchWord length
+    Space Complexity: O(n) for sorted products
 
     Key Insights:
-    - Sort products and use binary search
-    - Or build Trie with sorted suggestions at each node
-    - Return top 3 lexicographically smallest
-    - Sorting approach is simpler
+    - Sort products lexicographically
+    - For each prefix, use binary search to find the starting point
+    - Take up to 3 products that match the prefix
+    - Sorting approach is simpler and efficient
     """
 
-    def solve(self):
+    def suggestedProducts(self, products: List[str], searchWord: str) -> List[List[str]]:
         """
-        [TODO: Implement solution]
+        Return suggested products after each character of searchWord is typed.
+
+        Args:
+            products: List of product names
+            searchWord: The search query being typed
+
+        Returns:
+            List of lists of suggested products for each prefix
         """
-        pass
+        import bisect
+
+        # Sort products lexicographically
+        products.sort()
+        result = []
+        prefix = ''
+
+        for char in searchWord:
+            prefix += char
+            # Find the leftmost position where products >= prefix
+            left = bisect.bisect_left(products, prefix)
+
+            suggestions = []
+            # Check up to 3 products starting from this position
+            for i in range(left, min(left + 3, len(products))):
+                if products[i].startswith(prefix):
+                    suggestions.append(products[i])
+                else:
+                    break  # No more matches since products are sorted
+
+            result.append(suggestions)
+
+        return result
 
 
 # Metadata for tracking

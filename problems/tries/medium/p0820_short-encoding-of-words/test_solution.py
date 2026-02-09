@@ -3,7 +3,7 @@ Tests for LeetCode Problem #820: Short Encoding of Words
 """
 
 import pytest
-from .solution import Solution, PROBLEM_METADATA
+from solution import Solution, PROBLEM_METADATA
 
 
 class TestShortEncodingOfWords:
@@ -16,19 +16,18 @@ class TestShortEncodingOfWords:
 
     def test_example_1(self, solution):
         """Example 1 from problem description"""
-        # TODO: Implement test
-        pass
+        words = ["time", "me", "bell"]
+        assert solution.minimumLengthEncoding(words) == 10
 
     def test_example_2(self, solution):
         """Example 2 from problem description"""
-        # TODO: Implement test
-        pass
+        words = ["t"]
+        assert solution.minimumLengthEncoding(words) == 2
 
-    # Edge cases
     def test_edge_case_1(self, solution):
-        """TODO: Describe edge case"""
-        # TODO: Implement test
-        pass
+        """Test with all words being suffixes of one word"""
+        words = ["time", "ime", "me", "e"]
+        assert solution.minimumLengthEncoding(words) == 5
 
     # Metadata validation
     def test_metadata_exists(self):

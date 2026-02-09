@@ -51,11 +51,56 @@ class Solution:
     - Return empty array if cycle detected
     """
 
-    def solve(self):
+    def findOrder(self, numCourses: int, prerequisites: List[List[int]]) -> List[int]:
         """
-        [TODO: Implement solution]
+        Return a valid ordering of courses to finish all courses.
+
+        Args:
+            numCourses: Total number of courses
+            prerequisites: List of [course, prerequisite] pairs
+
+        Returns:
+            A valid ordering of courses, or empty list if impossible
+
+        Approach:
+        1. Build adjacency list graph
+        2. Use DFS with post-order traversal
+        3. Track three states: 0=unvisited, 1=visiting, 2=visited
+        4. If cycle detected, return empty list
+        5. Reverse the post-order to get topological order
         """
-        pass
+        from collections import defaultdict
+
+        # Build adjacency list
+        graph = defaultdict(list)
+        for course, prereq in prerequisites:
+            graph[prereq].append(course)
+
+        # DFS with cycle detection and topological ordering
+        states = [0] * numCourses  # 0=unvisited, 1=visiting, 2=visited
+        result = []
+
+        def dfs(course: int) -> bool:
+            """Returns False if cycle detected."""
+            if states[course] == 1:  # Currently visiting - cycle!
+                return False
+            if states[course] == 2:  # Already visited
+                return True
+
+            states[course] = 1  # Mark as visiting
+            for next_course in graph[course]:
+                if not dfs(next_course):
+                    return False
+            states[course] = 2  # Mark as visited
+            result.append(course)
+            return True
+
+        for course in range(numCourses):
+            if not dfs(course):
+                return []
+
+        # Reverse to get topological order (prerequisites first)
+        return result[::-1]
 
 
 # Metadata for tracking

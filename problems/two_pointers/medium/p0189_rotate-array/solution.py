@@ -46,19 +46,38 @@ class Solution:
     """
     Solution to LeetCode Problem #189: Rotate Array
 
-    Approach: [TODO: Describe approach]
-    Time Complexity: O(?)
-    Space Complexity: O(?)
+    Approach: Three-step reversal algorithm. First reverse the entire array,
+    then reverse the first k elements, then reverse the remaining elements.
+    This achieves in-place rotation with O(1) extra space.
+
+    Time Complexity: O(n) - Each element is reversed at most twice
+    Space Complexity: O(1) - In-place reversal with no extra array
 
     Key Insights:
-    [TODO: Add key insights]
+    1. k can be larger than n, so we use k % n
+    2. Reverse entire array: [1,2,3,4,5,6,7] -> [7,6,5,4,3,2,1]
+    3. Reverse first k: [5,6,7,4,3,2,1]
+    4. Reverse rest: [5,6,7,1,2,3,4]
+    5. Two-pointer technique for reversing subarrays in-place
     """
 
     def rotate(self, nums: List[int], k: int) -> None:
-        """
-        [TODO: Implement]
-        """
-        pass
+        n = len(nums)
+        k = k % n  # Handle k larger than array length
+
+        def reverse(left: int, right: int) -> None:
+            """Reverse elements in-place between left and right indices."""
+            while left < right:
+                nums[left], nums[right] = nums[right], nums[left]
+                left += 1
+                right -= 1
+
+        # Step 1: Reverse entire array
+        reverse(0, n - 1)
+        # Step 2: Reverse first k elements
+        reverse(0, k - 1)
+        # Step 3: Reverse remaining elements
+        reverse(k, n - 1)
 
 
 # Metadata for tracking
@@ -69,7 +88,7 @@ PROBLEM_METADATA = {
     "pattern": "Two Pointers",
     "topics": ['Array', 'Math', 'Two Pointers'],
     "url": "https://leetcode.com/problems/rotate-array/",
-    "companies": [],
-    "time_complexity": "O(?)",
-    "space_complexity": "O(?)",
+    "companies": ["Amazon", "Microsoft", "Google", "Facebook", "Apple", "Bloomberg"],
+    "time_complexity": "O(n)",
+    "space_complexity": "O(1)",
 }

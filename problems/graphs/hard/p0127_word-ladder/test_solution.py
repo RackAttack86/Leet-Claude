@@ -3,7 +3,7 @@ Tests for LeetCode Problem #127: Word Ladder
 """
 
 import pytest
-from .solution import Solution, PROBLEM_METADATA
+from solution import Solution, PROBLEM_METADATA
 
 
 
@@ -37,10 +37,24 @@ class TestWordLadder:
         assert result == expected
 
 
-    def test_edge_case_empty(self, solution):
-        """Test with empty/minimal input"""
-        # TODO: Implement edge case test
-        pass
+    def test_direct_transform(self, solution):
+        """Test direct one-step transformation"""
+        beginWord = "hot"
+        endWord = "dot"
+        wordList = ["dot"]
+        expected = 2
+        result = solution.ladderLength(beginWord, endWord, wordList)
+        assert result == expected
+
+
+    def test_no_path(self, solution):
+        """Test when no transformation path exists"""
+        beginWord = "hit"
+        endWord = "cog"
+        wordList = ["hot"]
+        expected = 0
+        result = solution.ladderLength(beginWord, endWord, wordList)
+        assert result == expected
 
 
     # Metadata validation

@@ -3,7 +3,7 @@ Tests for LeetCode Problem #72: Edit Distance
 """
 
 import pytest
-from .solution import Solution, PROBLEM_METADATA
+from solution import Solution, PROBLEM_METADATA
 
 
 
@@ -35,10 +35,72 @@ class TestEditDistance:
         assert result == expected
 
 
-    def test_edge_case_empty(self, solution):
-        """Test with empty/minimal input"""
-        # TODO: Implement edge case test
-        pass
+    # Edge cases
+    def test_both_empty(self, solution):
+        """Both strings empty"""
+        assert solution.minDistance("", "") == 0
+
+    def test_first_empty(self, solution):
+        """First string empty - all insertions"""
+        assert solution.minDistance("", "abc") == 3
+
+    def test_second_empty(self, solution):
+        """Second string empty - all deletions"""
+        assert solution.minDistance("abc", "") == 3
+
+    def test_same_strings(self, solution):
+        """Both strings are identical"""
+        assert solution.minDistance("abc", "abc") == 0
+
+    def test_completely_different(self, solution):
+        """Completely different strings of same length"""
+        assert solution.minDistance("abc", "xyz") == 3
+
+    def test_single_char_same(self, solution):
+        """Single character strings that are same"""
+        assert solution.minDistance("a", "a") == 0
+
+    def test_single_char_different(self, solution):
+        """Single character strings that are different"""
+        assert solution.minDistance("a", "b") == 1
+
+    def test_one_insertion(self, solution):
+        """One insertion needed"""
+        assert solution.minDistance("ac", "abc") == 1
+
+    def test_one_deletion(self, solution):
+        """One deletion needed"""
+        assert solution.minDistance("abc", "ac") == 1
+
+    def test_one_replacement(self, solution):
+        """One replacement needed"""
+        assert solution.minDistance("abc", "adc") == 1
+
+    def test_prefix_match(self, solution):
+        """Strings share common prefix"""
+        assert solution.minDistance("abc", "abxyz") == 3
+
+    def test_suffix_match(self, solution):
+        """Strings share common suffix"""
+        # Replace 'x' with 'a', delete 'y', delete 'z' = 3 operations
+        assert solution.minDistance("xyzbc", "abc") == 3
+
+    def test_reverse_strings(self, solution):
+        """One string is reverse of other"""
+        assert solution.minDistance("abc", "cba") == 2
+
+    def test_repeated_characters(self, solution):
+        """Strings with repeated characters"""
+        assert solution.minDistance("aaa", "aaaa") == 1
+
+    def test_long_strings_same(self, solution):
+        """Long identical strings"""
+        word = "abcdefghij"
+        assert solution.minDistance(word, word) == 0
+
+    def test_case_sensitive(self, solution):
+        """Case sensitive comparison"""
+        assert solution.minDistance("ABC", "abc") == 3
 
 
     # Metadata validation

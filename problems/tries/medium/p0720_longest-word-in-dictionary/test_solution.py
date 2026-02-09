@@ -3,7 +3,7 @@ Tests for LeetCode Problem #720: Longest Word in Dictionary
 """
 
 import pytest
-from .solution import Solution, PROBLEM_METADATA
+from solution import Solution, PROBLEM_METADATA
 
 
 class TestLongestWordInDictionary:
@@ -16,19 +16,18 @@ class TestLongestWordInDictionary:
 
     def test_example_1(self, solution):
         """Example 1 from problem description"""
-        # TODO: Implement test
-        pass
+        words = ["w", "wo", "wor", "worl", "world"]
+        assert solution.longestWord(words) == "world"
 
     def test_example_2(self, solution):
         """Example 2 from problem description"""
-        # TODO: Implement test
-        pass
+        words = ["a", "banana", "app", "appl", "ap", "apply", "apple"]
+        assert solution.longestWord(words) == "apple"
 
-    # Edge cases
     def test_edge_case_1(self, solution):
-        """TODO: Describe edge case"""
-        # TODO: Implement test
-        pass
+        """Test with single character words only"""
+        words = ["a", "b", "c"]
+        assert solution.longestWord(words) == "a"
 
     # Metadata validation
     def test_metadata_exists(self):

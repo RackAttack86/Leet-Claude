@@ -29,6 +29,13 @@ Output: 2
 from typing import List, Optional
 
 
+class TreeNode:
+    def __init__(self, val=0, left=None, right=None):
+        self.val = val
+        self.left = left
+        self.right = right
+
+
 class Solution:
     """
     Solution to LeetCode Problem #104: Maximum Depth of Binary Tree
@@ -44,11 +51,10 @@ class Solution:
     - Can also use BFS
     """
 
-    def solve(self):
-        """
-        [TODO: Implement solution]
-        """
-        pass
+    def maxDepth(self, root: Optional[TreeNode]) -> int:
+        if not root:
+            return 0
+        return 1 + max(self.maxDepth(root.left), self.maxDepth(root.right))
 
 
 # Metadata for tracking

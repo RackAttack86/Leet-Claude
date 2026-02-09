@@ -57,19 +57,39 @@ class Solution:
     """
     Solution to LeetCode Problem #167: Two Sum II - Input Array Is Sorted
 
-    Approach: [TODO: Describe approach]
-    Time Complexity: O(?)
-    Space Complexity: O(?)
+    Approach: Classic two-pointer technique. Use one pointer at the start
+    and one at the end. If sum is too large, move right pointer left.
+    If sum is too small, move left pointer right. The sorted property
+    guarantees we will find the solution.
+
+    Time Complexity: O(n) - Single pass with two pointers
+    Space Complexity: O(1) - Only using two pointer variables
 
     Key Insights:
-    [TODO: Add key insights]
+    1. Sorted array enables two-pointer approach
+    2. Moving left pointer increases sum, moving right decreases it
+    3. Guaranteed exactly one solution, so we will always find it
+    4. Return 1-indexed positions as required by the problem
     """
 
     def twoSum(self, numbers: List[int], target: int) -> List[int]:
-        """
-        [TODO: Implement]
-        """
-        pass
+        left, right = 0, len(numbers) - 1
+
+        while left < right:
+            current_sum = numbers[left] + numbers[right]
+
+            if current_sum == target:
+                # Return 1-indexed positions
+                return [left + 1, right + 1]
+            elif current_sum < target:
+                # Need larger sum, move left pointer right
+                left += 1
+            else:
+                # Need smaller sum, move right pointer left
+                right -= 1
+
+        # Problem guarantees a solution exists
+        return []
 
 
 # Metadata for tracking
@@ -80,7 +100,7 @@ PROBLEM_METADATA = {
     "pattern": "Two Pointers",
     "topics": ['Array', 'Two Pointers', 'Binary Search'],
     "url": "https://leetcode.com/problems/two-sum-ii-input-array-is-sorted/",
-    "companies": [],
-    "time_complexity": "O(?)",
-    "space_complexity": "O(?)",
+    "companies": ["Amazon", "Google", "Microsoft", "Facebook", "Apple", "Bloomberg"],
+    "time_complexity": "O(n)",
+    "space_complexity": "O(1)",
 }

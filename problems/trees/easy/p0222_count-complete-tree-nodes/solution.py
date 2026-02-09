@@ -10,7 +10,7 @@ Given the `root` of a complete binary tree, return the number of the nodes in th
 
 According to Wikipedia, every level, except possibly the last, is completely filled in a complete binary tree, and all nodes in the last level are as far left as possible. It can have between `1` and `2^h` nodes inclusive at the last level `h`.
 
-Design an algorithm that runs in less than O(n)` time complexity.
+Design an algorithm that runs in less than O(n)` time complexity.
 
 Constraints:
 -----------
@@ -63,25 +63,56 @@ class Solution:
     """
     Solution to LeetCode Problem #222: Count Complete Tree Nodes
 
-    Approach: [TODO: Describe approach]
-    Time Complexity: O(?)
-    Space Complexity: O(?)
+    Approach: Leverage complete binary tree property with binary search
+    - Compare left and right subtree heights.
+    - If heights are equal, left subtree is a perfect binary tree.
+      Count it as 2^h - 1 + 1 (root) and recurse on right.
+    - If heights differ, right subtree is perfect (one level shorter).
+      Count it as 2^(h-1) - 1 + 1 (root) and recurse on left.
+    - This avoids visiting all nodes by skipping perfect subtrees.
+
+    Time Complexity: O(log^2 n) - O(log n) height calculations, each O(log n) depth
+    Space Complexity: O(log n) - recursion stack depth
 
     Key Insights:
-    [TODO: Add key insights]
+    - In a complete tree, at least one subtree is always a perfect binary tree
+    - Perfect binary tree with height h has 2^h - 1 nodes
+    - Computing left/right height only traverses leftmost/rightmost path: O(log n)
+    - We recurse on only ONE subtree each time, giving O(log n) recursive calls
     """
-
-    def __init__(self, val=0: Any, left=None: Any, right=None: Any):
-        """
-        [TODO: Implement]
-        """
-        pass
 
     def countNodes(self, root: Optional[TreeNode]) -> int:
         """
-        [TODO: Implement]
+        Count nodes in a complete binary tree in O(log^2 n) time.
         """
-        pass
+        if not root:
+            return 0
+
+        left_height = self._getLeftHeight(root)
+        right_height = self._getRightHeight(root)
+
+        # If left and right heights are equal, tree is perfect
+        if left_height == right_height:
+            return (1 << left_height) - 1  # 2^h - 1
+
+        # Otherwise, recursively count nodes
+        return 1 + self.countNodes(root.left) + self.countNodes(root.right)
+
+    def _getLeftHeight(self, node: Optional[TreeNode]) -> int:
+        """Get height by traversing left edge."""
+        height = 0
+        while node:
+            height += 1
+            node = node.left
+        return height
+
+    def _getRightHeight(self, node: Optional[TreeNode]) -> int:
+        """Get height by traversing right edge."""
+        height = 0
+        while node:
+            height += 1
+            node = node.right
+        return height
 
 
 # Metadata for tracking
@@ -92,7 +123,7 @@ PROBLEM_METADATA = {
     "pattern": "Trees",
     "topics": ['Binary Search', 'Bit Manipulation', 'Tree', 'Binary Tree'],
     "url": "https://leetcode.com/problems/count-complete-tree-nodes/",
-    "companies": [],
-    "time_complexity": "O(?)",
-    "space_complexity": "O(?)",
+    "companies": ["Amazon", "Microsoft", "Google", "Facebook", "Apple", "Bloomberg"],
+    "time_complexity": "O(log^2 n)",
+    "space_complexity": "O(log n)",
 }

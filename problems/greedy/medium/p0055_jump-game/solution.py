@@ -42,11 +42,32 @@ class Solution:
     - Simple one-pass solution
     """
 
-    def solve(self):
+    def canJump(self, nums: List[int]) -> bool:
         """
-        [TODO: Implement solution]
+        Determine if you can reach the last index.
+
+        Args:
+            nums: Array where nums[i] is max jump length from index i
+
+        Returns:
+            True if you can reach the last index, False otherwise
         """
-        pass
+        max_reach = 0
+        n = len(nums)
+
+        for i in range(n):
+            # If current position is beyond max reach, we can't get here
+            if i > max_reach:
+                return False
+
+            # Update the farthest position we can reach
+            max_reach = max(max_reach, i + nums[i])
+
+            # Early termination if we can already reach the end
+            if max_reach >= n - 1:
+                return True
+
+        return True
 
 
 # Metadata for tracking

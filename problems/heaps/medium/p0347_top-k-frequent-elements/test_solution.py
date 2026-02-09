@@ -55,6 +55,40 @@ class TestTopKFrequentElements:
         k = 2
         assert sorted(solution.topKFrequent(nums, k)) == [1, 2]
 
+    def test_all_same_frequency_k_equals_n(self, solution):
+        """All elements have same frequency and k equals unique count"""
+        nums = [1, 2, 3, 4, 5]
+        k = 5
+        result = solution.topKFrequent(nums, k)
+        assert sorted(result) == [1, 2, 3, 4, 5]
+
+    def test_all_same_frequency_partial(self, solution):
+        """All elements have same frequency, k < unique count"""
+        nums = [1, 1, 2, 2, 3, 3, 4, 4]
+        k = 2
+        result = solution.topKFrequent(nums, k)
+        assert len(result) == 2
+        assert all(x in [1, 2, 3, 4] for x in result)
+
+    def test_single_element_repeated(self, solution):
+        """Single element repeated multiple times"""
+        nums = [5, 5, 5, 5, 5]
+        k = 1
+        assert solution.topKFrequent(nums, k) == [5]
+
+    def test_k_equals_one(self, solution):
+        """k equals 1 - most frequent only"""
+        nums = [1, 1, 1, 2, 2, 3, 3, 3, 3]
+        k = 1
+        assert solution.topKFrequent(nums, k) == [3]
+
+    def test_two_elements_tied_frequency(self, solution):
+        """Two elements with same top frequency"""
+        nums = [1, 1, 2, 2]
+        k = 2
+        result = solution.topKFrequent(nums, k)
+        assert sorted(result) == [1, 2]
+
     # Metadata validation
     def test_metadata_exists(self):
         """Verify problem metadata is complete"""
