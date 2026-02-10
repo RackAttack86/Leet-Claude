@@ -119,7 +119,7 @@ Four separate `useState` calls for essentially the same pattern. Could be a sing
 - `problemStore.ts` stores errors but they're not displayed to users anywhere visible
 - `String(err)` loses stack traces and error types - consider preserving more context
 
-**Status: Not addressed** - Requires error display UI.
+**Status: FIXED** - Created `Toast` component with auto-dismiss and `ErrorToast` that displays store errors. Added `clearError` action to problemStore.
 
 ### 9. No Keyboard Navigation for Tree
 
@@ -171,3 +171,7 @@ The foundation is solid. The main issues are duplication and missing polish (err
 7. **Monaco Editor Instance Access** - Created `editorStore` with:
    - `onMount` handler in `CodeEditor` to capture instance
    - Helper methods: `focus`, `goToLine`, `getCursorPosition`, `setCursorPosition`, `getSelectedText`, `insertText`
+8. **Error Display UI** - Created toast notification system:
+   - `Toast` component with auto-dismiss (5s default), supports error/success/info types
+   - `ErrorToast` component that listens to `problemStore.error`
+   - Added `clearError` action to problemStore

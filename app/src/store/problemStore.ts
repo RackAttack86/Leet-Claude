@@ -31,6 +31,7 @@ interface ProblemState {
   saveSolution: () => Promise<void>;
   resetToOriginal: () => void;
   toggleNode: (nodeId: string) => void;
+  clearError: () => void;
 }
 
 export const useProblemStore = create<ProblemState>((set, get) => ({
@@ -123,5 +124,9 @@ export const useProblemStore = create<ProblemState>((set, get) => ({
       });
     };
     set({ tree: toggleInTree(tree) });
+  },
+
+  clearError: () => {
+    set({ error: null });
   },
 }));

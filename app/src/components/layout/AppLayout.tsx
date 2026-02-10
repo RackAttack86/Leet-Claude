@@ -2,6 +2,7 @@ import { Panel, PanelGroup, PanelResizeHandle } from "react-resizable-panels";
 import { TreeSidebar } from "./TreeSidebar";
 import { LeftPanel } from "./LeftPanel";
 import { RightPanel } from "./RightPanel";
+import { ErrorToast } from "./ErrorToast";
 
 export function AppLayout() {
   return (
@@ -19,6 +20,9 @@ export function AppLayout() {
           <RightPanel />
         </Panel>
       </PanelGroup>
+
+      {/* Error notifications */}
+      <ErrorToast />
     </div>
   );
 }
