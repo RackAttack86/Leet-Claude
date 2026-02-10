@@ -5,7 +5,7 @@ use walkdir::WalkDir;
 use regex::Regex;
 
 use crate::models::{Problem, ProblemContent, TreeNode};
-use super::parser::{parse_metadata, extract_docstring, extract_hints, extract_explanation};
+use super::parser::{parse_metadata, extract_docstring, extract_hints, extract_explanation, strip_code_for_editor};
 
 /// Get the problems directory path
 #[tauri::command]
@@ -202,8 +202,11 @@ pub fn get_problem_content(problem_path: String) -> Result<ProblemContent, Strin
     // Read starter.py for the editor (method signatures only)
     // Falls back to solution.py if starter.py doesn't exist
     let starter_path = path.join("starter.py");
-    let editor_content = fs::read_to_string(&starter_path)
+    let raw_editor_content = fs::read_to_string(&starter_path)
         .unwrap_or_else(|_| solution_content.clone());
+
+    // Strip comments, docstrings, and metadata for a clean editor display
+    let editor_content = strip_code_for_editor(&raw_editor_content);
 
     // Read README.md
     let readme_path = path.join("README.md");

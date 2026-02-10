@@ -115,6 +115,57 @@ pub fn extract_explanation(readme: &str) -> String {
     String::new()
 }
 
+/// Strip comments, docstrings, and metadata from code for a clean editor display
+pub fn strip_code_for_editor(content: &str) -> String {
+    let mut result = content.to_string();
+
+    // Remove module-level docstring (at the start of file)
+    if let Some(re) = Regex::new(r#"^"""[\s\S]*?"""\s*\n?"#).ok() {
+        result = re.replace(&result, "").to_string();
+    }
+    if let Some(re) = Regex::new(r#"^'''[\s\S]*?'''\s*\n?"#).ok() {
+        result = re.replace(&result, "").to_string();
+    }
+
+    // Remove PROBLEM_METADATA dict
+    if let Some(re) = Regex::new(r#"\n*#?\s*Metadata.*\n?PROBLEM_METADATA\s*=\s*\{[\s\S]*?\}\s*\n?"#).ok() {
+        result = re.replace(&result, "").to_string();
+    }
+    if let Some(re) = Regex::new(r#"\n*PROBLEM_METADATA\s*=\s*\{[\s\S]*?\}\s*\n?"#).ok() {
+        result = re.replace(&result, "").to_string();
+    }
+
+    // Remove class docstrings (docstring right after class definition)
+    if let Some(re) = Regex::new(r#"(class\s+\w+.*?:\s*\n)\s*"""[\s\S]*?"""\s*\n"#).ok() {
+        result = re.replace_all(&result, "$1").to_string();
+    }
+    if let Some(re) = Regex::new(r#"(class\s+\w+.*?:\s*\n)\s*'''[\s\S]*?'''\s*\n"#).ok() {
+        result = re.replace_all(&result, "$1").to_string();
+    }
+
+    // Remove method docstrings (docstring right after def)
+    if let Some(re) = Regex::new(r#"(def\s+\w+\s*\([^)]*\)[^:]*:\s*\n)\s*"""[\s\S]*?"""\s*\n"#).ok() {
+        result = re.replace_all(&result, "$1").to_string();
+    }
+    if let Some(re) = Regex::new(r#"(def\s+\w+\s*\([^)]*\)[^:]*:\s*\n)\s*'''[\s\S]*?'''\s*\n"#).ok() {
+        result = re.replace_all(&result, "$1").to_string();
+    }
+
+    // Remove standalone comment blocks (lines starting with #)
+    // But keep inline comments
+    if let Some(re) = Regex::new(r#"^\s*#.*\n"#).ok() {
+        result = re.replace_all(&result, "").to_string();
+    }
+
+    // Clean up multiple consecutive blank lines (keep max 2)
+    if let Some(re) = Regex::new(r#"\n{3,}"#).ok() {
+        result = re.replace_all(&result, "\n\n").to_string();
+    }
+
+    // Trim leading/trailing whitespace
+    result.trim().to_string()
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
