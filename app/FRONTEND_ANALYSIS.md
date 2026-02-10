@@ -98,7 +98,7 @@ const [explanationOpen, setExplanationOpen] = useState(false);
 
 Four separate `useState` calls for essentially the same pattern. Could be a single object or a reducer, or better - a custom hook like `useCollapsibleSections`.
 
-**Status: Not addressed** - Low priority, works correctly.
+**Status: FIXED** - Created `useCollapsibleSections` hook that manages all section states with a single call. Provides `sections` object, `toggle`, `open`, `close`, `openAll`, `closeAll` methods.
 
 ### 6. No Loading States for Problem Content
 
@@ -186,3 +186,7 @@ The foundation is solid. The main issues are duplication and missing polish (err
    - Home/End for first/last node
    - Focus tracking in store with visual focus ring
    - Auto-scroll focused node into view
+10. **State Coupling** - Created `useCollapsibleSections` hook:
+    - Replaces 4 separate useState calls with single hook
+    - Type-safe section names with const assertion
+    - Provides toggle, open, close, openAll, closeAll methods

@@ -1,12 +1,15 @@
-import { useState } from "react";
-import { ExternalLink, Loader2 } from "lucide-react";
+import { ExternalLink } from "lucide-react";
 import { useProblemStore } from "@/store";
+import { useCollapsibleSections } from "@/hooks";
 import { Collapsible, CollapsibleTrigger, CollapsibleContent } from "@/components/ui/Collapsible";
 import { ProblemDefinition } from "./ProblemDefinition";
 import { Hints } from "./Hints";
 import { Solution } from "./Solution";
 import { Explanation } from "./Explanation";
 import { cn, getDifficultyBadgeClasses } from "@/lib/utils";
+
+const SECTIONS = ["definition", "hints", "solution", "explanation"] as const;
+type Section = (typeof SECTIONS)[number];
 
 function LoadingSkeleton() {
   return (
@@ -41,11 +44,8 @@ export function ProblemView() {
   const problemContent = useProblemStore((state) => state.problemContent);
   const loading = useProblemStore((state) => state.loading);
 
-  // Section open states - definition is open by default
-  const [definitionOpen, setDefinitionOpen] = useState(true);
-  const [hintsOpen, setHintsOpen] = useState(false);
-  const [solutionOpen, setSolutionOpen] = useState(false);
-  const [explanationOpen, setExplanationOpen] = useState(false);
+  // Manage collapsible sections - definition open by default
+  const { sections, toggle } = useCollapsibleSections<Section>(SECTIONS, ["definition"]);
 
   // Show loading skeleton when loading a problem
   if (loading && selectedProblem) {
@@ -122,9 +122,8 @@ export function ProblemView() {
 
       {/* Collapsible Sections */}
       <div className="flex-1 overflow-auto">
-        {/* Problem Definition - Default OPEN */}
-        <Collapsible open={definitionOpen} onOpenChange={setDefinitionOpen}>
-          <CollapsibleTrigger isOpen={definitionOpen}>
+        <Collapsible open={sections.definition} onOpenChange={() => toggle("definition")}>
+          <CollapsibleTrigger isOpen={sections.definition}>
             Problem Definition
           </CollapsibleTrigger>
           <CollapsibleContent>
@@ -132,9 +131,8 @@ export function ProblemView() {
           </CollapsibleContent>
         </Collapsible>
 
-        {/* Hints - Default CLOSED */}
-        <Collapsible open={hintsOpen} onOpenChange={setHintsOpen}>
-          <CollapsibleTrigger isOpen={hintsOpen}>
+        <Collapsible open={sections.hints} onOpenChange={() => toggle("hints")}>
+          <CollapsibleTrigger isOpen={sections.hints}>
             Hints ({problemContent.hints.length})
           </CollapsibleTrigger>
           <CollapsibleContent>
@@ -142,9 +140,8 @@ export function ProblemView() {
           </CollapsibleContent>
         </Collapsible>
 
-        {/* Solution - Default CLOSED */}
-        <Collapsible open={solutionOpen} onOpenChange={setSolutionOpen}>
-          <CollapsibleTrigger isOpen={solutionOpen}>
+        <Collapsible open={sections.solution} onOpenChange={() => toggle("solution")}>
+          <CollapsibleTrigger isOpen={sections.solution}>
             Full Solution
           </CollapsibleTrigger>
           <CollapsibleContent>
@@ -152,9 +149,8 @@ export function ProblemView() {
           </CollapsibleContent>
         </Collapsible>
 
-        {/* Explanation - Default CLOSED */}
-        <Collapsible open={explanationOpen} onOpenChange={setExplanationOpen}>
-          <CollapsibleTrigger isOpen={explanationOpen}>
+        <Collapsible open={sections.explanation} onOpenChange={() => toggle("explanation")}>
+          <CollapsibleTrigger isOpen={sections.explanation}>
             Explanation
           </CollapsibleTrigger>
           <CollapsibleContent>
