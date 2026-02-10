@@ -134,7 +134,7 @@ The tree uses `<button>` elements (good for accessibility), but there's no arrow
 - Access/restore cursor position
 - Implement features like "go to line"
 
-**Status: Not addressed** - Feature enhancement for later.
+**Status: FIXED** - Created `editorStore` with Monaco instance and helper methods (`focus`, `goToLine`, `getCursorPosition`, `setCursorPosition`, `getSelectedText`, `insertText`). CodeEditor now captures instance via `onMount`.
 
 ---
 
@@ -168,3 +168,6 @@ The foundation is solid. The main issues are duplication and missing polish (err
 6. **Memoization** - Added `React.memo()` to:
    - `TreeNode` - with `useCallback`/`useMemo` for handlers and computed values
    - `ProblemDefinition`, `Hints`, `Solution`, `Explanation` - leaf components
+7. **Monaco Editor Instance Access** - Created `editorStore` with:
+   - `onMount` handler in `CodeEditor` to capture instance
+   - Helper methods: `focus`, `goToLine`, `getCursorPosition`, `setCursorPosition`, `getSelectedText`, `insertText`
