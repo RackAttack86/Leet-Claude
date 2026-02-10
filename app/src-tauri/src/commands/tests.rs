@@ -4,6 +4,39 @@ use regex::Regex;
 
 use crate::models::{TestResult, TestRunResult};
 
+/// Find Python executable on the system
+fn find_python() -> Result<String, String> {
+    // Try common Python locations on Windows
+    let candidates = [
+        // Windows Python launcher (most reliable on Windows)
+        "py",
+        // Standard Python command
+        "python3",
+        "python",
+        // Common Windows installation paths
+        r"C:\Users\Rackl\AppData\Local\Programs\Python\Python312\python.exe",
+        r"C:\Users\Rackl\AppData\Local\Programs\Python\Python311\python.exe",
+        r"C:\Users\Rackl\AppData\Local\Programs\Python\Python310\python.exe",
+        r"C:\Python312\python.exe",
+        r"C:\Python311\python.exe",
+        r"C:\Python310\python.exe",
+    ];
+
+    for candidate in candidates {
+        let result = Command::new(candidate)
+            .args(["--version"])
+            .output();
+
+        if let Ok(output) = result {
+            if output.status.success() {
+                return Ok(candidate.to_string());
+            }
+        }
+    }
+
+    Err("Python not found. Please install Python and ensure it's in your PATH.".to_string())
+}
+
 /// Run pytest for a specific problem
 #[tauri::command]
 pub fn run_tests(problem_path: String) -> Result<TestRunResult, String> {
@@ -22,8 +55,11 @@ pub fn run_tests(problem_path: String) -> Result<TestRunResult, String> {
         .and_then(|p| p.parent()) // root
         .ok_or("Cannot determine project root")?;
 
+    // Find Python
+    let python = find_python()?;
+
     // Run pytest
-    let output = Command::new("python")
+    let output = Command::new(&python)
         .args(["-m", "pytest", test_file.to_str().unwrap(), "-v", "--tb=short"])
         .current_dir(problems_root)
         .output()
