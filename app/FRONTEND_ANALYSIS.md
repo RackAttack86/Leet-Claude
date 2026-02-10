@@ -125,7 +125,13 @@ Four separate `useState` calls for essentially the same pattern. Could be a sing
 
 The tree uses `<button>` elements (good for accessibility), but there's no arrow key navigation for keyboard users to move between nodes.
 
-**Status: Not addressed** - Accessibility enhancement for later.
+**Status: FIXED** - Added full keyboard navigation:
+- Arrow Up/Down: Move between visible nodes
+- Arrow Left: Collapse folder or move to parent
+- Arrow Right: Expand folder or move to first child
+- Enter/Space: Select problem or toggle folder
+- Home/End: Jump to first/last node
+- Visual focus ring on focused node, auto-scroll into view
 
 ### 10. Missing Monaco Editor Instance Access
 
@@ -175,3 +181,8 @@ The foundation is solid. The main issues are duplication and missing polish (err
    - `Toast` component with auto-dismiss (5s default), supports error/success/info types
    - `ErrorToast` component that listens to `problemStore.error`
    - Added `clearError` action to problemStore
+9. **Keyboard Navigation** - Added full tree keyboard navigation:
+   - Arrow keys for navigation, Enter/Space for activation
+   - Home/End for first/last node
+   - Focus tracking in store with visual focus ring
+   - Auto-scroll focused node into view

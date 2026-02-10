@@ -13,18 +13,22 @@ export const TreeNode = memo(function TreeNode({ node, level }: TreeNodeProps) {
   const toggleNode = useProblemStore((state) => state.toggleNode);
   const selectProblem = useProblemStore((state) => state.selectProblem);
   const selectedProblemNumber = useProblemStore((state) => state.selectedProblem?.number);
+  const focusedNodeId = useProblemStore((state) => state.focusedNodeId);
+  const setFocusedNodeId = useProblemStore((state) => state.setFocusedNodeId);
 
   const hasChildren = node.children && node.children.length > 0;
   const isExpanded = node.expanded;
   const isSelected = node.data && selectedProblemNumber === node.data.number;
+  const isFocused = focusedNodeId === node.id;
 
   const handleClick = useCallback(() => {
+    setFocusedNodeId(node.id);
     if (node.type === "problem" && node.data) {
       selectProblem(node.data);
     } else if (hasChildren) {
       toggleNode(node.id);
     }
-  }, [node.type, node.data, node.id, hasChildren, selectProblem, toggleNode]);
+  }, [node.type, node.data, node.id, hasChildren, selectProblem, toggleNode, setFocusedNodeId]);
 
   const icon = useMemo(() => {
     if (node.type === "problem") {
@@ -39,14 +43,16 @@ export const TreeNode = memo(function TreeNode({ node, level }: TreeNodeProps) {
   const paddingLeft = useMemo(() => ({ paddingLeft: `${level * 12 + 8}px` }), [level]);
 
   return (
-    <div>
+    <div role="treeitem" aria-expanded={hasChildren ? isExpanded : undefined} data-node-id={node.id}>
       <button
         onClick={handleClick}
         className={cn(
           "w-full flex items-center gap-1 px-2 py-1 text-left text-sm hover:bg-accent/50 transition-colors",
-          isSelected && "bg-accent"
+          isSelected && "bg-accent",
+          isFocused && "ring-1 ring-primary ring-inset"
         )}
         style={paddingLeft}
+        tabIndex={-1}
       >
         {/* Expand/collapse chevron */}
         {hasChildren ? (

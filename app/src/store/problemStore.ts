@@ -17,6 +17,9 @@ interface ProblemState {
   selectedProblem: Problem | null;
   problemContent: ProblemContent | null;
 
+  // Keyboard navigation
+  focusedNodeId: string | null;
+
   // Editor state
   solutionCode: string;
   originalCode: string;
@@ -32,6 +35,51 @@ interface ProblemState {
   resetToOriginal: () => void;
   toggleNode: (nodeId: string) => void;
   clearError: () => void;
+  setFocusedNodeId: (nodeId: string | null) => void;
+  getVisibleNodes: () => TreeNode[];
+  focusNextNode: () => void;
+  focusPrevNode: () => void;
+  focusFirstNode: () => void;
+  focusLastNode: () => void;
+  expandFocusedNode: () => void;
+  collapseFocusedNode: () => void;
+  activateFocusedNode: () => void;
+}
+
+// Helper to flatten visible nodes (expanded folders + all their visible children)
+function flattenVisibleNodes(nodes: TreeNode[]): TreeNode[] {
+  const result: TreeNode[] = [];
+  for (const node of nodes) {
+    result.push(node);
+    if (node.children && node.expanded) {
+      result.push(...flattenVisibleNodes(node.children));
+    }
+  }
+  return result;
+}
+
+// Helper to find a node by ID in the tree
+function findNodeById(nodes: TreeNode[], id: string): TreeNode | null {
+  for (const node of nodes) {
+    if (node.id === id) return node;
+    if (node.children) {
+      const found = findNodeById(node.children, id);
+      if (found) return found;
+    }
+  }
+  return null;
+}
+
+// Helper to find parent of a node
+function findParentNode(nodes: TreeNode[], targetId: string, parent: TreeNode | null = null): TreeNode | null {
+  for (const node of nodes) {
+    if (node.id === targetId) return parent;
+    if (node.children) {
+      const found = findParentNode(node.children, targetId, node);
+      if (found !== null) return found;
+    }
+  }
+  return null;
 }
 
 export const useProblemStore = create<ProblemState>((set, get) => ({
@@ -40,6 +88,7 @@ export const useProblemStore = create<ProblemState>((set, get) => ({
   error: null,
   selectedProblem: null,
   problemContent: null,
+  focusedNodeId: null,
   solutionCode: "",
   originalCode: "",
   isDirty: false,
@@ -128,5 +177,113 @@ export const useProblemStore = create<ProblemState>((set, get) => ({
 
   clearError: () => {
     set({ error: null });
+  },
+
+  setFocusedNodeId: (nodeId) => {
+    set({ focusedNodeId: nodeId });
+  },
+
+  getVisibleNodes: () => {
+    const { tree } = get();
+    return flattenVisibleNodes(tree);
+  },
+
+  focusNextNode: () => {
+    const { focusedNodeId, tree } = get();
+    const visible = flattenVisibleNodes(tree);
+    if (visible.length === 0) return;
+
+    if (!focusedNodeId) {
+      set({ focusedNodeId: visible[0].id });
+      return;
+    }
+
+    const currentIndex = visible.findIndex((n) => n.id === focusedNodeId);
+    if (currentIndex < visible.length - 1) {
+      set({ focusedNodeId: visible[currentIndex + 1].id });
+    }
+  },
+
+  focusPrevNode: () => {
+    const { focusedNodeId, tree } = get();
+    const visible = flattenVisibleNodes(tree);
+    if (visible.length === 0) return;
+
+    if (!focusedNodeId) {
+      set({ focusedNodeId: visible[visible.length - 1].id });
+      return;
+    }
+
+    const currentIndex = visible.findIndex((n) => n.id === focusedNodeId);
+    if (currentIndex > 0) {
+      set({ focusedNodeId: visible[currentIndex - 1].id });
+    }
+  },
+
+  focusFirstNode: () => {
+    const { tree } = get();
+    const visible = flattenVisibleNodes(tree);
+    if (visible.length > 0) {
+      set({ focusedNodeId: visible[0].id });
+    }
+  },
+
+  focusLastNode: () => {
+    const { tree } = get();
+    const visible = flattenVisibleNodes(tree);
+    if (visible.length > 0) {
+      set({ focusedNodeId: visible[visible.length - 1].id });
+    }
+  },
+
+  expandFocusedNode: () => {
+    const { focusedNodeId, tree, toggleNode } = get();
+    if (!focusedNodeId) return;
+
+    const node = findNodeById(tree, focusedNodeId);
+    if (!node) return;
+
+    // If it's a folder and collapsed, expand it
+    if (node.children && node.children.length > 0 && !node.expanded) {
+      toggleNode(focusedNodeId);
+    }
+    // If it's expanded or a leaf, move to first child
+    else if (node.children && node.children.length > 0 && node.expanded) {
+      set({ focusedNodeId: node.children[0].id });
+    }
+  },
+
+  collapseFocusedNode: () => {
+    const { focusedNodeId, tree, toggleNode } = get();
+    if (!focusedNodeId) return;
+
+    const node = findNodeById(tree, focusedNodeId);
+    if (!node) return;
+
+    // If it's a folder and expanded, collapse it
+    if (node.children && node.children.length > 0 && node.expanded) {
+      toggleNode(focusedNodeId);
+    }
+    // Otherwise, move to parent
+    else {
+      const parent = findParentNode(tree, focusedNodeId);
+      if (parent) {
+        set({ focusedNodeId: parent.id });
+      }
+    }
+  },
+
+  activateFocusedNode: () => {
+    const { focusedNodeId, tree, selectProblem, toggleNode } = get();
+    if (!focusedNodeId) return;
+
+    const node = findNodeById(tree, focusedNodeId);
+    if (!node) return;
+
+    if (node.type === "problem" && node.data) {
+      selectProblem(node.data);
+    } else if (node.children && node.children.length > 0) {
+      toggleNode(focusedNodeId);
+    }
   },
 }));
