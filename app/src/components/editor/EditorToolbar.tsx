@@ -13,8 +13,12 @@ export function EditorToolbar() {
   const runTests = useTestStore((state) => state.runTests);
   const isRunning = useTestStore((state) => state.isRunning);
 
-  const handleRunTests = () => {
+  const handleRunTests = async () => {
     if (selectedProblem) {
+      // Always save before running tests to ensure we test the current code
+      if (isDirty) {
+        await saveSolution();
+      }
       runTests(selectedProblem.path);
     }
   };

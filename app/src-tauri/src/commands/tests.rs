@@ -58,9 +58,15 @@ pub fn run_tests(problem_path: String) -> Result<TestRunResult, String> {
     // Find Python
     let python = find_python()?;
 
-    // Run pytest
+    // Clear pycache to ensure fresh imports
+    let pycache_dir = path.join("__pycache__");
+    if pycache_dir.exists() {
+        let _ = std::fs::remove_dir_all(&pycache_dir);
+    }
+
+    // Run pytest with cache disabled and no compiled files
     let output = Command::new(&python)
-        .args(["-m", "pytest", test_file.to_str().unwrap(), "-v", "--tb=short"])
+        .args(["-B", "-m", "pytest", test_file.to_str().unwrap(), "-v", "--tb=short", "-p", "no:cacheprovider"])
         .current_dir(problems_root)
         .output()
         .map_err(|e| format!("Failed to execute pytest: {}", e))?;
