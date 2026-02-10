@@ -1,44 +1,32 @@
+import { memo, useCallback, useMemo } from "react";
 import { ChevronRight, ChevronDown, Folder, FolderOpen, FileCode } from "lucide-react";
 import { useProblemStore } from "@/store";
-import { TreeNode as TreeNodeType, Problem } from "@/types";
-import { cn } from "@/lib/utils";
+import { TreeNode as TreeNodeType } from "@/types";
+import { cn, getDifficultyColor } from "@/lib/utils";
 
 interface TreeNodeProps {
   node: TreeNodeType;
   level: number;
 }
 
-export function TreeNode({ node, level }: TreeNodeProps) {
+export const TreeNode = memo(function TreeNode({ node, level }: TreeNodeProps) {
   const toggleNode = useProblemStore((state) => state.toggleNode);
   const selectProblem = useProblemStore((state) => state.selectProblem);
-  const selectedProblem = useProblemStore((state) => state.selectedProblem);
+  const selectedProblemNumber = useProblemStore((state) => state.selectedProblem?.number);
 
   const hasChildren = node.children && node.children.length > 0;
   const isExpanded = node.expanded;
-  const isSelected = node.data && selectedProblem?.number === node.data.number;
+  const isSelected = node.data && selectedProblemNumber === node.data.number;
 
-  const handleClick = () => {
+  const handleClick = useCallback(() => {
     if (node.type === "problem" && node.data) {
       selectProblem(node.data);
     } else if (hasChildren) {
       toggleNode(node.id);
     }
-  };
+  }, [node.type, node.data, node.id, hasChildren, selectProblem, toggleNode]);
 
-  const getDifficultyColor = (difficulty: string) => {
-    switch (difficulty.toLowerCase()) {
-      case "easy":
-        return "text-green-500";
-      case "medium":
-        return "text-yellow-500";
-      case "hard":
-        return "text-red-500";
-      default:
-        return "text-muted-foreground";
-    }
-  };
-
-  const getIcon = () => {
+  const icon = useMemo(() => {
     if (node.type === "problem") {
       return <FileCode className="h-4 w-4 text-muted-foreground" />;
     }
@@ -46,7 +34,9 @@ export function TreeNode({ node, level }: TreeNodeProps) {
       return <FolderOpen className="h-4 w-4 text-yellow-500" />;
     }
     return <Folder className="h-4 w-4 text-yellow-500" />;
-  };
+  }, [node.type, isExpanded]);
+
+  const paddingLeft = useMemo(() => ({ paddingLeft: `${level * 12 + 8}px` }), [level]);
 
   return (
     <div>
@@ -56,7 +46,7 @@ export function TreeNode({ node, level }: TreeNodeProps) {
           "w-full flex items-center gap-1 px-2 py-1 text-left text-sm hover:bg-accent/50 transition-colors",
           isSelected && "bg-accent"
         )}
-        style={{ paddingLeft: `${level * 12 + 8}px` }}
+        style={paddingLeft}
       >
         {/* Expand/collapse chevron */}
         {hasChildren ? (
@@ -70,7 +60,7 @@ export function TreeNode({ node, level }: TreeNodeProps) {
         )}
 
         {/* Icon */}
-        {getIcon()}
+        {icon}
 
         {/* Label */}
         <span
@@ -105,4 +95,4 @@ export function TreeNode({ node, level }: TreeNodeProps) {
       )}
     </div>
   );
-}
+});

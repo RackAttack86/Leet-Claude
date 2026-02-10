@@ -87,8 +87,8 @@ export const useProblemStore = create<ProblemState>((set, get) => ({
 
     try {
       set({ isSaving: true });
-      // Use backslash for Windows path - save to starter.py (user's work)
-      const starterPath = `${selectedProblem.path}\\starter.py`;
+      // Use forward slash for cross-platform compatibility - save to starter.py (user's work)
+      const starterPath = `${selectedProblem.path}/starter.py`;
       await writeSolution(starterPath, solutionCode);
       set({
         isSaving: false,

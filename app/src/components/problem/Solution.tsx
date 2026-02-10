@@ -1,8 +1,10 @@
+import { memo } from "react";
+
 interface SolutionProps {
   content: string;
 }
 
-export function Solution({ content }: SolutionProps) {
+export const Solution = memo(function Solution({ content }: SolutionProps) {
   if (!content) {
     return (
       <p className="text-muted-foreground text-sm">
@@ -18,4 +20,4 @@ export function Solution({ content }: SolutionProps) {
       </code>
     </pre>
   );
-}
+});

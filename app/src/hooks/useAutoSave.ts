@@ -1,47 +1,30 @@
 import { useEffect, useRef, useCallback } from "react";
-import { writeSolution } from "@/lib/tauri-commands";
 
 interface UseAutoSaveOptions {
   delay?: number;
-  onSaveStart?: () => void;
-  onSaveComplete?: () => void;
-  onSaveError?: (error: string) => void;
 }
 
+/**
+ * Hook for auto-saving content with debounce.
+ * @param saveFunction - The function to call to save (e.g., store.saveSolution)
+ * @param isDirty - Whether there are unsaved changes
+ * @param options - Configuration options
+ */
 export function useAutoSave(
-  path: string | undefined,
-  content: string,
-  enabled: boolean,
+  saveFunction: () => Promise<void>,
+  isDirty: boolean,
   options: UseAutoSaveOptions = {}
 ) {
-  const {
-    delay = 1500,
-    onSaveStart,
-    onSaveComplete,
-    onSaveError,
-  } = options;
+  const { delay = 1500 } = options;
 
   const timeoutRef = useRef<NodeJS.Timeout | null>(null);
-  const lastSavedContentRef = useRef<string>("");
+  const saveFunctionRef = useRef(saveFunction);
 
-  const save = useCallback(async () => {
-    if (!path || content === lastSavedContentRef.current) {
-      return;
-    }
-
-    onSaveStart?.();
-
-    try {
-      await writeSolution(path, content);
-      lastSavedContentRef.current = content;
-      onSaveComplete?.();
-    } catch (err) {
-      onSaveError?.(String(err));
-    }
-  }, [path, content, onSaveStart, onSaveComplete, onSaveError]);
+  // Keep save function ref up to date without causing effect re-runs
+  saveFunctionRef.current = saveFunction;
 
   useEffect(() => {
-    if (!enabled || !path) {
+    if (!isDirty) {
       return;
     }
 
@@ -51,19 +34,23 @@ export function useAutoSave(
     }
 
     // Set new timeout
-    timeoutRef.current = setTimeout(save, delay);
+    timeoutRef.current = setTimeout(() => {
+      saveFunctionRef.current();
+    }, delay);
 
     return () => {
       if (timeoutRef.current) {
         clearTimeout(timeoutRef.current);
       }
     };
-  }, [enabled, path, content, delay, save]);
+  }, [isDirty, delay]);
 
-  // Reset last saved content when path changes
-  useEffect(() => {
-    lastSavedContentRef.current = content;
-  }, [path]);
+  const saveNow = useCallback(() => {
+    if (timeoutRef.current) {
+      clearTimeout(timeoutRef.current);
+    }
+    return saveFunctionRef.current();
+  }, []);
 
-  return { save };
+  return { saveNow };
 }

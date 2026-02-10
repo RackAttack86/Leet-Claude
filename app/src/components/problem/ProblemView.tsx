@@ -1,16 +1,45 @@
 import { useState } from "react";
-import { ExternalLink } from "lucide-react";
+import { ExternalLink, Loader2 } from "lucide-react";
 import { useProblemStore } from "@/store";
 import { Collapsible, CollapsibleTrigger, CollapsibleContent } from "@/components/ui/Collapsible";
 import { ProblemDefinition } from "./ProblemDefinition";
 import { Hints } from "./Hints";
 import { Solution } from "./Solution";
 import { Explanation } from "./Explanation";
-import { cn } from "@/lib/utils";
+import { cn, getDifficultyBadgeClasses } from "@/lib/utils";
+
+function LoadingSkeleton() {
+  return (
+    <div className="h-full flex flex-col animate-pulse">
+      <div className="p-4 border-b border-border">
+        <div className="h-6 w-48 bg-muted rounded mb-3" />
+        <div className="flex gap-2">
+          <div className="h-5 w-16 bg-muted rounded" />
+          <div className="h-5 w-24 bg-muted rounded" />
+        </div>
+      </div>
+      <div className="p-4 space-y-4">
+        <div className="h-4 w-full bg-muted rounded" />
+        <div className="h-4 w-5/6 bg-muted rounded" />
+        <div className="h-4 w-4/6 bg-muted rounded" />
+        <div className="h-32 w-full bg-muted rounded mt-6" />
+      </div>
+    </div>
+  );
+}
+
+function EmptyState() {
+  return (
+    <div className="h-full flex items-center justify-center text-muted-foreground">
+      <p className="text-sm">Select a problem to get started</p>
+    </div>
+  );
+}
 
 export function ProblemView() {
   const selectedProblem = useProblemStore((state) => state.selectedProblem);
   const problemContent = useProblemStore((state) => state.problemContent);
+  const loading = useProblemStore((state) => state.loading);
 
   // Section open states - definition is open by default
   const [definitionOpen, setDefinitionOpen] = useState(true);
@@ -18,22 +47,15 @@ export function ProblemView() {
   const [solutionOpen, setSolutionOpen] = useState(false);
   const [explanationOpen, setExplanationOpen] = useState(false);
 
-  if (!selectedProblem || !problemContent) {
-    return null;
+  // Show loading skeleton when loading a problem
+  if (loading && selectedProblem) {
+    return <LoadingSkeleton />;
   }
 
-  const getDifficultyColor = (difficulty: string) => {
-    switch (difficulty.toLowerCase()) {
-      case "easy":
-        return "bg-green-500/20 text-green-500 border-green-500/30";
-      case "medium":
-        return "bg-yellow-500/20 text-yellow-500 border-yellow-500/30";
-      case "hard":
-        return "bg-red-500/20 text-red-500 border-red-500/30";
-      default:
-        return "bg-muted text-muted-foreground";
-    }
-  };
+  // Show empty state when no problem selected
+  if (!selectedProblem || !problemContent) {
+    return <EmptyState />;
+  }
 
   return (
     <div className="h-full flex flex-col">
@@ -48,7 +70,7 @@ export function ProblemView() {
               <span
                 className={cn(
                   "px-2 py-0.5 text-xs font-medium rounded border",
-                  getDifficultyColor(selectedProblem.difficulty)
+                  getDifficultyBadgeClasses(selectedProblem.difficulty)
                 )}
               >
                 {selectedProblem.difficulty}

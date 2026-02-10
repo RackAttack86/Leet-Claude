@@ -1,5 +1,6 @@
 import { useProblemStore } from "@/store";
 import { ProblemView } from "@/components/problem/ProblemView";
+import { ErrorBoundary } from "@/components/ui";
 
 export function LeftPanel() {
   const selectedProblem = useProblemStore((state) => state.selectedProblem);
@@ -26,7 +27,9 @@ export function LeftPanel() {
 
   return (
     <div className="h-full overflow-auto bg-background">
-      <ProblemView />
+      <ErrorBoundary name="ProblemView">
+        <ProblemView />
+      </ErrorBoundary>
     </div>
   );
 }

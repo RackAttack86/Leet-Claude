@@ -1,6 +1,6 @@
-import { useEffect, useRef, useCallback } from "react";
 import Editor from "@monaco-editor/react";
 import { useProblemStore } from "@/store";
+import { useAutoSave } from "@/hooks";
 import { EditorToolbar } from "./EditorToolbar";
 
 export function CodeEditor() {
@@ -9,29 +9,8 @@ export function CodeEditor() {
   const saveSolution = useProblemStore((state) => state.saveSolution);
   const isDirty = useProblemStore((state) => state.isDirty);
 
-  const saveTimeoutRef = useRef<NodeJS.Timeout | null>(null);
-
-  // Auto-save with debounce
-  const debouncedSave = useCallback(() => {
-    if (saveTimeoutRef.current) {
-      clearTimeout(saveTimeoutRef.current);
-    }
-    saveTimeoutRef.current = setTimeout(() => {
-      saveSolution();
-    }, 1500);
-  }, [saveSolution]);
-
-  // Trigger auto-save when code changes
-  useEffect(() => {
-    if (isDirty) {
-      debouncedSave();
-    }
-    return () => {
-      if (saveTimeoutRef.current) {
-        clearTimeout(saveTimeoutRef.current);
-      }
-    };
-  }, [isDirty, solutionCode, debouncedSave]);
+  // Auto-save with debounce using the shared hook
+  useAutoSave(saveSolution, isDirty);
 
   const handleEditorChange = (value: string | undefined) => {
     setSolutionCode(value ?? "");

@@ -2,6 +2,7 @@ import { Panel, PanelGroup, PanelResizeHandle } from "react-resizable-panels";
 import { useProblemStore } from "@/store";
 import { CodeEditor } from "@/components/editor/CodeEditor";
 import { TestRunner } from "@/components/test-runner/TestRunner";
+import { ErrorBoundary } from "@/components/ui";
 
 export function RightPanel() {
   const selectedProblem = useProblemStore((state) => state.selectedProblem);
@@ -20,11 +21,15 @@ export function RightPanel() {
   return (
     <PanelGroup direction="vertical" className="h-full">
       <Panel defaultSize={70} minSize={30}>
-        <CodeEditor />
+        <ErrorBoundary name="CodeEditor">
+          <CodeEditor />
+        </ErrorBoundary>
       </Panel>
       <PanelResizeHandle className="h-1.5 bg-border hover:bg-primary/50 transition-colors" />
       <Panel defaultSize={30} minSize={15}>
-        <TestRunner />
+        <ErrorBoundary name="TestRunner">
+          <TestRunner />
+        </ErrorBoundary>
       </Panel>
     </PanelGroup>
   );

@@ -1,10 +1,11 @@
+import { memo } from "react";
 import { Lightbulb } from "lucide-react";
 
 interface HintsProps {
   hints: string[];
 }
 
-export function Hints({ hints }: HintsProps) {
+export const Hints = memo(function Hints({ hints }: HintsProps) {
   if (hints.length === 0) {
     return (
       <p className="text-muted-foreground text-sm">
@@ -23,4 +24,4 @@ export function Hints({ hints }: HintsProps) {
       ))}
     </ul>
   );
-}
+});

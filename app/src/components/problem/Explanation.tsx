@@ -1,10 +1,11 @@
+import { memo } from "react";
 import ReactMarkdown from "react-markdown";
 
 interface ExplanationProps {
   content: string;
 }
 
-export function Explanation({ content }: ExplanationProps) {
+export const Explanation = memo(function Explanation({ content }: ExplanationProps) {
   if (!content) {
     return (
       <p className="text-muted-foreground text-sm">
@@ -60,4 +61,4 @@ export function Explanation({ content }: ExplanationProps) {
       </ReactMarkdown>
     </div>
   );
-}
+});

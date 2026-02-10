@@ -1,10 +1,11 @@
+import { memo } from "react";
 import ReactMarkdown from "react-markdown";
 
 interface ProblemDefinitionProps {
   content: string;
 }
 
-export function ProblemDefinition({ content }: ProblemDefinitionProps) {
+export const ProblemDefinition = memo(function ProblemDefinition({ content }: ProblemDefinitionProps) {
   if (!content) {
     return (
       <p className="text-muted-foreground text-sm">
@@ -60,4 +61,4 @@ export function ProblemDefinition({ content }: ProblemDefinitionProps) {
       </ReactMarkdown>
     </div>
   );
-}
+});

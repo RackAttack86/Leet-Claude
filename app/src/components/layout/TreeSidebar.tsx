@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { ChevronLeft, ChevronRight, FolderTree } from "lucide-react";
 import { ProblemTree } from "@/components/tree/ProblemTree";
+import { ErrorBoundary } from "@/components/ui";
 import { cn } from "@/lib/utils";
 
 export function TreeSidebar() {
@@ -37,7 +38,9 @@ export function TreeSidebar() {
       {/* Tree content */}
       {!collapsed && (
         <div className="flex-1 overflow-auto">
-          <ProblemTree />
+          <ErrorBoundary name="ProblemTree">
+            <ProblemTree />
+          </ErrorBoundary>
         </div>
       )}
 
