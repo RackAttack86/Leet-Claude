@@ -137,9 +137,9 @@ export const useProblemStore = create<ProblemState>((set, get) => ({
 
     try {
       set({ isSaving: true });
-      // Use forward slash for cross-platform compatibility - save to starter.py (user's work)
-      const starterPath = `${selectedProblem.path}/starter.py`;
-      await writeSolution(starterPath, solutionCode);
+      // Save to user_solution.py (user's work in progress)
+      const userSolutionPath = `${selectedProblem.path}/user_solution.py`;
+      await writeSolution(userSolutionPath, solutionCode);
       set({
         isSaving: false,
         isDirty: false,

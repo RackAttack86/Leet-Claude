@@ -3,7 +3,10 @@ Tests for LeetCode Problem #102: Binary Tree Level Order Traversal
 """
 
 import pytest
-from solution import Solution, TreeNode, PROBLEM_METADATA
+try:
+    from user_solution import Solution
+except ImportError:
+    from solution import Solution, TreeNode, PROBLEM_METADATA
 
 
 def array_to_tree(arr):

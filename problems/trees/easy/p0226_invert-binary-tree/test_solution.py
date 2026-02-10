@@ -3,7 +3,10 @@ Tests for LeetCode Problem #226: Invert Binary Tree
 """
 
 import pytest
-from solution import Solution, TreeNode, PROBLEM_METADATA
+try:
+    from user_solution import Solution
+except ImportError:
+    from solution import Solution, TreeNode, PROBLEM_METADATA
 
 
 def tree_to_list(root):

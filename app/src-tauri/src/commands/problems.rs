@@ -199,14 +199,25 @@ pub fn get_problem_content(problem_path: String) -> Result<ProblemContent, Strin
     let solution_content = fs::read_to_string(&solution_path)
         .map_err(|e| format!("Failed to read solution.py: {}", e))?;
 
-    // Read starter.py for the editor (method signatures only)
-    // Falls back to solution.py if starter.py doesn't exist
-    let starter_path = path.join("starter.py");
-    let raw_editor_content = fs::read_to_string(&starter_path)
-        .unwrap_or_else(|_| solution_content.clone());
+    // For editor content, priority order:
+    // 1. user_solution.py (user's work in progress)
+    // 2. template.py (clean skeleton)
+    // 3. Stripped solution.py (fallback)
+    let user_solution_path = path.join("user_solution.py");
+    let template_path = path.join("template.py");
 
-    // Strip comments, docstrings, and metadata for a clean editor display
-    let editor_content = strip_code_for_editor(&raw_editor_content);
+    let editor_content = if user_solution_path.exists() {
+        // User has existing work - load it
+        fs::read_to_string(&user_solution_path)
+            .unwrap_or_else(|_| String::new())
+    } else if template_path.exists() {
+        // Load clean template
+        fs::read_to_string(&template_path)
+            .unwrap_or_else(|_| String::new())
+    } else {
+        // Fallback: strip solution.py
+        strip_code_for_editor(&solution_content)
+    };
 
     // Read README.md
     let readme_path = path.join("README.md");
@@ -220,7 +231,7 @@ pub fn get_problem_content(problem_path: String) -> Result<ProblemContent, Strin
     Ok(ProblemContent {
         definition,
         hints,
-        solution: editor_content,  // Use starter.py content for the editor
+        solution: editor_content,
         explanation,
         readme: readme_content,
     })

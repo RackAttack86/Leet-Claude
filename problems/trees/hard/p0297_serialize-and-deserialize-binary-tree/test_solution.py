@@ -3,7 +3,11 @@ Tests for LeetCode Problem #297: Serialize and Deserialize Binary Tree
 """
 
 import pytest
-from solution import Solution, PROBLEM_METADATA, Codec, TreeNode
+try:
+    from user_solution import Solution
+    from solution import PROBLEM_METADATA
+except ImportError:
+    from solution import Solution, PROBLEM_METADATA, Codec, TreeNode
 
 
 def array_to_tree(arr):

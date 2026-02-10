@@ -3,7 +3,11 @@ Tests for LeetCode Problem #16: 3Sum Closest
 """
 
 import pytest
-from solution import Solution, PROBLEM_METADATA
+try:
+    from user_solution import Solution
+    from solution import PROBLEM_METADATA
+except ImportError:
+    from solution import Solution, PROBLEM_METADATA
 
 
 class Test3sumClosest:

@@ -3,7 +3,11 @@ Tests for LeetCode Problem #211: Design Add and Search Words Data Structure
 """
 
 import pytest
-from solution import Solution, PROBLEM_METADATA
+try:
+    from user_solution import Solution
+    from solution import PROBLEM_METADATA
+except ImportError:
+    from solution import Solution, PROBLEM_METADATA
 
 
 

@@ -3,7 +3,10 @@ Tests for LeetCode Problem #235: Lowest Common Ancestor of a Binary Search Tree
 """
 
 import pytest
-from solution import Solution, TreeNode, PROBLEM_METADATA
+try:
+    from user_solution import Solution
+except ImportError:
+    from solution import Solution, TreeNode, PROBLEM_METADATA
 
 
 def array_to_tree(arr):

@@ -3,7 +3,10 @@ Tests for LeetCode Problem #206: Reverse Linked List
 """
 
 import pytest
-from solution import Solution, ListNode, PROBLEM_METADATA
+try:
+    from user_solution import Solution
+except ImportError:
+    from solution import Solution, ListNode, PROBLEM_METADATA
 
 
 def list_to_array(head):

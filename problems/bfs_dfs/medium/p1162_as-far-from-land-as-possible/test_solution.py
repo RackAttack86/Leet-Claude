@@ -3,7 +3,11 @@ Tests for LeetCode Problem #1162: As Far from Land as Possible
 """
 
 import pytest
-from solution import Solution, PROBLEM_METADATA
+try:
+    from user_solution import Solution
+    from solution import PROBLEM_METADATA
+except ImportError:
+    from solution import Solution, PROBLEM_METADATA
 
 
 class TestAsFarFromLandAsPossible:

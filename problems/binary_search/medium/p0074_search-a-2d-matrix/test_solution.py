@@ -3,7 +3,11 @@ Tests for LeetCode Problem #74: Search a 2D Matrix
 """
 
 import pytest
-from solution import Solution, PROBLEM_METADATA
+try:
+    from user_solution import Solution
+    from solution import PROBLEM_METADATA
+except ImportError:
+    from solution import Solution, PROBLEM_METADATA
 
 
 

@@ -3,7 +3,11 @@ Tests for LeetCode Problem #543: Diameter of Binary Tree
 """
 
 import pytest
-from solution import Solution, PROBLEM_METADATA, TreeNode
+try:
+    from user_solution import Solution
+    from solution import PROBLEM_METADATA
+except ImportError:
+    from solution import Solution, PROBLEM_METADATA, TreeNode
 
 
 class TestDiameterOfBinaryTree:

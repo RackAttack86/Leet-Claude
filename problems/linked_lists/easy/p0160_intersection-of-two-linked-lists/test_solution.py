@@ -3,7 +3,11 @@ Tests for LeetCode Problem #160: Intersection of Two Linked Lists
 """
 
 import pytest
-from solution import Solution, PROBLEM_METADATA, ListNode
+try:
+    from user_solution import Solution
+    from solution import PROBLEM_METADATA
+except ImportError:
+    from solution import Solution, PROBLEM_METADATA, ListNode
 
 
 def create_intersecting_lists(valsA, valsB, skipA, skipB, intersection_vals):

@@ -3,7 +3,11 @@ Tests for LeetCode Problem #141: Linked List Cycle
 """
 
 import pytest
-from solution import Solution, PROBLEM_METADATA, ListNode
+try:
+    from user_solution import Solution
+    from solution import PROBLEM_METADATA
+except ImportError:
+    from solution import Solution, PROBLEM_METADATA, ListNode
 
 
 def create_cycle_list(vals, pos):

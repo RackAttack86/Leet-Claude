@@ -3,7 +3,11 @@ Tests for LeetCode Problem #230: Kth Smallest Element in a BST
 """
 
 import pytest
-from solution import Solution, PROBLEM_METADATA
+try:
+    from user_solution import Solution
+    from solution import PROBLEM_METADATA
+except ImportError:
+    from solution import Solution, PROBLEM_METADATA
 from solution import TreeNode
 from solution import Node
 

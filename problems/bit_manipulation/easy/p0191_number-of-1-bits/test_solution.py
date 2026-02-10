@@ -3,7 +3,11 @@ Tests for LeetCode Problem #191: Number of 1 Bits
 """
 
 import pytest
-from solution import Solution, PROBLEM_METADATA
+try:
+    from user_solution import Solution
+    from solution import PROBLEM_METADATA
+except ImportError:
+    from solution import Solution, PROBLEM_METADATA
 
 
 class TestNumberOf1Bits:

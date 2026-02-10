@@ -3,7 +3,11 @@ Tests for LeetCode Problem #153: Find Minimum in Rotated Sorted Array
 """
 
 import pytest
-from solution import Solution, PROBLEM_METADATA
+try:
+    from user_solution import Solution
+    from solution import PROBLEM_METADATA
+except ImportError:
+    from solution import Solution, PROBLEM_METADATA
 
 
 class TestFindMinimumInRotatedSortedArray:

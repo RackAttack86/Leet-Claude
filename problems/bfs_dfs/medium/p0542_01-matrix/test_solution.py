@@ -3,7 +3,11 @@ Tests for LeetCode Problem #542: 01 Matrix
 """
 
 import pytest
-from solution import Solution, PROBLEM_METADATA
+try:
+    from user_solution import Solution
+    from solution import PROBLEM_METADATA
+except ImportError:
+    from solution import Solution, PROBLEM_METADATA
 
 
 class Test01Matrix:

@@ -3,7 +3,11 @@ Tests for LeetCode Problem #82: Remove Duplicates from Sorted List II
 """
 
 import pytest
-from solution import Solution, PROBLEM_METADATA
+try:
+    from user_solution import Solution
+    from solution import PROBLEM_METADATA
+except ImportError:
+    from solution import Solution, PROBLEM_METADATA
 from solution import ListNode
 from solution import Node
 

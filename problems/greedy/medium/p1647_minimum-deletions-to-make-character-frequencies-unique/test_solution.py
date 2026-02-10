@@ -3,7 +3,11 @@ Tests for LeetCode Problem #1647: Minimum Deletions to Make Character Frequencie
 """
 
 import pytest
-from solution import Solution, PROBLEM_METADATA
+try:
+    from user_solution import Solution
+    from solution import PROBLEM_METADATA
+except ImportError:
+    from solution import Solution, PROBLEM_METADATA
 
 
 class TestMinimumDeletionsToMakeCharacterFrequenciesUnique:

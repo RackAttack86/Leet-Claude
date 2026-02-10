@@ -3,7 +3,11 @@ Tests for LeetCode Problem #452: Minimum Number of Arrows to Burst Balloons
 """
 
 import pytest
-from solution import Solution, PROBLEM_METADATA
+try:
+    from user_solution import Solution
+    from solution import PROBLEM_METADATA
+except ImportError:
+    from solution import Solution, PROBLEM_METADATA
 
 
 class TestMinimumNumberOfArrowsToBurstBalloons:

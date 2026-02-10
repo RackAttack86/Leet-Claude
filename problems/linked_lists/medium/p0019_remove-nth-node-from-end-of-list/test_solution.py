@@ -3,7 +3,11 @@ Tests for LeetCode Problem #19: Remove Nth Node From End of List
 """
 
 import pytest
-from solution import Solution, PROBLEM_METADATA, ListNode
+try:
+    from user_solution import Solution
+    from solution import PROBLEM_METADATA
+except ImportError:
+    from solution import Solution, PROBLEM_METADATA, ListNode
 
 
 def list_to_linked(arr):

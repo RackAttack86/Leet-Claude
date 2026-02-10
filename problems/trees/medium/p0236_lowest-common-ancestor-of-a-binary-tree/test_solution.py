@@ -3,7 +3,11 @@ Tests for LeetCode Problem #236: Lowest Common Ancestor of a Binary Tree
 """
 
 import pytest
-from solution import Solution, PROBLEM_METADATA
+try:
+    from user_solution import Solution
+    from solution import PROBLEM_METADATA
+except ImportError:
+    from solution import Solution, PROBLEM_METADATA
 from solution import TreeNode
 
 

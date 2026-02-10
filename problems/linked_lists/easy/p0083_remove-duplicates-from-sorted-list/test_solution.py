@@ -3,7 +3,11 @@ Tests for LeetCode Problem #83: Remove Duplicates from Sorted List
 """
 
 import pytest
-from solution import Solution, PROBLEM_METADATA, ListNode
+try:
+    from user_solution import Solution
+    from solution import PROBLEM_METADATA
+except ImportError:
+    from solution import Solution, PROBLEM_METADATA, ListNode
 
 
 def list_to_linked(vals):

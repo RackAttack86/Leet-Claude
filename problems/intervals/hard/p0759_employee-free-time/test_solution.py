@@ -3,7 +3,10 @@ Tests for LeetCode Problem #759: Employee Free Time
 """
 
 import pytest
-from solution import Solution, Interval, PROBLEM_METADATA
+try:
+    from user_solution import Solution
+except ImportError:
+    from solution import Solution, Interval, PROBLEM_METADATA
 
 
 class TestEmployeeFreeTime:

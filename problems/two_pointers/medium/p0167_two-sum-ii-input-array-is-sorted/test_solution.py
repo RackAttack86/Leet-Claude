@@ -3,7 +3,11 @@ Tests for LeetCode Problem #167: Two Sum II - Input Array Is Sorted
 """
 
 import pytest
-from solution import Solution, PROBLEM_METADATA
+try:
+    from user_solution import Solution
+    from solution import PROBLEM_METADATA
+except ImportError:
+    from solution import Solution, PROBLEM_METADATA
 
 
 

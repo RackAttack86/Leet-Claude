@@ -3,7 +3,10 @@ Tests for LeetCode Problem #104: Maximum Depth of Binary Tree
 """
 
 import pytest
-from solution import Solution, TreeNode, PROBLEM_METADATA
+try:
+    from user_solution import Solution
+except ImportError:
+    from solution import Solution, TreeNode, PROBLEM_METADATA
 
 
 class TestMaximumDepthOfBinaryTree:

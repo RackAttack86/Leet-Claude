@@ -3,7 +3,11 @@ Tests for LeetCode Problem #767: Reorganize String
 """
 
 import pytest
-from solution import Solution, PROBLEM_METADATA
+try:
+    from user_solution import Solution
+    from solution import PROBLEM_METADATA
+except ImportError:
+    from solution import Solution, PROBLEM_METADATA
 
 
 def is_valid_reorganization(s, result):
