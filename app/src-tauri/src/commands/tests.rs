@@ -1,8 +1,13 @@
-use std::process::Command;
+use std::process::{Command, Stdio};
 use std::path::Path;
+use std::time::Duration;
 use regex::Regex;
+use wait_timeout::ChildExt;
 
 use crate::models::{TestResult, TestRunResult};
+
+/// Test timeout in seconds
+const TEST_TIMEOUT_SECS: u64 = 30;
 
 /// Find Python executable on the system
 fn find_python() -> Result<String, String> {
@@ -65,14 +70,52 @@ pub fn run_tests(problem_path: String) -> Result<TestRunResult, String> {
     }
 
     // Run pytest with cache disabled and no compiled files
-    let output = Command::new(&python)
+    let mut child = Command::new(&python)
         .args(["-B", "-m", "pytest", test_file.to_str().unwrap(), "-v", "--tb=short", "-p", "no:cacheprovider"])
         .current_dir(problems_root)
-        .output()
+        .stdout(Stdio::piped())
+        .stderr(Stdio::piped())
+        .spawn()
         .map_err(|e| format!("Failed to execute pytest: {}", e))?;
 
-    let stdout = String::from_utf8_lossy(&output.stdout).to_string();
-    let stderr = String::from_utf8_lossy(&output.stderr).to_string();
+    // Wait with timeout
+    let timeout = Duration::from_secs(TEST_TIMEOUT_SECS);
+    let status = match child.wait_timeout(timeout).map_err(|e| format!("Failed to wait for pytest: {}", e))? {
+        Some(status) => status,
+        None => {
+            // Timeout - kill the process
+            let _ = child.kill();
+            let _ = child.wait(); // Clean up zombie process
+            return Ok(TestRunResult {
+                success: false,
+                total: 0,
+                passed: 0,
+                failed: 0,
+                results: vec![],
+                raw_output: format!("Test execution timed out after {} seconds. Your solution may have an infinite loop.", TEST_TIMEOUT_SECS),
+            });
+        }
+    };
+
+    // Read output
+    let stdout = child.stdout.take()
+        .map(|mut s| {
+            let mut buf = String::new();
+            use std::io::Read;
+            let _ = s.read_to_string(&mut buf);
+            buf
+        })
+        .unwrap_or_default();
+    
+    let stderr = child.stderr.take()
+        .map(|mut s| {
+            let mut buf = String::new();
+            use std::io::Read;
+            let _ = s.read_to_string(&mut buf);
+            buf
+        })
+        .unwrap_or_default();
+
     let raw_output = format!("{}\n{}", stdout, stderr);
 
     // Parse pytest output
@@ -82,7 +125,7 @@ pub fn run_tests(problem_path: String) -> Result<TestRunResult, String> {
     let total = results.len() as i32;
 
     Ok(TestRunResult {
-        success: output.status.success(),
+        success: status.success(),
         total,
         passed,
         failed,
