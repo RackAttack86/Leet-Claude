@@ -57,6 +57,15 @@ class TestIsomorphicStrings:
         assert result == expected
 
 
+    def test_different_chars_map_to_same(self, solution):
+        """Test where different chars in s would map to same char in t"""
+        s = "badc"
+        t = "baba"
+        expected = False
+        result = solution.isIsomorphic(s, t)
+        assert result == expected
+
+
     # Metadata validation
     def test_metadata_exists(self):
         """Verify problem metadata is complete"""
