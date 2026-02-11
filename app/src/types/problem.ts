@@ -21,7 +21,8 @@ export interface Problem extends ProblemMetadata {
 export interface ProblemContent {
   definition: string;
   hints: string[];
-  solution: string;
+  solution: string;      // Full solution for display
+  starterCode: string;   // Template/starter for editor
   explanation: string;
   readme: string;
 }

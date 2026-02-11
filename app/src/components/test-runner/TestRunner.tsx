@@ -1,7 +1,7 @@
 import { Terminal, CheckCircle, XCircle, Loader2 } from "lucide-react";
 import { useTestStore } from "@/store";
 import { TestResults } from "./TestResults";
-import { cn } from "@/lib/utils";
+
 
 export function TestRunner() {
   const isRunning = useTestStore((state) => state.isRunning);

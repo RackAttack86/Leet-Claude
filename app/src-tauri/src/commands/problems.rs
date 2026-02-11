@@ -10,11 +10,9 @@ use super::parser::{parse_metadata, extract_docstring, extract_hints, extract_ex
 /// Get the problems directory path
 #[tauri::command]
 pub fn get_problems_dir() -> Result<String, String> {
-    // Get the app's base directory (where the executable is)
     let exe_path = std::env::current_exe().map_err(|e| e.to_string())?;
     let base_dir = exe_path.parent().ok_or("Cannot get parent directory")?;
 
-    // Check common locations
     let possible_paths = vec![
         base_dir.join("..").join("..").join("..").join("problems"),
         base_dir.join("problems"),
@@ -29,7 +27,6 @@ pub fn get_problems_dir() -> Result<String, String> {
         }
     }
 
-    // Default fallback
     Ok("D:\\Leet-Claude\\problems".to_string())
 }
 
@@ -44,7 +41,6 @@ pub fn get_problem_tree(problems_dir: String) -> Result<Vec<TreeNode>, String> {
 
     let mut patterns: HashMap<String, HashMap<String, Vec<Problem>>> = HashMap::new();
 
-    // Walk through the directory structure
     for entry in WalkDir::new(problems_path)
         .min_depth(3)
         .max_depth(3)
@@ -56,13 +52,11 @@ pub fn get_problem_tree(problems_dir: String) -> Result<Vec<TreeNode>, String> {
             continue;
         }
 
-        // Check if this is a problem directory (has solution.py)
         let solution_path = path.join("solution.py");
         if !solution_path.exists() {
             continue;
         }
 
-        // Parse the path structure: problems/{pattern}/{difficulty}/p{number}_{slug}
         let components: Vec<&str> = path
             .strip_prefix(problems_path)
             .ok()
@@ -77,7 +71,6 @@ pub fn get_problem_tree(problems_dir: String) -> Result<Vec<TreeNode>, String> {
         let difficulty = components[1].to_string();
         let folder_name = components[2];
 
-        // Extract problem number and slug from folder name
         let folder_re = Regex::new(r"p(\d+)_(.+)").ok();
         let (number, slug) = if let Some(re) = folder_re {
             if let Some(caps) = re.captures(folder_name) {
@@ -91,7 +84,6 @@ pub fn get_problem_tree(problems_dir: String) -> Result<Vec<TreeNode>, String> {
             continue;
         };
 
-        // Read and parse solution.py for metadata
         let solution_content = fs::read_to_string(&solution_path).unwrap_or_default();
         let metadata = parse_metadata(&solution_content);
 
@@ -110,7 +102,6 @@ pub fn get_problem_tree(problems_dir: String) -> Result<Vec<TreeNode>, String> {
                 path: path.to_string_lossy().to_string(),
             }
         } else {
-            // Fallback with basic info
             Problem {
                 number,
                 name: slug.replace("-", " "),
@@ -134,10 +125,8 @@ pub fn get_problem_tree(problems_dir: String) -> Result<Vec<TreeNode>, String> {
             .push(problem);
     }
 
-    // Build tree structure
     let mut tree: Vec<TreeNode> = Vec::new();
 
-    // Sort patterns alphabetically
     let mut pattern_names: Vec<_> = patterns.keys().cloned().collect();
     pattern_names.sort();
 
@@ -146,7 +135,6 @@ pub fn get_problem_tree(problems_dir: String) -> Result<Vec<TreeNode>, String> {
 
         let mut difficulty_nodes: Vec<TreeNode> = Vec::new();
 
-        // Sort difficulties: Easy, Medium, Hard
         let difficulty_order = ["easy", "medium", "hard"];
         for diff in difficulty_order.iter() {
             if let Some(problems) = difficulties.get(*diff) {
@@ -194,36 +182,26 @@ pub fn get_problem_tree(problems_dir: String) -> Result<Vec<TreeNode>, String> {
 pub fn get_problem_content(problem_path: String) -> Result<ProblemContent, String> {
     let path = Path::new(&problem_path);
 
-    // Read solution.py for metadata and docstring
     let solution_path = path.join("solution.py");
     let solution_content = fs::read_to_string(&solution_path)
         .map_err(|e| format!("Failed to read solution.py: {}", e))?;
 
-    // For editor content, priority order:
-    // 1. user_solution.py (user's work in progress)
-    // 2. template.py (clean skeleton)
-    // 3. Stripped solution.py (fallback)
-    let user_solution_path = path.join("user_solution.py");
+    // Full solution (stripped) for the Full Solution panel
+    let full_solution = strip_code_for_editor(&solution_content);
+
+    // For editor starter code, use template.py or fallback to stripped solution
     let template_path = path.join("template.py");
 
-    let editor_content = if user_solution_path.exists() {
-        // User has existing work - load it
-        fs::read_to_string(&user_solution_path)
-            .unwrap_or_else(|_| String::new())
-    } else if template_path.exists() {
-        // Load clean template
+    let starter_code = if template_path.exists() {
         fs::read_to_string(&template_path)
-            .unwrap_or_else(|_| String::new())
+            .unwrap_or_else(|_| full_solution.clone())
     } else {
-        // Fallback: strip solution.py
-        strip_code_for_editor(&solution_content)
+        full_solution.clone()
     };
 
-    // Read README.md
     let readme_path = path.join("README.md");
     let readme_content = fs::read_to_string(&readme_path).unwrap_or_default();
 
-    // Extract sections from solution.py
     let definition = extract_docstring(&solution_content);
     let hints = extract_hints(&readme_content);
     let explanation = extract_explanation(&readme_content);
@@ -231,7 +209,8 @@ pub fn get_problem_content(problem_path: String) -> Result<ProblemContent, Strin
     Ok(ProblemContent {
         definition,
         hints,
-        solution: editor_content,
+        solution: full_solution,
+        starter_code,
         explanation,
         readme: readme_content,
     })

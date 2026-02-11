@@ -36,6 +36,7 @@ pub struct ProblemContent {
     pub definition: String,
     pub hints: Vec<String>,
     pub solution: String,
+    pub starter_code: String,
     pub explanation: String,
     pub readme: String,
 }

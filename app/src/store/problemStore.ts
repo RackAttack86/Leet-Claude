@@ -102,12 +102,13 @@ export const useProblemStore = create<ProblemState>((set, get) => ({
     try {
       set({ loading: true, error: null });
       const content = await getProblemContent(problem.path);
-      // content.solution contains the starter template (from template.py or fallback)
+      // content.starterCode contains the template for the editor
+      // content.solution contains the full solution for the Full Solution panel
       set({
         selectedProblem: problem,
         problemContent: content,
-        solutionCode: content.solution,
-        originalCode: content.solution,
+        solutionCode: content.starterCode,
+        originalCode: content.starterCode,
         loading: false,
       });
     } catch (err) {
