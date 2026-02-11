@@ -9,7 +9,6 @@ use commands::{
     get_problem_tree,
     get_problem_content,
     read_solution,
-    write_solution,
     run_tests,
 };
 
@@ -20,7 +19,6 @@ fn main() {
             get_problem_tree,
             get_problem_content,
             read_solution,
-            write_solution,
             run_tests,
         ])
         .run(tauri::generate_context!())

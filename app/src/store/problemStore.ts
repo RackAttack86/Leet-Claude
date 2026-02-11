@@ -3,7 +3,6 @@ import type { Problem, ProblemContent, TreeNode } from "@/types";
 import {
   getProblemTree,
   getProblemContent,
-  writeSolution,
   getProblemsDir,
 } from "@/lib/tauri-commands";
 
@@ -20,18 +19,14 @@ interface ProblemState {
   // Keyboard navigation
   focusedNodeId: string | null;
 
-  // Editor state
+  // Editor state (ephemeral - not saved)
   solutionCode: string;
   originalCode: string;
-  isDirty: boolean;
-  isSaving: boolean;
-  lastSaved: Date | null;
 
   // Actions
   loadProblems: () => Promise<void>;
   selectProblem: (problem: Problem) => Promise<void>;
   setSolutionCode: (code: string) => void;
-  saveSolution: () => Promise<void>;
   resetToOriginal: () => void;
   toggleNode: (nodeId: string) => void;
   clearError: () => void;
@@ -91,9 +86,6 @@ export const useProblemStore = create<ProblemState>((set, get) => ({
   focusedNodeId: null,
   solutionCode: "",
   originalCode: "",
-  isDirty: false,
-  isSaving: false,
-  lastSaved: null,
 
   loadProblems: async () => {
     try {
@@ -110,12 +102,12 @@ export const useProblemStore = create<ProblemState>((set, get) => ({
     try {
       set({ loading: true, error: null });
       const content = await getProblemContent(problem.path);
+      // content.solution contains the starter template (from template.py or fallback)
       set({
         selectedProblem: problem,
         problemContent: content,
         solutionCode: content.solution,
         originalCode: content.solution,
-        isDirty: false,
         loading: false,
       });
     } catch (err) {
@@ -124,39 +116,12 @@ export const useProblemStore = create<ProblemState>((set, get) => ({
   },
 
   setSolutionCode: (code: string) => {
-    const { originalCode } = get();
-    set({
-      solutionCode: code,
-      isDirty: code !== originalCode,
-    });
-  },
-
-  saveSolution: async () => {
-    const { selectedProblem, solutionCode } = get();
-    if (!selectedProblem) return;
-
-    try {
-      set({ isSaving: true });
-      // Save to user_solution.py (user's work in progress)
-      const userSolutionPath = `${selectedProblem.path}/user_solution.py`;
-      await writeSolution(userSolutionPath, solutionCode);
-      set({
-        isSaving: false,
-        isDirty: false,
-        originalCode: solutionCode,
-        lastSaved: new Date(),
-      });
-    } catch (err) {
-      set({ isSaving: false, error: String(err) });
-    }
+    set({ solutionCode: code });
   },
 
   resetToOriginal: () => {
     const { originalCode } = get();
-    set({
-      solutionCode: originalCode,
-      isDirty: false,
-    });
+    set({ solutionCode: originalCode });
   },
 
   toggleNode: (nodeId: string) => {

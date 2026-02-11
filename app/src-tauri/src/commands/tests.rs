@@ -42,15 +42,20 @@ fn find_python() -> Result<String, String> {
     Err("Python not found. Please install Python and ensure it's in your PATH.".to_string())
 }
 
-/// Run pytest for a specific problem
+/// Run pytest for a specific problem with code passed from the editor
 #[tauri::command]
-pub fn run_tests(problem_path: String) -> Result<TestRunResult, String> {
+pub fn run_tests(problem_path: String, code: String) -> Result<TestRunResult, String> {
     let path = Path::new(&problem_path);
     let test_file = path.join("test_solution.py");
+    let temp_solution_file = path.join("user_solution.py");
 
     if !test_file.exists() {
         return Err(format!("Test file not found: {:?}", test_file));
     }
+
+    // Write the code to a temporary user_solution.py file
+    std::fs::write(&temp_solution_file, &code)
+        .map_err(|e| format!("Failed to write temporary solution file: {}", e))?;
 
     // Get the problems root directory (3 levels up from problem folder)
     let problems_root = path
@@ -83,9 +88,10 @@ pub fn run_tests(problem_path: String) -> Result<TestRunResult, String> {
     let status = match child.wait_timeout(timeout).map_err(|e| format!("Failed to wait for pytest: {}", e))? {
         Some(status) => status,
         None => {
-            // Timeout - kill the process
+            // Timeout - kill the process and clean up temp file
             let _ = child.kill();
-            let _ = child.wait(); // Clean up zombie process
+            let _ = child.wait();
+            let _ = std::fs::remove_file(&temp_solution_file);
             return Ok(TestRunResult {
                 success: false,
                 total: 0,
@@ -97,6 +103,9 @@ pub fn run_tests(problem_path: String) -> Result<TestRunResult, String> {
         }
     };
 
+    // Clean up temp file after tests complete
+    let _ = std::fs::remove_file(&temp_solution_file);
+
     // Read output
     let stdout = child.stdout.take()
         .map(|mut s| {
@@ -106,7 +115,7 @@ pub fn run_tests(problem_path: String) -> Result<TestRunResult, String> {
             buf
         })
         .unwrap_or_default();
-    
+
     let stderr = child.stderr.take()
         .map(|mut s| {
             let mut buf = String::new();
