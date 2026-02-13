@@ -3,6 +3,7 @@ Tests for LeetCode Problem #173: Binary Search Tree Iterator
 """
 
 import pytest
+from collections import deque
 from solution import BSTIterator, PROBLEM_METADATA
 from solution import TreeNode
 
@@ -13,11 +14,11 @@ def array_to_tree(arr):
         return None
 
     root = TreeNode(arr[0])
-    queue = [root]
+    queue = deque([root])  # Use deque for O(1) popleft
     i = 1
 
     while queue and i < len(arr):
-        node = queue.pop(0)
+        node = queue.popleft()  # O(1) instead of O(n) pop(0)
         if i < len(arr) and arr[i] is not None:
             node.left = TreeNode(arr[i])
             queue.append(node.left)
@@ -122,8 +123,6 @@ class TestBinarySearchTreeIterator:
         assert iterator.next() == 3
         assert iterator.hasNext() == False
         assert iterator.hasNext() == False  # Multiple hasNext calls at end
-
-    # Metadata validation
     def test_metadata_exists(self):
         """Verify problem metadata is complete"""
         required_fields = ["number", "name", "difficulty", "pattern", "url"]

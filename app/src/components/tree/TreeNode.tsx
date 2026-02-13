@@ -1,6 +1,7 @@
 import { memo, useCallback, useMemo } from "react";
 import { ChevronRight, ChevronDown, Folder, FolderOpen, FileCode } from "lucide-react";
 import { useProblemStore } from "@/store";
+import { shallow } from "zustand/shallow";
 import { TreeNode as TreeNodeType } from "@/types";
 import { cn, getDifficultyColor } from "@/lib/utils";
 
@@ -10,11 +11,17 @@ interface TreeNodeProps {
 }
 
 export const TreeNode = memo(function TreeNode({ node, level }: TreeNodeProps) {
-  const toggleNode = useProblemStore((state) => state.toggleNode);
-  const selectProblem = useProblemStore((state) => state.selectProblem);
-  const selectedProblemNumber = useProblemStore((state) => state.selectedProblem?.number);
-  const focusedNodeId = useProblemStore((state) => state.focusedNodeId);
-  const setFocusedNodeId = useProblemStore((state) => state.setFocusedNodeId);
+  // Batch state and action subscriptions to reduce re-renders
+  const { selectedProblemNumber, focusedNodeId, toggleNode, selectProblem, setFocusedNodeId } = useProblemStore(
+    (state) => ({
+      selectedProblemNumber: state.selectedProblem?.number,
+      focusedNodeId: state.focusedNodeId,
+      toggleNode: state.toggleNode,
+      selectProblem: state.selectProblem,
+      setFocusedNodeId: state.setFocusedNodeId,
+    }),
+    shallow
+  );
 
   const hasChildren = node.children && node.children.length > 0;
   const isExpanded = node.expanded;

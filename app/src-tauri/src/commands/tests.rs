@@ -1,7 +1,9 @@
 use std::process::{Command, Stdio};
 use std::path::Path;
 use std::time::Duration;
+use std::sync::Mutex;
 use regex::Regex;
+use once_cell::sync::Lazy;
 use wait_timeout::ChildExt;
 
 use crate::models::{TestResult, TestRunResult};
@@ -9,8 +11,30 @@ use crate::models::{TestResult, TestRunResult};
 /// Test timeout in seconds
 const TEST_TIMEOUT_SECS: u64 = 30;
 
-/// Find Python executable on the system
+// ============================================================================
+// CACHING & PRE-COMPILED PATTERNS
+// ============================================================================
+
+// Cache the discovered Python executable path
+static PYTHON_PATH: Lazy<Mutex<Option<String>>> = Lazy::new(|| Mutex::new(None));
+
+// Pre-compiled regex patterns for pytest output parsing
+static RE_TEST_RESULT: Lazy<Regex> = Lazy::new(|| {
+    Regex::new(r"test_solution\.py::(\w+)::(\w+)\s+(PASSED|FAILED)").unwrap()
+});
+static RE_SIMPLE_TEST: Lazy<Regex> = Lazy::new(|| {
+    Regex::new(r"(test_\w+)\s+(PASSED|FAILED)").unwrap()
+});
+
+/// Find Python executable on the system (cached after first discovery)
 fn find_python() -> Result<String, String> {
+    // Check cache first
+    if let Ok(cache) = PYTHON_PATH.lock() {
+        if let Some(ref path) = *cache {
+            return Ok(path.clone());
+        }
+    }
+
     // Try common Python locations on Windows
     let candidates = [
         // Windows Python launcher (most reliable on Windows)
@@ -34,6 +58,10 @@ fn find_python() -> Result<String, String> {
 
         if let Ok(output) = result {
             if output.status.success() {
+                // Cache the found path
+                if let Ok(mut cache) = PYTHON_PATH.lock() {
+                    *cache = Some(candidate.to_string());
+                }
                 return Ok(candidate.to_string());
             }
         }
@@ -146,54 +174,47 @@ pub fn run_tests(problem_path: String, code: String) -> Result<TestRunResult, St
 fn parse_pytest_output(output: &str) -> Vec<TestResult> {
     let mut results = Vec::new();
 
-    // Match test result lines like:
+    // Match test result lines using pre-compiled regex:
     // test_solution.py::TestClassName::test_name PASSED [ 20%]
     // test_solution.py::TestClassName::test_name FAILED [ 40%]
-    let test_re = Regex::new(r"test_solution\.py::(\w+)::(\w+)\s+(PASSED|FAILED)").ok();
+    for caps in RE_TEST_RESULT.captures_iter(output) {
+        let class_name = caps.get(1).map(|m| m.as_str()).unwrap_or("");
+        let test_name = caps.get(2).map(|m| m.as_str()).unwrap_or("");
+        let status = caps.get(3).map(|m| m.as_str()).unwrap_or("");
 
-    if let Some(re) = test_re {
-        for caps in re.captures_iter(output) {
-            let class_name = caps.get(1).map(|m| m.as_str()).unwrap_or("");
-            let test_name = caps.get(2).map(|m| m.as_str()).unwrap_or("");
-            let status = caps.get(3).map(|m| m.as_str()).unwrap_or("");
+        let passed = status == "PASSED";
+        let full_name = format!("{}::{}", class_name, test_name);
 
-            let passed = status == "PASSED";
-            let full_name = format!("{}::{}", class_name, test_name);
+        // Try to extract error for failed tests
+        let error = if !passed {
+            extract_test_error(output, &full_name)
+        } else {
+            None
+        };
 
-            // Try to extract error for failed tests
-            let error = if !passed {
-                extract_test_error(output, &full_name)
-            } else {
-                None
-            };
-
-            results.push(TestResult {
-                passed,
-                test_name: full_name,
-                output: String::new(),
-                error,
-                duration: 0.0,
-            });
-        }
+        results.push(TestResult {
+            passed,
+            test_name: full_name,
+            output: String::new(),
+            error,
+            duration: 0.0,
+        });
     }
 
     // If no results parsed, try simpler pattern
     if results.is_empty() {
-        let simple_re = Regex::new(r"(test_\w+)\s+(PASSED|FAILED)").ok();
-        if let Some(re) = simple_re {
-            for caps in re.captures_iter(output) {
-                let test_name = caps.get(1).map(|m| m.as_str().to_string()).unwrap_or_default();
-                let status = caps.get(2).map(|m| m.as_str()).unwrap_or("");
-                let passed = status == "PASSED";
+        for caps in RE_SIMPLE_TEST.captures_iter(output) {
+            let test_name = caps.get(1).map(|m| m.as_str().to_string()).unwrap_or_default();
+            let status = caps.get(2).map(|m| m.as_str()).unwrap_or("");
+            let passed = status == "PASSED";
 
-                results.push(TestResult {
-                    passed,
-                    test_name,
-                    output: String::new(),
-                    error: None,
-                    duration: 0.0,
-                });
-            }
+            results.push(TestResult {
+                passed,
+                test_name,
+                output: String::new(),
+                error: None,
+                duration: 0.0,
+            });
         }
     }
 

@@ -1,11 +1,38 @@
 use std::collections::HashMap;
 use std::fs;
 use std::path::Path;
+use std::sync::Mutex;
+use std::num::NonZeroUsize;
 use walkdir::WalkDir;
 use regex::Regex;
+use once_cell::sync::Lazy;
+use lru::LruCache;
 
 use crate::models::{Problem, ProblemContent, TreeNode};
 use super::parser::{parse_metadata, extract_docstring, extract_hints, extract_explanation, strip_code_for_editor};
+
+// ============================================================================
+// CACHING
+// Pre-compiled regex and LRU cache for problem content
+// ============================================================================
+
+// Pre-compiled regex for folder name parsing (was compiled per-folder before)
+static RE_FOLDER: Lazy<Regex> = Lazy::new(|| {
+    Regex::new(r"p(\d+)_(.+)").unwrap()
+});
+
+// LRU cache for problem content (avoids re-reading/re-parsing files)
+static CONTENT_CACHE: Lazy<Mutex<LruCache<String, ProblemContent>>> = Lazy::new(|| {
+    Mutex::new(LruCache::new(NonZeroUsize::new(50).unwrap()))
+});
+
+/// Clear the content cache (useful when files are modified externally)
+#[tauri::command]
+pub fn clear_content_cache() {
+    if let Ok(mut cache) = CONTENT_CACHE.lock() {
+        cache.clear();
+    }
+}
 
 /// Get the problems directory path
 #[tauri::command]
@@ -71,15 +98,11 @@ pub fn get_problem_tree(problems_dir: String) -> Result<Vec<TreeNode>, String> {
         let difficulty = components[1].to_string();
         let folder_name = components[2];
 
-        let folder_re = Regex::new(r"p(\d+)_(.+)").ok();
-        let (number, slug) = if let Some(re) = folder_re {
-            if let Some(caps) = re.captures(folder_name) {
-                let num: i32 = caps.get(1).and_then(|m| m.as_str().parse().ok()).unwrap_or(0);
-                let s = caps.get(2).map(|m| m.as_str().to_string()).unwrap_or_default();
-                (num, s)
-            } else {
-                continue;
-            }
+        // Use pre-compiled regex for folder name parsing
+        let (number, slug) = if let Some(caps) = RE_FOLDER.captures(folder_name) {
+            let num: i32 = caps.get(1).and_then(|m| m.as_str().parse().ok()).unwrap_or(0);
+            let s = caps.get(2).map(|m| m.as_str().to_string()).unwrap_or_default();
+            (num, s)
         } else {
             continue;
         };
@@ -177,9 +200,17 @@ pub fn get_problem_tree(problems_dir: String) -> Result<Vec<TreeNode>, String> {
     Ok(tree)
 }
 
-/// Get full content for a selected problem
+/// Get full content for a selected problem (with LRU caching)
 #[tauri::command]
 pub fn get_problem_content(problem_path: String) -> Result<ProblemContent, String> {
+    // Check cache first
+    if let Ok(mut cache) = CONTENT_CACHE.lock() {
+        if let Some(cached) = cache.get(&problem_path) {
+            return Ok(cached.clone());
+        }
+    }
+
+    // Cache miss - read and parse files
     let path = Path::new(&problem_path);
 
     let solution_path = path.join("solution.py");
@@ -206,14 +237,21 @@ pub fn get_problem_content(problem_path: String) -> Result<ProblemContent, Strin
     let hints = extract_hints(&readme_content);
     let explanation = extract_explanation(&readme_content);
 
-    Ok(ProblemContent {
+    let content = ProblemContent {
         definition,
         hints,
         solution: full_solution,
         starter_code,
         explanation,
         readme: readme_content,
-    })
+    };
+
+    // Store in cache
+    if let Ok(mut cache) = CONTENT_CACHE.lock() {
+        cache.put(problem_path, content.clone());
+    }
+
+    Ok(content)
 }
 
 fn capitalize(s: &str) -> String {

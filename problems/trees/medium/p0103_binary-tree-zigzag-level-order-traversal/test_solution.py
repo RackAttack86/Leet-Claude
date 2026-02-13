@@ -3,6 +3,7 @@ Tests for LeetCode Problem #103: Binary Tree Zigzag Level Order Traversal
 """
 
 import pytest
+from collections import deque
 try:
     from user_solution import Solution
     from solution import PROBLEM_METADATA
@@ -18,11 +19,11 @@ def array_to_tree(arr):
         return None
 
     root = TreeNode(arr[0])
-    queue = [root]
+    queue = deque([root])  # Use deque for O(1) popleft
     i = 1
 
     while queue and i < len(arr):
-        node = queue.pop(0)
+        node = queue.popleft()  # O(1) instead of O(n) pop(0)
         if i < len(arr) and arr[i] is not None:
             node.left = TreeNode(arr[i])
             queue.append(node.left)
@@ -41,10 +42,10 @@ def tree_to_array(root):
         return []
 
     result = []
-    queue = [root]
+    queue = deque([root])  # Use deque for O(1) popleft
 
     while queue:
-        node = queue.pop(0)
+        node = queue.popleft()  # O(1) instead of O(n) pop(0)
         if node:
             result.append(node.val)
             queue.append(node.left)
@@ -103,7 +104,6 @@ class TestBinaryTreeZigzagLevelOrderTraversal:
         """Test with two levels"""
         root = array_to_tree([1, 2, 3])
         # Level 0: left to right -> [1]
-        # Level 1: right to left -> [3, 2]
         expected = [[1], [3, 2]]
         result = solution.zigzagLevelOrder(root)
         assert result == expected
@@ -112,7 +112,6 @@ class TestBinaryTreeZigzagLevelOrderTraversal:
         """Test with three levels complete tree"""
         root = array_to_tree([1, 2, 3, 4, 5, 6, 7])
         # Level 0: left to right -> [1]
-        # Level 1: right to left -> [3, 2]
         # Level 2: left to right -> [4, 5, 6, 7]
         expected = [[1], [3, 2], [4, 5, 6, 7]]
         result = solution.zigzagLevelOrder(root)

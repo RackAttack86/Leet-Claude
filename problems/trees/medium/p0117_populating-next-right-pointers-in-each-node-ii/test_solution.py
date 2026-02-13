@@ -3,6 +3,7 @@ Tests for LeetCode Problem #117: Populating Next Right Pointers in Each Node II
 """
 
 import pytest
+from collections import deque
 try:
     from user_solution import Solution
     from solution import PROBLEM_METADATA
@@ -26,13 +27,11 @@ class TestPopulatingNextRightPointersInEachNodeIi:
             return None
 
         root = Node(values[0])
-        queue = [root]
+        queue = deque([root])  # Use deque for O(1) popleft
         i = 1
 
         while queue and i < len(values):
-            node = queue.pop(0)
-
-            # Left child
+            node = queue.popleft()  # O(1) instead of O(n) pop(0)
             if i < len(values) and values[i] is not None:
                 node.left = Node(values[i])
                 queue.append(node.left)

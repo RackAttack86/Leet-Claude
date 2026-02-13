@@ -3,6 +3,7 @@ Tests for LeetCode Problem #226: Invert Binary Tree
 """
 
 import pytest
+from collections import deque
 try:
     from user_solution import Solution
 except ImportError:
@@ -14,9 +15,9 @@ def tree_to_list(root):
     if not root:
         return []
     result = []
-    queue = [root]
+    queue = deque([root])  # Use deque for O(1) popleft
     while queue:
-        node = queue.pop(0)
+        node = queue.popleft()  # O(1) instead of O(n) pop(0)
         if node:
             result.append(node.val)
             queue.append(node.left)

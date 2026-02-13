@@ -8,6 +8,7 @@ use commands::{
     get_problems_dir,
     get_problem_tree,
     get_problem_content,
+    clear_content_cache,
     read_solution,
     run_tests,
 };
@@ -18,6 +19,7 @@ fn main() {
             get_problems_dir,
             get_problem_tree,
             get_problem_content,
+            clear_content_cache,
             read_solution,
             run_tests,
         ])

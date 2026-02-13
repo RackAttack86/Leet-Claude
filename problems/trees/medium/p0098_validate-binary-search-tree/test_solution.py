@@ -3,6 +3,7 @@ Tests for LeetCode Problem #98: Validate Binary Search Tree
 """
 
 import pytest
+from collections import deque
 try:
     from user_solution import Solution
 except ImportError:
@@ -15,11 +16,11 @@ def array_to_tree(arr):
         return None
 
     root = TreeNode(arr[0])
-    queue = [root]
+    queue = deque([root])  # Use deque for O(1) popleft
     i = 1
 
     while queue and i < len(arr):
-        node = queue.pop(0)
+        node = queue.popleft()  # O(1) instead of O(n) pop(0)
         if i < len(arr) and arr[i] is not None:
             node.left = TreeNode(arr[i])
             queue.append(node.left)
@@ -96,7 +97,6 @@ class TestValidateBinarySearchTree:
     def test_invalid_right_subtree_violation(self, solution):
         """Right subtree contains value less than root"""
         # Tree: 10 -> left: 5, right: 15 -> left: 6, right: 20
-        # 6 is less than 10, so invalid
         root = TreeNode(10)
         root.left = TreeNode(5)
         root.right = TreeNode(15)

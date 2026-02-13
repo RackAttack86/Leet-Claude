@@ -1,20 +1,42 @@
 import { useCallback, useRef, useEffect } from "react";
 import { useProblemStore } from "@/store";
+import { shallow } from "zustand/shallow";
 import { TreeNode as TreeNodeType } from "@/types";
 import { TreeNode } from "./TreeNode";
 
 export function ProblemTree() {
-  const tree = useProblemStore((state) => state.tree);
-  const loading = useProblemStore((state) => state.loading);
-  const error = useProblemStore((state) => state.error);
-  const focusedNodeId = useProblemStore((state) => state.focusedNodeId);
-  const focusNextNode = useProblemStore((state) => state.focusNextNode);
-  const focusPrevNode = useProblemStore((state) => state.focusPrevNode);
-  const focusFirstNode = useProblemStore((state) => state.focusFirstNode);
-  const focusLastNode = useProblemStore((state) => state.focusLastNode);
-  const expandFocusedNode = useProblemStore((state) => state.expandFocusedNode);
-  const collapseFocusedNode = useProblemStore((state) => state.collapseFocusedNode);
-  const activateFocusedNode = useProblemStore((state) => state.activateFocusedNode);
+  // Batch state subscriptions to reduce re-renders
+  const { tree, loading, error, focusedNodeId } = useProblemStore(
+    (state) => ({
+      tree: state.tree,
+      loading: state.loading,
+      error: state.error,
+      focusedNodeId: state.focusedNodeId,
+    }),
+    shallow
+  );
+
+  // Batch action subscriptions (these are stable references from Zustand)
+  const {
+    focusNextNode,
+    focusPrevNode,
+    focusFirstNode,
+    focusLastNode,
+    expandFocusedNode,
+    collapseFocusedNode,
+    activateFocusedNode,
+  } = useProblemStore(
+    (state) => ({
+      focusNextNode: state.focusNextNode,
+      focusPrevNode: state.focusPrevNode,
+      focusFirstNode: state.focusFirstNode,
+      focusLastNode: state.focusLastNode,
+      expandFocusedNode: state.expandFocusedNode,
+      collapseFocusedNode: state.collapseFocusedNode,
+      activateFocusedNode: state.activateFocusedNode,
+    }),
+    shallow
+  );
 
   const containerRef = useRef<HTMLDivElement>(null);
 

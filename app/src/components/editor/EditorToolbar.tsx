@@ -1,15 +1,29 @@
+import { useMemo, useCallback } from "react";
 import { Play, RotateCcw, Loader2 } from "lucide-react";
 import { useProblemStore, useTestStore } from "@/store";
+import { shallow } from "zustand/shallow";
 import { cn } from "@/lib/utils";
 
 export function EditorToolbar() {
-  const selectedProblem = useProblemStore((state) => state.selectedProblem);
-  const solutionCode = useProblemStore((state) => state.solutionCode);
-  const originalCode = useProblemStore((state) => state.originalCode);
-  const resetToOriginal = useProblemStore((state) => state.resetToOriginal);
+  // Batch problem store subscriptions
+  const { selectedProblem, solutionCode, originalCode, resetToOriginal } = useProblemStore(
+    (state) => ({
+      selectedProblem: state.selectedProblem,
+      solutionCode: state.solutionCode,
+      originalCode: state.originalCode,
+      resetToOriginal: state.resetToOriginal,
+    }),
+    shallow
+  );
 
-  const runTests = useTestStore((state) => state.runTests);
-  const isRunning = useTestStore((state) => state.isRunning);
+  // Batch test store subscriptions
+  const { runTests, isRunning } = useTestStore(
+    (state) => ({
+      runTests: state.runTests,
+      isRunning: state.isRunning,
+    }),
+    shallow
+  );
 
   // Check if code differs from original (for Reset button)
   const hasChanges = solutionCode !== originalCode;

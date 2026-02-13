@@ -1,11 +1,92 @@
 use regex::Regex;
+use once_cell::sync::Lazy;
 use crate::models::ProblemMetadata;
+
+// ============================================================================
+// PRE-COMPILED REGEX PATTERNS
+// These are compiled once at startup, eliminating per-call regex compilation
+// which was causing 10+ regex compilations per file read.
+// ============================================================================
+
+// Metadata extraction patterns
+static RE_METADATA: Lazy<Regex> = Lazy::new(|| {
+    Regex::new(r#"PROBLEM_METADATA\s*=\s*\{([^}]+(?:\{[^}]*\}[^}]*)*)\}"#).unwrap()
+});
+static RE_LIST_ITEM: Lazy<Regex> = Lazy::new(|| {
+    Regex::new(r#"["']([^"']+)["']"#).unwrap()
+});
+
+// Docstring extraction patterns
+static RE_DOCSTRING_DOUBLE: Lazy<Regex> = Lazy::new(|| {
+    Regex::new(r#"^"""([\s\S]*?)""""#).unwrap()
+});
+static RE_DOCSTRING_SINGLE: Lazy<Regex> = Lazy::new(|| {
+    Regex::new(r#"^'''([\s\S]*?)'''"#).unwrap()
+});
+
+// README section patterns
+static RE_KEY_INSIGHTS: Lazy<Regex> = Lazy::new(|| {
+    Regex::new(r#"(?i)##\s*Key\s*Insights?\s*\n([\s\S]*?)(?:\n##|$)"#).unwrap()
+});
+static RE_BULLET: Lazy<Regex> = Lazy::new(|| {
+    Regex::new(r#"[-*]\s+(.+)"#).unwrap()
+});
+static RE_APPROACHES: Lazy<Regex> = Lazy::new(|| {
+    Regex::new(r#"(?i)##\s*Approach(?:es)?\s*\n([\s\S]*?)(?:\n##|$)"#).unwrap()
+});
+
+// Code stripping patterns
+static RE_MODULE_DOCSTRING_DOUBLE: Lazy<Regex> = Lazy::new(|| {
+    Regex::new(r#"^"""[\s\S]*?"""\s*\n?"#).unwrap()
+});
+static RE_MODULE_DOCSTRING_SINGLE: Lazy<Regex> = Lazy::new(|| {
+    Regex::new(r#"^'''[\s\S]*?'''\s*\n?"#).unwrap()
+});
+static RE_METADATA_WITH_COMMENT: Lazy<Regex> = Lazy::new(|| {
+    Regex::new(r#"\n*#?\s*Metadata.*\n?PROBLEM_METADATA\s*=\s*\{[\s\S]*?\}\s*\n?"#).unwrap()
+});
+static RE_METADATA_PLAIN: Lazy<Regex> = Lazy::new(|| {
+    Regex::new(r#"\n*PROBLEM_METADATA\s*=\s*\{[\s\S]*?\}\s*\n?"#).unwrap()
+});
+static RE_CLASS_DOCSTRING_DOUBLE: Lazy<Regex> = Lazy::new(|| {
+    Regex::new(r#"(class\s+\w+.*?:\s*\n)\s*"""[\s\S]*?"""\s*\n"#).unwrap()
+});
+static RE_CLASS_DOCSTRING_SINGLE: Lazy<Regex> = Lazy::new(|| {
+    Regex::new(r#"(class\s+\w+.*?:\s*\n)\s*'''[\s\S]*?'''\s*\n"#).unwrap()
+});
+static RE_METHOD_DOCSTRING_DOUBLE: Lazy<Regex> = Lazy::new(|| {
+    Regex::new(r#"(def\s+\w+\s*\([^)]*\)[^:]*:\s*\n)\s*"""[\s\S]*?"""\s*\n"#).unwrap()
+});
+static RE_METHOD_DOCSTRING_SINGLE: Lazy<Regex> = Lazy::new(|| {
+    Regex::new(r#"(def\s+\w+\s*\([^)]*\)[^:]*:\s*\n)\s*'''[\s\S]*?'''\s*\n"#).unwrap()
+});
+static RE_STANDALONE_COMMENT: Lazy<Regex> = Lazy::new(|| {
+    Regex::new(r#"(?m)^\s*#.*\n"#).unwrap()
+});
+static RE_MULTIPLE_NEWLINES: Lazy<Regex> = Lazy::new(|| {
+    Regex::new(r#"\n{3,}"#).unwrap()
+});
+
+// Dynamic pattern builders (cached per key)
+fn build_string_pattern(key: &str) -> Regex {
+    Regex::new(&format!(r#"["']{}["']\s*:\s*["']([^"']+)["']"#, key)).unwrap()
+}
+
+fn build_int_pattern(key: &str) -> Regex {
+    Regex::new(&format!(r#"["']{}["']\s*:\s*(\d+)"#, key)).unwrap()
+}
+
+fn build_list_pattern(key: &str) -> Regex {
+    Regex::new(&format!(r#"["']{}["']\s*:\s*\[([^\]]*)\]"#, key)).unwrap()
+}
+
+// ============================================================================
+// PUBLIC API
+// ============================================================================
 
 /// Parse PROBLEM_METADATA from solution.py content
 pub fn parse_metadata(content: &str) -> Option<ProblemMetadata> {
-    // Find the PROBLEM_METADATA dict
-    let re = Regex::new(r#"PROBLEM_METADATA\s*=\s*\{([^}]+(?:\{[^}]*\}[^}]*)*)\}"#).ok()?;
-    let caps = re.captures(content)?;
+    let caps = RE_METADATA.captures(content)?;
     let dict_content = caps.get(1)?.as_str();
 
     // Extract individual fields
@@ -33,25 +114,21 @@ pub fn parse_metadata(content: &str) -> Option<ProblemMetadata> {
 }
 
 fn extract_string(content: &str, key: &str) -> Option<String> {
-    let pattern = format!(r#"["']{}["']\s*:\s*["']([^"']+)["']"#, key);
-    let re = Regex::new(&pattern).ok()?;
+    let re = build_string_pattern(key);
     re.captures(content).map(|c| c.get(1).unwrap().as_str().to_string())
 }
 
 fn extract_int(content: &str, key: &str) -> Option<i32> {
-    let pattern = format!(r#"["']{}["']\s*:\s*(\d+)"#, key);
-    let re = Regex::new(&pattern).ok()?;
+    let re = build_int_pattern(key);
     re.captures(content).and_then(|c| c.get(1).unwrap().as_str().parse().ok())
 }
 
 fn extract_list(content: &str, key: &str) -> Option<Vec<String>> {
-    let pattern = format!(r#"["']{}["']\s*:\s*\[([^\]]*)\]"#, key);
-    let re = Regex::new(&pattern).ok()?;
+    let re = build_list_pattern(key);
     let caps = re.captures(content)?;
     let list_content = caps.get(1)?.as_str();
 
-    let item_re = Regex::new(r#"["']([^"']+)["']"#).ok()?;
-    let items: Vec<String> = item_re
+    let items: Vec<String> = RE_LIST_ITEM
         .captures_iter(list_content)
         .filter_map(|c| c.get(1).map(|m| m.as_str().to_string()))
         .collect();
@@ -61,19 +138,12 @@ fn extract_list(content: &str, key: &str) -> Option<Vec<String>> {
 
 /// Extract the module-level docstring (problem definition)
 pub fn extract_docstring(content: &str) -> String {
-    let re = Regex::new(r#"^"""([\s\S]*?)""""#).ok();
-    if let Some(re) = re {
-        if let Some(caps) = re.captures(content) {
-            return caps.get(1).map(|m| m.as_str().trim().to_string()).unwrap_or_default();
-        }
+    if let Some(caps) = RE_DOCSTRING_DOUBLE.captures(content) {
+        return caps.get(1).map(|m| m.as_str().trim().to_string()).unwrap_or_default();
     }
 
-    // Try single quotes
-    let re = Regex::new(r#"^'''([\s\S]*?)'''"#).ok();
-    if let Some(re) = re {
-        if let Some(caps) = re.captures(content) {
-            return caps.get(1).map(|m| m.as_str().trim().to_string()).unwrap_or_default();
-        }
+    if let Some(caps) = RE_DOCSTRING_SINGLE.captures(content) {
+        return caps.get(1).map(|m| m.as_str().trim().to_string()).unwrap_or_default();
     }
 
     String::new()
@@ -81,22 +151,12 @@ pub fn extract_docstring(content: &str) -> String {
 
 /// Extract Key Insights section from README.md
 pub fn extract_hints(readme: &str) -> Vec<String> {
-    // Find the Key Insights section
-    let section_re = Regex::new(r#"(?i)##\s*Key\s*Insights?\s*\n([\s\S]*?)(?:\n##|$)"#).ok();
-
-    if let Some(re) = section_re {
-        if let Some(caps) = re.captures(readme) {
-            let section = caps.get(1).map(|m| m.as_str()).unwrap_or("");
-
-            // Extract bullet points
-            let bullet_re = Regex::new(r#"[-*]\s+(.+)"#).ok();
-            if let Some(bullet_re) = bullet_re {
-                return bullet_re
-                    .captures_iter(section)
-                    .filter_map(|c| c.get(1).map(|m| m.as_str().trim().to_string()))
-                    .collect();
-            }
-        }
+    if let Some(caps) = RE_KEY_INSIGHTS.captures(readme) {
+        let section = caps.get(1).map(|m| m.as_str()).unwrap_or("");
+        return RE_BULLET
+            .captures_iter(section)
+            .filter_map(|c| c.get(1).map(|m| m.as_str().trim().to_string()))
+            .collect();
     }
 
     Vec::new()
@@ -104,12 +164,8 @@ pub fn extract_hints(readme: &str) -> Vec<String> {
 
 /// Extract Approaches section from README.md
 pub fn extract_explanation(readme: &str) -> String {
-    let section_re = Regex::new(r#"(?i)##\s*Approach(?:es)?\s*\n([\s\S]*?)(?:\n##|$)"#).ok();
-
-    if let Some(re) = section_re {
-        if let Some(caps) = re.captures(readme) {
-            return caps.get(1).map(|m| m.as_str().trim().to_string()).unwrap_or_default();
-        }
+    if let Some(caps) = RE_APPROACHES.captures(readme) {
+        return caps.get(1).map(|m| m.as_str().trim().to_string()).unwrap_or_default();
     }
 
     String::new()
@@ -120,49 +176,27 @@ pub fn strip_code_for_editor(content: &str) -> String {
     let mut result = content.to_string();
 
     // Remove module-level docstring (at the start of file)
-    if let Some(re) = Regex::new(r#"^"""[\s\S]*?"""\s*\n?"#).ok() {
-        result = re.replace(&result, "").to_string();
-    }
-    if let Some(re) = Regex::new(r#"^'''[\s\S]*?'''\s*\n?"#).ok() {
-        result = re.replace(&result, "").to_string();
-    }
+    result = RE_MODULE_DOCSTRING_DOUBLE.replace(&result, "").to_string();
+    result = RE_MODULE_DOCSTRING_SINGLE.replace(&result, "").to_string();
 
     // Remove PROBLEM_METADATA dict
-    if let Some(re) = Regex::new(r#"\n*#?\s*Metadata.*\n?PROBLEM_METADATA\s*=\s*\{[\s\S]*?\}\s*\n?"#).ok() {
-        result = re.replace(&result, "").to_string();
-    }
-    if let Some(re) = Regex::new(r#"\n*PROBLEM_METADATA\s*=\s*\{[\s\S]*?\}\s*\n?"#).ok() {
-        result = re.replace(&result, "").to_string();
-    }
+    result = RE_METADATA_WITH_COMMENT.replace(&result, "").to_string();
+    result = RE_METADATA_PLAIN.replace(&result, "").to_string();
 
-    // Remove class docstrings (docstring right after class definition)
-    if let Some(re) = Regex::new(r#"(class\s+\w+.*?:\s*\n)\s*"""[\s\S]*?"""\s*\n"#).ok() {
-        result = re.replace_all(&result, "$1").to_string();
-    }
-    if let Some(re) = Regex::new(r#"(class\s+\w+.*?:\s*\n)\s*'''[\s\S]*?'''\s*\n"#).ok() {
-        result = re.replace_all(&result, "$1").to_string();
-    }
+    // Remove class docstrings
+    result = RE_CLASS_DOCSTRING_DOUBLE.replace_all(&result, "$1").to_string();
+    result = RE_CLASS_DOCSTRING_SINGLE.replace_all(&result, "$1").to_string();
 
-    // Remove method docstrings (docstring right after def)
-    if let Some(re) = Regex::new(r#"(def\s+\w+\s*\([^)]*\)[^:]*:\s*\n)\s*"""[\s\S]*?"""\s*\n"#).ok() {
-        result = re.replace_all(&result, "$1").to_string();
-    }
-    if let Some(re) = Regex::new(r#"(def\s+\w+\s*\([^)]*\)[^:]*:\s*\n)\s*'''[\s\S]*?'''\s*\n"#).ok() {
-        result = re.replace_all(&result, "$1").to_string();
-    }
+    // Remove method docstrings
+    result = RE_METHOD_DOCSTRING_DOUBLE.replace_all(&result, "$1").to_string();
+    result = RE_METHOD_DOCSTRING_SINGLE.replace_all(&result, "$1").to_string();
 
-    // Remove standalone comment blocks (lines starting with #)
-    // But keep inline comments
-    if let Some(re) = Regex::new(r#"^\s*#.*\n"#).ok() {
-        result = re.replace_all(&result, "").to_string();
-    }
+    // Remove standalone comment blocks
+    result = RE_STANDALONE_COMMENT.replace_all(&result, "").to_string();
 
-    // Clean up multiple consecutive blank lines (keep max 2)
-    if let Some(re) = Regex::new(r#"\n{3,}"#).ok() {
-        result = re.replace_all(&result, "\n\n").to_string();
-    }
+    // Clean up multiple consecutive blank lines
+    result = RE_MULTIPLE_NEWLINES.replace_all(&result, "\n\n").to_string();
 
-    // Trim leading/trailing whitespace
     result.trim().to_string()
 }
 
